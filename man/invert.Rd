@@ -7,12 +7,16 @@
 invert(x)
 }
 \arguments{
-\item{x}{object to invert
-
-Inverts named vectors}
+\item{x}{object to invert}
+}
+\value{
+A character vector in which the names are the former valeus.
 }
 \description{
 Invert a structure by swapping keys and values
+}
+\details{
+Inverts named vectors
 }
 \note{
 - currently applies to atomic vectors only

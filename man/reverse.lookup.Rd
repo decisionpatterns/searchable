@@ -17,6 +17,9 @@ performed in the Extract methods.
 In order to perform a reverse lookup, values must be converted to character
 names.}
 }
+\value{
+a string object with the \code{reversse.lookup} attribute set.
+}
 \description{
 This function causes the pattern search to be performed against an object's
 values instead of its names
@@ -26,10 +29,8 @@ What happens if there are two reverse.lookups
 }
 \examples{
 reverse.lookup("string")
-  "string"  \%>\%  reverse.lookup  \%>\% reverse.lookup
 }
 \seealso{
-\code{\link[base]{extract}} \cr
-  The \code{invert} function in the \code{hash} package \cr
+The \code{invert} function in the \code{hash} package \cr
 }
 

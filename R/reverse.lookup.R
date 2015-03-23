@@ -13,16 +13,18 @@
 #' In order to perform a reverse lookup, values must be converted to character 
 #' names.
 #' 
+#' @return 
+#'   a string object with the \code{reversse.lookup} attribute set. 
+#' 
 #' @seealso 
-#'   \code{\link[base]{extract}} \cr
 #'   The \code{invert} function in the \code{hash} package \cr
 #'   
 #' @examples 
 #'   reverse.lookup("string")
-#'   "string"  %>%  reverse.lookup  %>% reverse.lookup  
 #'   
 #' @note
 #'   What happens if there are two reverse.lookups
+#' @rdname reverse.lookup
 #' @export 
 
 reverse.lookup <- 

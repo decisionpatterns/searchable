@@ -1,17 +1,30 @@
 Package: searchable
 Type: Package
-Title: Make objects more searchable by matching names based on case 
-    (in)sensitivity, regular expressions, etc. 
+Title: Make R objects more searchable by matching names based on case
+    (in)sensitivity, regular expressions, etc.
 Version: 0.1
-Date: 2015-03-13
+Date: 2015-03-20
 Author: "DecisionPatterns [aut, cre]"
 Maintainer: Christopher Brown <chris.brown@decisionpatterns.com>
-Description: Provides functionality for making named list and vectors more  
+Description: Provides functionality for making named list and vectors more
     generally searchable by case (in)sensitivity, regular expressions or fixed
-    values (default). The packages using stringr-style search modifiers: 
-    ignore.case, regex and perl. This functionality facilitates creating 
-    dictionary and thesaurus like structures 
-Imports:
+    values (default). The packages using stringr-style search modifiers:
+    ignore.case, regex and perl. This functionality facilitates creating
+    dictionary and thesaurus like structures
+Depends:
+    R (>= 3.0.2),
     stringr (>= 0.6.2)
-License: DP Client License
-Suggests: testthat
+Suggests:
+    testthat
+License: GPL-2
+URL: https://github.com/decisionpatterns/searchable
+BugReports: https://github.com/decisionpatterns/searchable/issues
+Collate:
+    'Class-searchable.R'
+    'extract.R'
+    'invert.R'
+    'is.string.R'
+    'match-modifiers.R'
+    'reverse.lookup.R'
+    'searchable-package.R'
+    'zzz.R'

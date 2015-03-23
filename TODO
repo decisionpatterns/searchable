@@ -1,0 +1,24 @@
+TODO:
+ - remove dependency on stringr?
+ - Refactor to 
+   - match.modifiers: 
+       fixed, perl (regex), ignore.case, exact, partial
+   - search.modifiers: 
+       reverse.lookup - look in values  
+       any, all
+       recursive (unlist)  
+   - return.modifeirs: 
+       key, value
+       searchable (returns a searchable object), 
+       recursive: first, last, second, third, nth(string,n)
+   - setting modifiers:
+       uniqueness
+   
+ - Determine if we need subclasses: 
+   - searchable.atomic and searchable.recursive
+     There are no classes for atomic and recursive(?)
+   - searchable.vector, searchable.list, searchable.hash
+
+- Should be able to:
+  v %>% searchable %>% ignore.case   for example. 
+  This could be done by changing the S4 slot modifiers to the match mofiers

@@ -2,7 +2,11 @@
 #' 
 #' @param x object to invert
 #' 
+#' @details 
 #' Inverts named vectors 
+#' 
+#' @return 
+#'   A character vector in which the names are the former valeus.
 #' 
 #' @examples 
 #'  v <- 1:26
@@ -33,3 +37,21 @@ setMethod( "invert", "vector",
     
   }
 )
+
+
+# SEARCHABLE
+  setMethod( "invert", "searchable", 
+  
+    function(x) { 
+      x@.Data <- invert( x@.Data )
+      x
+    }
+    
+  )
+
+# LISTS
+  setMethod( "invert", "list", 
+    function(x) {
+      stop( "Inverting lists is not supported yet")
+    }  
+  )
