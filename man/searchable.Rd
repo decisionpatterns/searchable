@@ -82,32 +82,28 @@ arrays are not supported at this time.
     sv <- searchable(v)
 
   # EXTRACT:
-    sv[ c('a','b') ]        # Normal
-    sv[ perl('c.?') ]
-    sv[ fixed('c') ]
-    sv[ 'x' ]                # NA
-
-    sv[["a"]]
-    sv[[ ignore.case("a") ]]
-    sv[[ ignore.case("A") ]]
-
     sv$a
-    sv$b
-    sv$B
 
+    sv[['a']]
+    sv[[ ignore.case('A') ]]
 
-  # WITH MARGRITTR:
-  \dontrun{
-    "b" \%>\% sv[[.]]
-    "B" \%>\% ignore.case \%>\% sv[.]
-    "c." \%>\% perl \%>\% sv[[.]]
-    "c.?" \%>\% perl \%>\% sv[.]
-   }
+    sv[ ignore.case('b') ]
+    sv[ perl('c') ]
+    sv[ fixed('c') ]
+
 
   # REPLACEMENT:
-    sv[['a']] <- "first"
+    sv$a               <- "first"
+    sv[['a']]          <- "1st"
     sv[[ perl('c.') ]] <- "third"
-    sv[[ perl('c.?') ]] <- "third"
+
+    sv[ perl('c.?') ]   <- "3rd"
+
+
+  # MODIFIERS TO OBJECT
+    sv <- searchable(v, modifiers = list( ignore.case, fixed ) )
+    sv$A
+    sv['C']
 
 
   # RECURSIVE LISTS:

@@ -80,6 +80,51 @@ uniqueness for names in vectors and lists. These structures may contain
 multiple elements with the same name. Attempts to extract by this name yield
 the first occurence of the name.
 }
+\examples{
+# ATOMIC VECTORS:
+    v <- c( a=1, b=2, B=3, c=4, c2=5 )
+    sv <- searchable(v)
+
+  # EXTRACT:
+    sv[ c('a','b') ]        # Normal
+    sv[ perl('c.?') ]
+    sv[ fixed('c') ]
+    sv[ 'x' ]                # NA
+
+    sv[["a"]]
+    sv[[ ignore.case("a") ]]
+    sv[[ ignore.case("A") ]]
+
+    sv$a
+    sv$b
+    sv$B
+
+
+  # WITH MARGRITTR:
+  \dontrun{
+    "b" \%>\% sv[[.]]
+    "B" \%>\% ignore.case \%>\% sv[.]
+    "c." \%>\% perl \%>\% sv[[.]]
+    "c.?" \%>\% perl \%>\% sv[.]
+   }
+
+  # REPLACEMENT:
+    sv[['a']] <- "first"
+    sv[[ perl('c.') ]] <- "third"
+    # sv[[ perl('c.?') ]] <- "third"
+
+
+  # RECURSIVE LISTS:
+    l <- list( a=1, b=2, c=3 )
+    sl <- searchable(l)
+    sl[["b"]]
+    sl[[ ignore.case("B") ]]
+   \dontrun{
+    sl[[ "B"  \%>\% ignore.case ]]
+    "b" \%>\% sl[[.]]
+    "B" \%>\% ignore.case \%>\% sl[[ . ]]
+   }
+}
 \seealso{
 \code{\link{searchable}}           \cr
    \code{\link[base]{Extract}}        \cr

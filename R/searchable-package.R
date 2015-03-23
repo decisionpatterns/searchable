@@ -13,10 +13,21 @@
 #' @examples
 #'   
 #'   # Vectors 
-#'     v <- c( a=1, b=2, c=3 )
-#'     sv <- searchable( v, ignore.case )
-#'     sv[[ "b" ]]     # 2 
-#'     sv[[ ignore.case('B') ]]
+#'     v <- c( ay=1, bee=2, cee=3 )
+#'     sv <- searchable( v, modifiers = list(ignore.case) )
+#'     
+#'     sv$BEE 
+#'     
+#'     sv[[ "b" ]]                # 2 
+#'     sv[[ "B" ]]                # 2 
+#'     sv[[ ignore.case('BEE') ]] # 2
+#'     
+#'     sv[[ fixed('b') ]]         # 2 with warning
+#'     
+#'     
+#'     sv[ 'bee' ]                       
+#'     sv[ 'ee' ]                 #  
+#'     sv[ perl('[A|B]') ]        # 1,2  
 #'      
 #'   # LISTS 
 #'     l <- list( a=1, B=2, c=3 )
