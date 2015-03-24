@@ -2,6 +2,8 @@ TODO:
  
 # IMMEDIATE 
 
+ - Support data.frames
+ 
  - What is the behavior of $, $<- ?
  
    - Option 1: Not overridden, behaves as base R. This is rationale because $
