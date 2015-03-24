@@ -6,7 +6,7 @@ allow for matching by case (in)sensitivity, regular expressions
 or fixed expression. It also allows searching through values rather than names. 
 This functionality facilitates creating dictionary and thesaurus like structures. 
 
-# INSTALLATION
+# Installation
 
     library(devtools)
     install_github( "decisionpatterns/searchable" )
