@@ -1,5 +1,16 @@
-.match.modifiers <- c( 'ignore.case', 'fixed', 'perl', 'exact', 'partial' )
+# List of active modifiers, exact/default is not a match modifier, it resets ther others
+.match.modifiers <- c( 'ignore.case', 'fixed', 'perl' ) #, 'exact', 'default', 'partial' 
 
+# Get active modifier(s) 
+# @return list of match.modifiers or NULL if non-exist.
+.get.modifiers <- function(object) {
+  li <- attributes(object)[ .match.modifiers ] 
+  li <- li[ ! sapply(li, is.null) ]
+  
+  # if( ! is.null(li) && length(li) == 0 ) return(NULL)
+  return(li)
+}
+  
 #' Match modifiers 
 #' 
 #' Functions affecting how matching occurs. The modifiers can be applied to 
@@ -8,13 +19,16 @@
 #' @param object string or target object to apply match modifiers to
 #' 
 #' Match modifiers control how a search pattern is matched against the search 
-#' target. They can be applied to either the pattern or target. Generally, 
-#' modifers applied to the target are applied when the object is created. 
-#' Modifiers applied to the search string take priority, are applied after and 
-#' override those of applied to the target.   
+#' target. They can be applied to either the pattern or target.  
+#' Modifiers applied to the search pattern take priority. \strong{If any match modifiers 
+#' are set on the search pattern, these are used instead of those defined on the 
+#' target.}
 #' 
 #' Modifiers \code{ignore.case}, \code{perl} and \code{fixed} follow closely the
-#' implementations by the \strong{stringr} package.
+#' implementations by the \strong{stringr} package. \code{exact} is added that 
+#' reverts the match to R's default exact matching behavior. These are slightly 
+#' enhanced from stringr version: See 
+#' \url{https://github.com/hadley/stringr/issues/60} for details
 #' 
 #' 
 #' @section ignore.case: 
@@ -23,6 +37,7 @@
 #' the names of the target. \code{ignore.case} is incompatible with 
 #' \code{fixed}. Application of \code{ignore.case} overrides previous calls to
 #' \code{fixed}.
+#' 
 #' 
 #' @section perl: 
 #' 
@@ -52,12 +67,18 @@
 #' 
 #' @section exact:
 #' 
-#' Match modifier \code{exact}, set matches to performs an exact match against 
-#' the target's object names. This is the default behavior of base. It is 
-#' incompatible with all other match modifiers. Setting \code{exact} sets the 
-#' other match modifiers to \code{FALSE}.
+#' Match modifier \code{exact}, clears all match modifiers and resets the 
+#' R's normal exact matching to the target's names. 
 #' 
+#' It is incompatible with all other match modifiers. Setting \code{exact} 
+#' clears other match modifiers to \code{FALSE}.
 #' 
+#' See \url{https://github.com/hadley/stringr/issues/55}
+#' 
+#' @references 
+#'   \url{https://github.com/hadley/stringr/issues/55} \cr
+#'   \url{https://github.com/hadley/stringr/issues/60} \cr
+#'   
 #' @seealso 
 #'   \code{\link{extract}} \cr
 #'   \code{\link[stringr]{fixed}} \cr
@@ -73,12 +94,13 @@
 perl <- function (object) {
   
     fixed <- attr(object, 'fixed')
+    
     if( ! is.null(fixed) && fixed ) { 
        message("perl overriding fixed matching")
        object <- structure( object, fixed = FALSE )
     } 
     
-    object <- structure( object, perl = TRUE  )
+    object <- structure( object, perl = TRUE, exact = NULL  )
     return(object)
 }
 
@@ -94,7 +116,7 @@ ignore.case <- function (object) {
        object <- structure( object, fixed = FALSE )
     } 
     
-    object <- structure( object, ignore.case = TRUE  )
+    object <- structure( object, ignore.case = TRUE, exact = NULL   )
     return(object)
 }
 
@@ -115,7 +137,7 @@ fixed <- function (object) {
        object <- structure( object, ignore.case = FALSE )
     }
     
-    object <- structure( object, fixed = TRUE  )
+    object <- structure( object, fixed = TRUE, exact = NULL  )
     return(object)
 }
 
@@ -130,9 +152,11 @@ fixed <- function (object) {
 #' @export
   exact <- function(object) { 
     
-    object <- structure( object, 'exact' ) <- TRUE
+    object <- structure( object, ignore.case = NULL, fixed = NULL, perl = NULL )
     return(object)
+    
   }
-  
 
-
+# #' @rdname match.modifiers 
+# #' @export
+#   default <- function(object) exact(object)

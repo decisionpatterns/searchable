@@ -1,5 +1,21 @@
 TODO:
- - remove dependency on stringr in favor of stringi?
+ 
+# IMMEDIATE 
+
+ - What is the behavior of $, $<- ?
+ 
+   - Option 1: Not overridden, behaves as base R. This is rationale because $
+     does not generally interpret the argument.
+     
+   - Option 2: As [[, and interprets 
+     There is no way to directly add to the structure if the 
+     Since it is object$name there can be no modifiers applied to name.    
+   
+   - $<- ?
+     If there is no
+ 
+ 
+ - Can there be perl and ignore.case together? OR fixed and ignore.case? 
  
  - Refactor to 
    - match.modifiers: 
@@ -9,31 +25,43 @@ TODO:
        x exact
 
    - search.modifiers: 
-       reverse.lookup - look in values  
-       
-   - ????
-       any, all
-       recursive (unlist)
+       - reverse.lookup - look in values  
+       - recursive (unlist)
 
+   - multiple matches
+       - any 
+       - all
+       - first, last, second, third, nth(string,n)        
+       
    - return.modifeirs: 
-       key, value
-       searchable (returns a searchable object), 
-       recursive: first, last, second, third, nth(string,n)
+       - key, value
+       x searchable (returns a searchable object): pipe result to searchable
 
    - setting modifiers:
-       uniqueness
-       
-       
+       - uniqueness
+       - count 
+
+ - Better modifier collision in extract.R/.collect.modifiers 
+    - ? match modifiers should be resolved without necessarily affecting search etc.  
+    - It's possible to apply the modifiers differently to searchable vs nt searchable
+      objects
+    
+    Any modifiers to search pattern override the target. 
+    
+    
+# LONG TERM 
+ - remove dependency on stringr in favor of stringi?
+    
  - Determine if we need subclasses: 
    - searchable.atomic and searchable.recursive
      There are no classes for atomic and recursive(?)
    - searchable.vector, searchable.list, searchable.hash
 
 
-- Should be able to apply modifiers to object:
-  v %>% searchable %>% ignore.case for example. 
-  This could be done by changing the S4 slot modifiers to the match mofiers
-
+# COMPLETED 
+X Should be able to apply modifiers to target object:
+  v %>% searchable %>% ignore.case  
+  
 
 
 # INTERFACE OPTIONS

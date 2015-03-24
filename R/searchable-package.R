@@ -12,9 +12,9 @@
 #'   
 #' @examples
 #'   
-#'   # Vectors 
+#'   # ATOMIC VECTORS 
 #'     v <- c( ay=1, bee=2, cee=3 )
-#'     sv <- searchable( v, modifiers = list(ignore.case) )
+#'     sv <- searchable( v, ignore.case  )
 #'     
 #'     sv$BEE 
 #'     
@@ -22,18 +22,31 @@
 #'     sv[[ "B" ]]                # 2 
 #'     sv[[ ignore.case('BEE') ]] # 2
 #'     
-#'     sv[[ fixed('b') ]]         # 2 with warning
+#'     sv[[ fixed('b') ]]         # 2 
 #'     
 #'     
 #'     sv[ 'bee' ]                       
 #'     sv[ 'ee' ]                 #  
 #'     sv[ perl('[A|B]') ]        # 1,2  
 #'      
-#'   # LISTS 
-#'     l <- list( a=1, B=2, c=3 )
-#'     sl <- searchable(l)
-#
+#'   # RECURSIVE LISTS 
 #'   
+#'     l <- list( ay=c(1), bee=c(2), cee=3 )
+#'     sl <- searchable(l, ignore.case )
+#'
+#'     sl$BEE                     # 1 2   
+#'     
+#'     sl[[ "b" ]]                # 1 2 
+#'     sl[[ "B" ]]                # 1 2 
+#'     sl[[ ignore.case('BEE') ]] # 1 2
+#'     
+#'     sl[[ fixed('b') ]]         # 1 2 
+#'     
+#'     sl[ 'bee' ]                       
+#'     sl[ 'ee' ]                 # 1  1 2 
+#'     sl[ perl('[a|b]') ]        # 1  1 2  
+#'    
+#'    
 #' @docType package
 #' @name searchable-package
 #' @include Class-searchable.R

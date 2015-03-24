@@ -1,16 +1,37 @@
 # ----------------------------------------------------------------
 # HELPER FUNCTIONS 
  
-# Adds searchable objects modifiers to pattern 
 
-.is.unmodified <- function( object, pattern )
-  length(object@modifiers) == 0 && 
-  is.null( attributes(pattern) )    # pattern can be NULL 
+# Unmodifed do not have any .match.modifiers set.
+
+
+.is.unmodified <- function( object, pattern )  {
   
+  mods.object <- .get.modifiers(object)
+  mods.pattern <- .get.modifiers(pattern)
+  
+  
+  ( is.null( mods.object)  || length(mods.object)  == 0 ) && 
+  ( is.null( mods.pattern) || length(mods.pattern) == 0 ) 
+  
+}
 
 .collect.modifiers <- function( object, pattern ) { 
-   for( mod in object@modifiers ) pattern <- mod(pattern)
-   return(pattern)
+   ret <- pattern 
+   
+   obj.mods <- .get.modifiers(object)
+   if( ! is.null(obj.mods) ) 
+
+      
+   # RESOLVE CONFLICTS ...
+   # If there are any modifiers to pattern use those instead.
+   pat.mods <- .get.modifiers(pattern)
+   if( ! is.null(pat.mods) ) 
+     attributes(ret) <- pat.mods else
+     attributes(ret) <- obj.mods
+
+   return(ret)
+   
 }
   
 # # Applies invert lookup, if set   
@@ -25,7 +46,8 @@
 .which.matches <- function( object, pattern ) { 
   
   # TRAP ERRORS     
-    if( ! is.string(pattern) ) stop("pattern string should be a one-element character vector")
+    if( ! .is.unmodified(object,pattern) & ! is.string(pattern) ) 
+      stop("pattern string should be a one-element character vector")
      
   # ADD DEFAULT MODIFIERS
     pattern <- .collect.modifiers(object,pattern)

@@ -1,6 +1,10 @@
 # setClassUnion( "LogicalOrCharacter", c("logical","character") )
   setClassUnion( "searchables", c('vector', 'list') )
 
+# A searchable object is a vector or list and has a names attribute  
+  is.searchables <- function(object) 
+    ( is.vector(object) || is.list(object) ) && ! is.null( attr(object, "names"))
+  
 #   validSearchableObject <- function(object) { 
 #     
 #     if( object@perl = TRUE && object)
@@ -18,14 +22,15 @@
 #' @description
 #' Creates a searchable class that allows for modification for searches.
 #'
-#' @slot modifiers zero or more function that are used to modify the search 
-#' function before performing the search. 
-#'  
+# @slot modifiers zero or more function that are used to modify the search 
+# function before performing the search. 
+#  
 # @param x,object object to be made or searchable
 # @param modifiers functions used to modify the search  
 #'  
-#' @param object searchable object 
-#'
+#' @param object searchable object or object to be made searchable
+#' @param ... one or more stringr-style match modifying sunctions, See 
+#'   \code{?match.modifiers} for details.
 #'  
 # @slot ignore.case logical; whether case should be ignored
 # @slot regex logical or character; if \code{TRUE}, R's regular expression 
@@ -67,6 +72,11 @@
 #' 
 #' Multiple dimension ojects such as data.frames, data.tables, matrices and 
 #' arrays are not supported at this time.
+#' 
+#' @section Adding new modifiers:
+#' 
+#' It is possible to add additional search modifiers ... (vignette)  
+#' 
 #' 
 #' @return 
 #'   By default, the extraction from a searchable objects is not a class 
@@ -111,10 +121,11 @@
 #'     sv[ perl('c.?') ]   <- "3rd"
 #'   
 #'   
-#'   # MODIFIERS TO OBJECT
-#'     sv <- searchable(v, modifiers = list( ignore.case, fixed ) )         
+#'   # MODIFIERS TO SEARCH TARGET/OBJECT
+#'     sv <- searchable(v, ignore.case )         
 #'     sv$A
-#'     sv['C']
+#'     sv['b']
+#'     sv['B']
 #'   
 #'   
 #'   # RECURSIVE LISTS:
@@ -122,6 +133,8 @@
 #'     sl <- searchable(l)                
 #'     sl[["b"]]
 #'     sl[[ ignore.case("B") ]] 
+#'     
+#'   # USE WITH MAGRITTR   
 #'    \dontrun{
 #'     sl[[ "B"  %>% ignore.case ]]
 #'     "b" %>% sl[[.]]
@@ -131,22 +144,60 @@
 #'      
 #' @rdname searchable
 #' @exportClass searchable
+#' @import methods
 #' @export searchable 
 
-  searchable <- setClass( 'searchable' 
-    , representation = representation( 'searchables', modifiers = 'list' ) # ignore.case = 'logical', regex = 'LogicalOrCharacter' )    # Fix 
-    , prototype = prototype( vector(), modifiers = list()  ) 
+  setClass( 'searchable' 
+    , representation = representation( 
+        'searchables'
+        # , modifiers = 'list'
+        # , ignore.case = 'logical'
+        # , perl        = 'logical'
+        #, fixed       = 'logical'
+        # , exact       = 'logical'  # This is the default
+      )  
+    , prototype = prototype( vector() ) # , ignore.case = FALSE, perl = FALSE, fixed = FALSE ) 
     , contains = 'searchables'  #searchables2
   )
 
+
+#' @rdname searchable
+#' @export
+  
+searchable <- function( object, ...) { 
+
+  ret <- new( 'searchable', object )
+  
+  li <- list(...)
+  if( length(li) > 0 ) 
+    for( elem in li )  
+      if( is.function(elem) ) 
+        ret <- elem(ret) else
+        stop( "argument is not a match modifier." )
+   
+  return(ret)
+  
+}
+   
   
 # METHOD: show
 #' @rdname searchable
   setMethod('show', 'searchable', 
     function(object) {
-      cat( class(object), " ", class(object@.Data), ":\n", sep = "" )
-      show(object@.Data)
+      
+      # CREATE LIST OF MATCH MODIFIERS USED
+      mods <- unlist( .get.modifiers(object) )
+      if ( is.null(mods) )
+        mods <- "exact" else 
+        mods <- paste( names( which( mods  ) ), collapse = ", " )
+      
+      cat( class(object), class(object@.Data), "using",  mods, ":\n", sep = " " )
+   
+      val <- object@.Data 
+      
+      show( object@.Data[ 1:length(object@.Data) ] )  # REMOVE attributes
       invisible(NULL)
+      
     }
   )
   

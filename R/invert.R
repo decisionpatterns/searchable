@@ -21,10 +21,14 @@
 #'   - apply to list (recursive structures), data.frames, matrices and arrays 
 #'   - invert might be an ambiguous name ... call it swap_kv? kvswap? swapKV? swapNV?
 #'   
+#' @rdname invert   
 #' @export
 
 setGeneric( "invert", function(x) standardGeneric( "invert" ) )
 
+
+#' @rdname invert
+#' @export
 setMethod( "invert", "vector", 
   function(x) {
     
@@ -40,6 +44,8 @@ setMethod( "invert", "vector",
 
 
 # SEARCHABLE
+#' @rdname invert
+#' @export
   setMethod( "invert", "searchable", 
   
     function(x) { 
@@ -50,6 +56,8 @@ setMethod( "invert", "vector",
   )
 
 # LISTS
+#' @rdname invert
+#' @export
   setMethod( "invert", "list", 
     function(x) {
       stop( "Inverting lists is not supported yet")

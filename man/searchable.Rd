@@ -8,12 +8,17 @@
 \alias{show,searchable-method}
 \title{searchable}
 \usage{
+searchable(object, ...)
+
 \S4method{show}{searchable}(object)
 
 is.searchable(object)
 }
 \arguments{
-\item{object}{searchable object}
+\item{object}{searchable object or object to be made searchable}
+
+\item{...}{one or more stringr-style match modifying sunctions, See
+  \code{?match.modifiers} for details.}
 }
 \value{
 By default, the extraction from a searchable objects is not a class
@@ -42,12 +47,6 @@ object or its names are made when classing an object as searcable and if no
 search modifiers are enabled, the object behaves as a regular,
 "non-searchable" object.
 }
-\section{Slots}{
-
-\describe{
-\item{\code{modifiers}}{zero or more function that are used to modify the search
-function before performing the search.}
-}}
 \note{
 - Environments cannot be (easily) be made "searchable" due to the way the
   objects are implemented
@@ -76,6 +75,12 @@ for additional exemples.
 Multiple dimension ojects such as data.frames, data.tables, matrices and
 arrays are not supported at this time.
 }
+
+\section{Adding new modifiers}{
+
+
+It is possible to add additional search modifiers ... (vignette)
+}
 \examples{
 # ATOMIC VECTORS:
     v <- c( a=1, b=2, B=3, c=4, c2=5 )
@@ -100,10 +105,11 @@ arrays are not supported at this time.
     sv[ perl('c.?') ]   <- "3rd"
 
 
-  # MODIFIERS TO OBJECT
-    sv <- searchable(v, modifiers = list( ignore.case, fixed ) )
+  # MODIFIERS TO SEARCH TARGET/OBJECT
+    sv <- searchable(v, ignore.case )
     sv$A
-    sv['C']
+    sv['b']
+    sv['B']
 
 
   # RECURSIVE LISTS:
@@ -111,6 +117,8 @@ arrays are not supported at this time.
     sl <- searchable(l)
     sl[["b"]]
     sl[[ ignore.case("B") ]]
+
+  # USE WITH MAGRITTR
    \dontrun{
     sl[[ "B"  \%>\% ignore.case ]]
     "b" \%>\% sl[[.]]
