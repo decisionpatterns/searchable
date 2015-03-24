@@ -17,6 +17,7 @@ This functionality facilitates creating dictionary and thesaurus like structures
 
 # Examples
 
+```R
     # ATOMIC VECTORS: 
       v <- c( a=1, b=2, B=3, c=4, c2=5 )
       sv <- searchable(v)
@@ -60,3 +61,4 @@ This functionality facilitates creating dictionary and thesaurus like structures
       "B" %>% ignore.case %>% sl[[ . ]]
      }
      
+```
