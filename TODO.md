@@ -2,6 +2,28 @@ TODO:
  
 # IMMEDIATE 
 
+ - Supporting multiple patterns for [ and [<- 
+ 
+   Currently these operators support only one pattern, unlike there base 
+   counterparts. Thus this is an error:
+   
+     sv[ c('ay','bee','dee') ]
+ 
+   In order to be more like base R, it might be better to support multiple 
+   patterns. In general, the problems is that the pattern can match more than 
+   one elements. This would mean that either, 
+     - the returned object would be a different length than the patterns. 
+     - Or, a list would be returned. Breaking the rule that [ is a slice 
+       operator
+     
+   The alternative something ugly like:      
+     c('ay','bee','dee')  %>% sapply( function(x) sv[x] )  %>% unlist( use.names = FALSE )
+     
+     - Use a return-modifier that ensures a single return value.
+     
+     
+   
+ 
  - Support data.frames
  
  - What is the behavior of $, $<- ?

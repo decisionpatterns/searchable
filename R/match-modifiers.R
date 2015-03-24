@@ -20,9 +20,9 @@
 #' 
 #' Match modifiers control how a search pattern is matched against the search 
 #' target. They can be applied to either the pattern or target.  
-#' Modifiers applied to the search pattern take priority. \strong{If any match modifiers 
-#' are set on the search pattern, these are used instead of those defined on the 
-#' target.}
+#' Modifiers applied to the search pattern take priority. \strong{If any match 
+#' modifiers are set on the search pattern, these are used instead of those 
+#' defined on the target.}
 #' 
 #' Modifiers \code{ignore.case}, \code{perl} and \code{fixed} follow closely the
 #' implementations by the \strong{stringr} package. \code{exact} is added that 

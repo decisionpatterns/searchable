@@ -90,8 +90,10 @@
 #' @section \code{[}, \code{[<-} :
 #' 
 #' \code{[} and \code{[<-} are used for getting and setting 
-#' \strong{zero or more} elemenxts of \code{x}. When searching using a pattern, 
-#' this is generally the search type that is wanted. 
+#' \strong{zero or more} elemenxts of \code{x}. This is probably the most 
+#' usefule of the searches. When searching using a pattern, only one pattern can
+#' be used. This is because each pattern can much multiple elements in the 
+#' searchable object. 
 #'  
 #' \code{[} does not return a searchable object. It is generally thought that 
 #' the returned object should not be a returnable object.   
