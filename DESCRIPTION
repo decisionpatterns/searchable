@@ -6,11 +6,11 @@ Version: 0.1
 Date: 2015-03-20
 Author: "DecisionPatterns [aut, cre]"
 Maintainer: Christopher Brown <chris.brown@decisionpatterns.com>
-Description: Provides functionality for making named list and vectors more
-    generally searchable by case (in)sensitivity, regular expressions or fixed
-    values (default). The packages using stringr-style search modifiers:
-    ignore.case, regex and perl. This functionality facilitates creating
-    dictionary and thesaurus like structures
+Description: Provides functionality for searching named vectors and
+    lists more configurable. The packages uses stringr-style match modifiers to
+    allow for matching by case (in)sensitivity, regular expressions or fixed
+    expression. It also allows searching through values rather than names. This
+    functionality facilitates creating dictionary and thesaurus like structures.
 Depends:
     R (>= 3.0.2)
 Imports:

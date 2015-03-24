@@ -1,3 +1,18 @@
-# searchable
-Make R objects more searchable by matching names based on case (in)sensitivity, regular expressions, etc.
+# Introduction
 
+The `searchable` packages provides functionality for searching named vectors and
+lists more configurable. The packages uses stringr-style match modifiers to 
+allow for matching by case (in)sensitivity, regular expressions 
+or fixed expression. It also allows searching through values rather than names. 
+This functionality facilitates creating dictionary and thesaurus like structures. 
+
+# INSTALLATION
+
+    library(devtools)
+    install_github( "decisionpatterns/searchable" )
+    
+    # OR 
+    install.packages('searchable')
+
+
+# 
