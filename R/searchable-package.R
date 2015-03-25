@@ -6,9 +6,12 @@
 #' 
 #' @references 
 #'   \url{http://stackoverflow.com/questions/5671719/case-insensitive-search-of-a-list-in-r} \cr
+#'   \url{http://stackoverflow.com/questions/27085620/which-command-in-r-with-case-insensitive} \cr
+#'   \url{http://stackoverflow.com/questions/21450925/r-grep-usage-finding-the-averages} \cr
 #'   
 #' @seealso
-#'   \code{\link{searchable}}
+#'   \code{\link{searchable}} \cr
+#'   \url{http://cran.r-project.org/web/packages/qdap}
 #'   
 #' @examples
 #'   
