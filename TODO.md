@@ -21,10 +21,17 @@ TODO:
      
      - Use a return-modifier that ensures a single return value.
      
-     
-   
  
- - Support data.frames
+ - Support data.frames 
+   
+   This should be straight-foward and implement a method of 
+   seachable-ANY-character that dispatches to data.frame-ANY-character after 
+   appropriate resolutions.
+
+ - Support data.tables
+   
+    This might be tricky as j is interpreted within x. There might not be a 
+    good way to do this unless with = FALSE.   
  
  - What is the behavior of $, $<- ?
  
