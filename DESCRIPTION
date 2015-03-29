@@ -2,7 +2,7 @@ Package: searchable
 Type: Package
 Title: Make R Objects Searchable by Matching Names Based on Case
     (in)Sensitivity, Regular Expressions, ...
-Version: 0.2
+Version: 0.2.1
 Date: 2015-03-29
 Author: "DecisionPatterns [aut, cre]"
 Maintainer: Christopher Brown <chris.brown@decisionpatterns.com>
@@ -28,7 +28,6 @@ Collate:
     'invert.R'
     'is.string.R'
     'match-modifiers.R'
-    'return-modifiers.R'
     'reverse.lookup.R'
     'searchable-package.R'
     'zzz.R'
