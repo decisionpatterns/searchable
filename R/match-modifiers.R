@@ -1,6 +1,7 @@
 # List of active modifiers, exact/default is not a match modifier, it resets ther others
 .match.modifiers <- c( 'ignore.case', 'fixed', 'perl' ) #, 'exact', 'default', 'partial' 
 
+
 # Get active modifier(s) 
 # @return list of match.modifiers or NULL if non-exist.
 .get.modifiers <- function(object) {
@@ -11,6 +12,42 @@
   return(li)
 }
   
+
+# Unmodifed do not have any .match.modifiers set.
+
+# Identify whether a search (object and pattern) are unmodified.
+.is.unmodified <- function( object, pattern )  {
+  
+  mods.object  <- .get.modifiers(object)
+  mods.pattern <- .get.modifiers(pattern)
+  
+  ( is.null( mods.object)  || length(mods.object)  == 0 ) && 
+  ( is.null( mods.pattern) || length(mods.pattern) == 0 ) 
+  
+}
+
+
+# resolve modifiers applied to both object and patterns.
+.collect.modifiers <- function( object, pattern ) { 
+   ret <- pattern 
+   
+   obj.mods <- .get.modifiers(object)
+   if( ! is.null(obj.mods) ) 
+
+      
+   # RESOLVE CONFLICTS ...
+   # If there are any modifiers to pattern use those instead.
+   pat.mods <- .get.modifiers(pattern)
+   if( ! is.null(pat.mods) ) 
+     attributes(ret) <- pat.mods else
+     attributes(ret) <- obj.mods
+
+   return(ret)
+   
+}
+
+
+
 #' Match modifiers 
 #' 
 #' Functions affecting how matching occurs. The modifiers can be applied to 
@@ -88,7 +125,7 @@
 #' @examples 
 #'   exact( "string" )
 #'       
-#' @rdname match.modifiers   
+#' @rdname match_modifiers   
 #' @export
 
 perl <- function (object) {
@@ -106,7 +143,7 @@ perl <- function (object) {
 
 
 
-#' @rdname match.modifiers 
+#' @rdname match_modifiers 
 #' @export
 ignore.case <- function (object) {
   
@@ -121,7 +158,7 @@ ignore.case <- function (object) {
 }
 
 
-#' @rdname match.modifiers 
+#' @rdname match_modifiers 
 #' @export
 fixed <- function (object) {
   
@@ -142,13 +179,13 @@ fixed <- function (object) {
 }
 
 
-#' @rdname match.modifiers 
+#' @rdname match_modifiers 
 #' @export
   partial <- function(object) fixed(object)
 
 
 
-#' @rdname match.modifiers 
+#' @rdname match_modifiers 
 #' @export
   exact <- function(object) { 
     
@@ -157,6 +194,6 @@ fixed <- function (object) {
     
   }
 
-# #' @rdname match.modifiers 
+# #' @rdname match_modifiers 
 # #' @export
 #   default <- function(object) exact(object)

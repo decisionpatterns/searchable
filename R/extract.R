@@ -1,38 +1,4 @@
-# ----------------------------------------------------------------
-# HELPER FUNCTIONS 
- 
 
-# Unmodifed do not have any .match.modifiers set.
-
-
-.is.unmodified <- function( object, pattern )  {
-  
-  mods.object <- .get.modifiers(object)
-  mods.pattern <- .get.modifiers(pattern)
-  
-  
-  ( is.null( mods.object)  || length(mods.object)  == 0 ) && 
-  ( is.null( mods.pattern) || length(mods.pattern) == 0 ) 
-  
-}
-
-.collect.modifiers <- function( object, pattern ) { 
-   ret <- pattern 
-   
-   obj.mods <- .get.modifiers(object)
-   if( ! is.null(obj.mods) ) 
-
-      
-   # RESOLVE CONFLICTS ...
-   # If there are any modifiers to pattern use those instead.
-   pat.mods <- .get.modifiers(pattern)
-   if( ! is.null(pat.mods) ) 
-     attributes(ret) <- pat.mods else
-     attributes(ret) <- obj.mods
-
-   return(ret)
-   
-}
   
 # # Applies invert lookup, if set   
 # .inverse.if.reverse.lookup <- function(object, pattern)
@@ -66,6 +32,41 @@
   
 }  
 
+# Returns indices of matching elements
+# for use with [, [<- allowing multiple patterns
+
+.which.matches.bracket <- function( object, pattern ) { 
+  
+  # TRAP ERRORS     
+    # if( ! .is.unmodified(object,pattern) & ! is.string(pattern) ) 
+    #  stop("pattern string should be a one-element character vector")
+     
+  # ADD DEFAULT MODIFIERS
+    pattern <- .collect.modifiers(object,pattern)
+     
+  # APPLY REVERSE LOOKUP BY INVERTING OBJECT
+  #  This does not work for recursive, list-like  object
+   object <- 
+     if( 
+         ! is.null( attr(pattern, "reverse.lookup" ) ) &&
+         attr(pattern, "reverse.lookup" ) == TRUE 
+     ) invert(object) else object  
+    
+    
+  # Handle Multiple-pattern HERE
+    # for( pat in pattern ) { 
+    #  
+    # }
+      
+  
+  
+    return( 
+      which( stringr::str_detect( string=names(object), pattern=pattern ) )
+    )
+  
+}  
+
+
 
 #' Extraction operators for searchable object
 #' 
@@ -91,13 +92,16 @@
 #' 
 #' \code{[} and \code{[<-} are used for getting and setting 
 #' \strong{zero or more} elemenxts of \code{x}. This is probably the most 
-#' usefule of the searches. When searching using a pattern, only one pattern can
-#' be used. This is because each pattern can much multiple elements in the 
-#' searchable object. 
+#' useful of the search modifiers. This search returns elements of 
+#' the target that matches \strong{ANY} of the search patterns. Unlike the 
+#' its normal behavior, \code{\[} does not guarantee the output to have as many
+#' elements as elements to \code{pattern}.
 #'  
-#' \code{[} does not return a searchable object. It is generally thought that 
-#' the returned object should not be a returnable object.   
-#'  
+#' \code{[} does not return a searchable object. It is thought that 
+#' the return valuable will not be subsequently searched. It is easy to turn 
+#' the results into a searchable object using \code{searchable} however. 
+#'
+#'
 #' @section \code{[[}, \code{[[<-} and \code{$}, \code{$<-} :
 #' 
 #' These operators are used for getting and setting at \strong{zero or one} 
@@ -106,17 +110,17 @@
 #' 
 #' @section repeated-names:
 #' 
-#' Unlike for environments or hashes, there are no constraints ensuring 
+#' Unlike for environments and hashes, no constraints exist for ensuring 
 #' uniqueness for names in vectors and lists. These structures may contain 
-#' multiple elements with the same name. Attempts to extract by this name yield 
-#' the first occurence of the name.
+#' multiple elements with the same name. Normal attempts to extract by name 
+#' yield only the first element that matches the name. Using a \code{searchable}
+#' pattern match yields all matching elements.
 #' 
 #' 
 #' @return 
 #'   The values after the extracting methods have been applied:\cr
-#'   \code{[} returns a subset of \code{x}, but which is not searchable.  \cr
-#'   \code{[[} returns an element of \code{x}  \cr
-#'   \code{$} retutrns an element of \code{x} \cr
+#'   \code{\[} returns a subset of \code{x}, but which is not searchable.  \cr
+#'   \code{\[\[} and \code{\$} return a sinlge element of \code{x}  \cr
 #'   
 #'  @seealso
 #'    \code{\link{searchable}}           \cr
@@ -188,7 +192,7 @@
        if( .is.unmodified(x,i) ) return( x@.Data[i] )      
 
      # FIND MATCHES    
-       wh <- .which.matches(x,i)
+       wh <- .which.matches.bracket(x,i)
 
        return( x[wh] )
      

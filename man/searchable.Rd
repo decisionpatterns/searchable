@@ -21,9 +21,9 @@ is.searchable(object)
   \code{?match.modifiers} for details.}
 }
 \value{
-By default, the extraction from a searchable objects is not a class
-  searchable. It is assumed that in most cases, the developer will not want
-  another searchable object.
+By default, extraction from a searchable objects does not produce a subset
+  that is also searchable. It is assumed that in most cases, the developer
+  will not want another searchable object and only wish to have the subclass.
 }
 \description{
 Creates a searchable class that allows for modification for searches.
@@ -31,35 +31,90 @@ Creates a searchable class that allows for modification for searches.
 is.searchable
 }
 \details{
-The searchable class allows for non-standard, stringr-like searches when
-extracting (or replacing) objects. The following
-modification are (at present) supported: \code{fixed},
-\code{ignore.case}, \code{perl} and
-\code{reverse.lookup}.
-
-Search modification can be applied either to the object being searched or
-the search pattern(s). To apply them to the searched object add the modifiers
-to the \code{modifiers} slot of the object. These are applied after any user
-supplied modifiers.
-
-\code{searchable} is designed to be minimally invase. No modification to the
-object or its names are made when classing an object as searcable and if no
-search modifiers are enabled, the object behaves as a regular,
-"non-searchable" object.
+The searchable class allows for non-standard, 'stringr'-like searches when
+extracting (or replacing) objects. The following modifiers are (at present)
+supported:
+\itemize{
+  \item \code{fixed},
+  \item \code{ignore.case},
+  \item \code{perl},
+  \item \code{exact} and
+  \item \code{reverse.lookup}.
+}
 }
 \note{
 - Environments cannot be (easily) be made "searchable" due to the way the
-  objects are implemented
+    they are implemented.
+
   - The extraction methods for searchable objects are (at present) limited to
-    only one pattern. This
+    only one pattern. This may change in the future.
 }
+\section{Diffences from stringr}{
+
+
+\code{stringr} is a general purpose string manipulations library; amoung its
+functions is the ability to search/pattern match against strings.
+\code{searchable} uses \code{stringr} to allow searching objects' names using
+standard R accessors.
+
+Unlike \code{stringr} which allows search modifiers to apply to only the
+search pattern, \code{searchable} also allows the modifier to be applied to
+the search target. This provides a default search method for an object.
+This modification to the search against the target can be specified at
+initialization time or any subsequent time using the same match-modifying
+functions: \code{fixed}, \code{perl}, \code{ignore.case}, etc. See examples.
+
+When modifiers are applied to both target and pattern, modifers applied to
+the pattern take precedence and the target's modifiers are disabled.
+}
+
+\section{Differences from base R}{
+
+
+For the most part, R's standard accessors: \code{\[}, \code{\$}, \code{\[\[}
+applied to searchable objects work as expected with a few changes to
+accomodate the indeterminate number of search results. These are:
+
+\itemize{
+
+  \item \code{\$} works with atomic, searchable objects. This is not true of
+        R's atomic objects. This should probably be fixed in Base R.
+
+  \item Searches using \code{\[\[]} or \code{\$} may have more than one match.
+        In order to be consistent with base R, searches with multiple matches
+        produce an error: \code{attempt to select more than one element}.
+
+  \item Searches using \code{\[} accepts a one element search
+        pattern. (This may change). Attempts to provide multiple search terms
+        results in an error:
+           \code{pattern string should be a one-element character vector}.
+
+        In base R, there is output value every element of input argument,
+        \code{i}. Input elements that do not match a named element of
+        \code{x} return \code{NA}. Because of the indeterminant number of
+        matches given a pattern search against a \code{searchable} object,
+        there is no guarantee that a search pattern have a match. If no
+        matches are found, a zero-length object is returned. (This may change
+        to \code{NA} to be more consisitent.)
+
+  \item Searches do not produce a searchable class but the superclass that
+        the searchable class wraps.
+
+}
+
+\code{searchable} is designed to be minimally invase. No modification to the
+object or its names are made and if no search modifiers are enabled or
+\code{exact} is used, search behavior and performance reverts to the norm, as
+if the object was a regular, 'non-searchable' object.
+}
+
 \section{reverse.lookup}{
 
 
 When performing a reverse lookup, values (not names) are searched. The
 corresponding names are returned.  NOTE: this is highly experimental and only
 works for atomic vectors. It is uncertain how this might be applied to
-recursive structures.
+recursive structures like lists.
 }
 
 \section{replacement}{
@@ -79,7 +134,7 @@ arrays are not supported at this time.
 \section{Adding new modifiers}{
 
 
-It is possible to add additional search modifiers ... (vignette)
+It is possible to add additional search modifiers ... details forthcoming.
 }
 \examples{
 # ATOMIC VECTORS:

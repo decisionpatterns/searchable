@@ -2,15 +2,15 @@ Package: searchable
 Type: Package
 Title: Make R Objects Searchable by Matching Names Based on Case
     (in)Sensitivity, Regular Expressions, ...
-Version: 0.1.2
-Date: 2015-03-23
+Version: 0.2
+Date: 2015-03-29
 Author: "DecisionPatterns [aut, cre]"
 Maintainer: Christopher Brown <chris.brown@decisionpatterns.com>
 Description: Provides functionality for searching named vectors and
     lists more configurable. The packages uses 'stringr'-style match modifiers
-    to allow for matching by case (in)sensitivity, regular expressions or fixed
-    expression. It also allows searching through values rather than names. This
-    functionality facilitates creating dictionary and thesaurus like structures.
+    to allow search by case (in)sensitivity, regular expressions or fixed
+    expressions using standard accessors: $, [, [[. It also allows searching
+    through values rather than names.
 Depends:
     R (>= 3.0.2)
 Imports:
@@ -28,6 +28,7 @@ Collate:
     'invert.R'
     'is.string.R'
     'match-modifiers.R'
+    'return-modifiers.R'
     'reverse.lookup.R'
     'searchable-package.R'
     'zzz.R'

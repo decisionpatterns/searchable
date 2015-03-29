@@ -30,5 +30,4 @@ context('vectors:fixed search')
   
   sv['cee']    %>% expect_equivalent(3)
   sv['ee']     %>% expect_equivalent(2:3)
-                   expect_error(sv[ c('ay','bee','dee') ] )
- 
+

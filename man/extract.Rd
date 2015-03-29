@@ -47,9 +47,8 @@ The methods for searching respect the modifiers applied to both \code{x} and
 }
 \value{
 The values after the extracting methods have been applied:\cr
-  \code{[} returns a subset of \code{x}, but which is not searchable.  \cr
-  \code{[[} returns an element of \code{x}  \cr
-  \code{$} retutrns an element of \code{x} \cr
+  \code{\[} returns a subset of \code{x}, but which is not searchable.  \cr
+  \code{\[\[} and \code{\$} return a sinlge element of \code{x}  \cr
 }
 \description{
 Defines  \code{[}, \code{[[}, and \code{$} for searchable objects
@@ -59,12 +58,14 @@ Defines  \code{[}, \code{[[}, and \code{$} for searchable objects
 
 \code{[} and \code{[<-} are used for getting and setting
 \strong{zero or more} elemenxts of \code{x}. This is probably the most
-usefule of the searches. When searching using a pattern, only one pattern can
-be used. This is because each pattern can much multiple elements in the
-searchable object.
+useful of the search modifiers. This search returns elements of
+the target that matches \strong{ANY} of the search patterns. Unlike the
+its normal behavior, \code{\[} does not guarantee the output to have as many
+elements as elements to \code{pattern}.
 
-\code{[} does not return a searchable object. It is generally thought that
-the returned object should not be a returnable object.
+\code{[} does not return a searchable object. It is thought that
+the return valuable will not be subsequently searched. It is easy to turn
+the results into a searchable object using \code{searchable} however.
 }
 
 \section{\code{[[}, \code{[[<-} and \code{$}, \code{$<-} }{
@@ -77,10 +78,11 @@ element of \code{x}. Matches to more than one element result in an error.
 \section{repeated-names}{
 
 
-Unlike for environments or hashes, there are no constraints ensuring
+Unlike for environments and hashes, no constraints exist for ensuring
 uniqueness for names in vectors and lists. These structures may contain
-multiple elements with the same name. Attempts to extract by this name yield
-the first occurence of the name.
+multiple elements with the same name. Normal attempts to extract by name
+yield only the first element that matches the name. Using a \code{searchable}
+pattern match yields all matching elements.
 }
 \examples{
 # ATOMIC VECTORS:
