@@ -5,7 +5,7 @@ library(magrittr)
 l <- list( ay=1, bee=1:2, cee=1:3, aitch=1:8, aitch=-(1:8) )
 
 
-context('list:unmodified search')
+context('list-default')
   sl <- searchable(l)
 
   # $
@@ -26,7 +26,7 @@ context('list:unmodified search')
 
 
 
-context('lists:fixed search')
+context('list-fixed')
   sl <- searchable(l, fixed )
 
   # sl$MISS       %>% expect_null        # MISS: FAILS  

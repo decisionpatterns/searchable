@@ -15,10 +15,10 @@ Depends:
     R (>= 3.0.2)
 Imports:
     methods,
+    magrittr(>= 1.5),
     stringr (>= 0.6.2)
 Suggests:
-    testthat,
-    magrittr
+    testthat
 License: GPL-2
 URL: https://github.com/decisionpatterns/searchable
 BugReports: https://github.com/decisionpatterns/searchable/issues

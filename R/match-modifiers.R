@@ -1,5 +1,41 @@
 # List of active modifiers, exact/default is not a match modifier, it resets ther others
-.match.modifiers <- c( 'ignore.case', 'fixed', 'perl' ) #, 'exact', 'default', 'partial' 
+# .match.modifiers <- c( 'ignore.case', 'fixed', 'perl' ) #, 'exact', 'default', 'partial' #
+.match.modifiers <- c( 'ignore.case', 'fixed', 'perl', 'exact', 'default', 'partial', 'case.sensitive', 'case.insensitive', 'use.case' )
+
+
+# Turn OFF attribute by toggling attribute to NULL if TRUE  
+.off <- function( object, which ) { 
+
+  for( wh in which ) { 
+    
+    attr <- object  %>% attr(wh)
+    if( ! attr  %>% is.null && attr  %>% is.logical && attr )
+      attr(object,wh) <- NULL
+      
+  }
+  
+  return(object)
+}
+
+
+
+
+# Toggle ON attribute 
+.on <- function(object, which ) { 
+  
+  for( wh in which ) { 
+    attr <- object  %>% attr(wh)
+    if( ! attr  %>% is.null && ! attr  %>% is.logical ) warning( wh, " is exists and is not logical") 
+    attr(object, wh) <- TRUE
+  }
+  return(object)
+}
+
+
+
+.is.on <- function(object, which)
+  ! object %>% attr(which) %>% is.null && object %>% attr(which)
+  
 
 
 # Get active modifier(s) 
@@ -68,10 +104,14 @@
 #' \url{https://github.com/hadley/stringr/issues/60} for details
 #' 
 #' 
+#' @section reset, default:
+#' 
+#' Clears all match modifiers and performs a search as base R.
+#' 
 #' @section ignore.case: 
 #' 
 #' Match modifier \code{ignore.case} performs case insensitive matching against
-#' the names of the target. \code{ignore.case} is incompatible with 
+#' the names of the target. \code{ignore.case} is incompatible and overrides  
 #' \code{fixed}. Application of \code{ignore.case} overrides previous calls to
 #' \code{fixed}.
 #' 
@@ -84,7 +124,7 @@
 #' \code{fixed}.
 #' 
 #' 
-#' @section fixed:
+#' @section partial, fixed:
 #' 
 #' Match modifier \code{fixed} performs a fixed string match instead of using a
 #' regular expression. This can yield substantial speed ups, if regular 
@@ -92,25 +132,26 @@
 #' target \strong{contains} the search string. For exact matching of the search 
 #' string see \code{exact}. 
 #' 
-#' \code{fixed} is incompatible with 
-#' \code{perl} and \code{ignore.case}.  Application of \code{fixed} overrides 
-#' previous calls to the others. 
+#' \code{fixed} is incompatible with \code{perl}, \code{default},.  
+#' Application of \code{fixed} overrides previous calls to the others. 
 #' 
 #' 
-#' @section partial: 
+#' @section reset, default:
 #' 
-#' This is a synonym for \code{\link[stringr]{fixed}}
-#' 
-#' 
-#' @section exact:
-#' 
-#' Match modifier \code{exact}, clears all match modifiers and resets the 
-#' R's normal exact matching to the target's names. 
-#' 
-#' It is incompatible with all other match modifiers. Setting \code{exact} 
-#' clears other match modifiers to \code{FALSE}.
+#' Match modifiers \code{exact} or \code{default} clear all modification and 
+#' resets to R's normal matching against the target's names. 
 #' 
 #' See \url{https://github.com/hadley/stringr/issues/55}
+#' 
+#' 
+#' @section full: 
+#' 
+#' Match modifier \code{full} requires the whole pattern to match as opposted to 
+#' \code{partial} or fixed that match a substring.   
+#' 
+#' If existing match modifiers 
+#' 
+#' 
 #' 
 #' @references 
 #'   \url{https://github.com/hadley/stringr/issues/55} \cr
@@ -130,70 +171,119 @@
 
 perl <- function (object) {
   
-    fixed <- attr(object, 'fixed')
-    
-    if( ! is.null(fixed) && fixed ) { 
+    if( object  %>% .is.on('fixed') ) { 
        message("perl overriding fixed matching")
-       object <- structure( object, fixed = FALSE )
+       object  %<>% .off('fixed')
     } 
     
-    object <- structure( object, perl = TRUE, exact = NULL  )
+    object %<>%  .on('perl')
     return(object)
 }
 
-
-
-#' @rdname match_modifiers 
-#' @export
-ignore.case <- function (object) {
-  
-    fixed <- attr(object, 'fixed')
-    if( ! is.null(fixed) && fixed ) { 
-       message("ignore.case overriding fixed matching")
-       object <- structure( object, fixed = FALSE )
-    } 
-    
-    object <- structure( object, ignore.case = TRUE, exact = NULL   )
-    return(object)
-}
 
 
 #' @rdname match_modifiers 
 #' @export
 fixed <- function (object) {
   
-    perl <- attr(object, 'perl')
-    if( ! is.null(perl) && perl ) { 
-       message("fixed overriding perl matching")
-       object <- structure( object, perl = FALSE )
-    } 
+  if( object  %>% .is.on('perl') ) { 
+     message("fixed overriding perl matching")
+     object %<>%  .off('perl')
+  } 
     
-    ignore.case <- attr(object, 'ignore.case')
-    if( ! is.null(ignore.case) && ignore.case ) { 
-       message("fixed overridding ignore.case matching")
-       object <- structure( object, ignore.case = FALSE )
-    }
-    
-    object <- structure( object, fixed = TRUE, exact = NULL  )
-    return(object)
+  if( object  %>% .is.on('ignore.case') ) { 
+    message("fixed overridding ignore.case")
+    object %<>% .off('ignore.case')
+  }
+  
+  if( object  %>% .is.on('full') ) { 
+    message("fixed overridding partial")
+    object %<>% partial
+  }
+  
+  object %<>% .on('fixed')
+  return(object)
+  
 }
 
 
 #' @rdname match_modifiers 
 #' @export
-  partial <- function(object) fixed(object)
+partial <- function(object) { 
+
+  object  %<>% .off("full")
+  object  %<>% .on("partial")
+  
+  return(object)
+
+}
+
+
+
+full <- function(object) { 
+ 
+  object %<>% .off('partial')
+  
+  # THERE IS NO FIXED, FULL SINCE BY DEFIN
+  # fixed <- attr(object, 'fixed')
+  if( .is.on('fixed') ) { 
+    message("full overriding fixed matching")
+    object %<>% perl
+  } 
+  
+  if( .is.on)
+  object %<>%  .on('full')
+  
+  return(object)
+  
+}  
 
 
 
 #' @rdname match_modifiers 
 #' @export
-  exact <- function(object) { 
-    
-    object <- structure( object, ignore.case = NULL, fixed = NULL, perl = NULL )
-    return(object)
-    
-  }
 
-# #' @rdname match_modifiers 
-# #' @export
-#   default <- function(object) exact(object)
+ignore.case <- function (object) {
+  object %<>%  .off('use.case')
+  object %<>%  .on('ignore.case')
+  return(object)
+}
+
+#' @rdname match_modifiers 
+#' @export
+
+case.insensitive <- ignore.case
+
+
+#' @rdname match_modifiers 
+#' @export
+
+use.case <- function(object) { 
+ object %<>% .off('ignore.case')
+ object %<>% .on('use.case')
+   
+ return(object)
+}
+
+
+#' @rdname match_modifiers 
+#' @export
+
+case.sensitive <- use.case 
+     
+     
+
+#' @rdname match_modifiers 
+#' @export
+
+reset <- function(object) { 
+  attributes(object) <- NULL 
+  return(object)
+}
+
+
+#' @rdname match_modifiers 
+#' @export
+
+default <- reset
+
