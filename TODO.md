@@ -2,6 +2,13 @@ TODO:
  
 # IMMEDIATE 
  
+## ? Support options for missing hits from search.  
+
+     For example: 
+        v$MISS -> NA rather than error
+        l$MISS -> list() rather than list( NA=NULL )
+     
+
 ## Test to support 
    - None, 0, 1, 1 of multiple, multiple match hits
    - Each match modifier
