@@ -2,10 +2,16 @@ TODO:
  
 # IMMEDIATE 
  
+## Test to support 
+   - None, 0, 1, 1 of multiple, multiple match hits
+   - Each match modifier
+   - Each (upcoming) return modifier
+   - Extract, Replace
+ 
 ## Test and support lists
    
    It is unclear how lists are supported.
- 
+   - On [ with search miss should yield NULL (?), Cf. tests
  
 ## Support data.frames 
    

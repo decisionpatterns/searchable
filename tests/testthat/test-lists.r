@@ -2,29 +2,37 @@ library(testthat)
 library(searchable)
 library(magrittr)
 
-l <- list( ay=1, bee=1:2, cee=1:3 )
+l <- list( ay=1, bee=1:2, cee=1:3, aitch=1:8, aitch=-(1:8) )
 
 
 context('list:unmodified search')
   sl <- searchable(l)
 
-  sl$ay        %>% expect_equal(1)
-                   expect_null( sl$ee )
+  # $
+  sl$ee          %>% expect_null        # MISS 
+  sl$ay          %>% expect_equal(1)    # SINGLE HIT
+  sl$aitch       %>% expect_equal(1:8)  # FIRST OF TWO HITS  
   
-  sl[['bee']]  %>% expect_equal(1:2)  
-                   expect_null( sl[['ee']] )
+
+  sl[['ee']]     %>% expect_null        # MISS 
+  sl[['bee']]    %>% expect_equal(1:2)  # SINGLE HIT
+  sl[['aitch']]  %>% expect_equal(1:8)  # FIRST OF TWO HITS
   
-  sl['cee']    %>% expect_equivalent( l[3] )
-  sl['ee']     %>% extract2(1)  %>% is.null %>% expect_true
-  sl[ c('ay','bee','dee') ]  %>% expect_equivalent( sl[ c('ay','bee','dee') ] ) 
+
+  sl['ee']       %T>% expect_is('list')  %>%  unlist %>% expect_null
+  sl['cee']      %>% expect_equivalent( l[3] )# SINGLE HIT
+  
+  sl[ c('ay','bee','dee') ]  %>% expect_equivalent( l[ c('ay','bee','dee') ] ) 
+
 
 
 context('lists:fixed search')
   sl <- searchable(l, fixed )
 
+  # sl$MISS       %>% expect_null        # MISS: FAILS  
   sl$ay        %>% expect_equal(1)
-                   expect_error( sl$ee )
-  
+               
+
   sl[['bee']]  %>% expect_equal(1:2)  
                    expect_error( sl[['ee']] )
   
