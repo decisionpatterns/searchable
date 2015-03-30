@@ -2,12 +2,14 @@
 % Please edit documentation in R/match-modifiers.R
 \name{perl}
 \alias{case.insensitive}
+\alias{case.sensitive}
 \alias{default}
 \alias{fixed}
 \alias{ignore.case}
 \alias{partial}
 \alias{perl}
 \alias{reset}
+\alias{use.case}
 \title{Match modifiers}
 \usage{
 perl(object)
@@ -19,6 +21,10 @@ partial(object)
 ignore.case(object)
 
 case.insensitive(object)
+
+use.case(object)
+
+case.sensitive(object)
 
 reset(object)
 
@@ -53,7 +59,7 @@ Clears all match modifiers and performs a search as base R.
 
 
 Match modifier \code{ignore.case} performs case insensitive matching against
-the names of the target. \code{ignore.case} is incompatible with
+the names of the target. \code{ignore.case} is incompatible and overrides
 \code{fixed}. Application of \code{ignore.case} overrides previous calls to
 \code{fixed}.
 }
@@ -67,7 +73,7 @@ PCREs. \code{perl} is incompatible with
 \code{fixed}.
 }
 
-\section{fixed, partial}{
+\section{partial, fixed}{
 
 
 Match modifier \code{fixed} performs a fixed string match instead of using a
@@ -80,22 +86,22 @@ string see \code{exact}.
 Application of \code{fixed} overrides previous calls to the others.
 }
 
-\section{partial}{
+\section{reset, default}{
 
 
-This is a synonym for \code{\link[stringr]{fixed}}
-}
-
-\section{exact}{
-
-
-Match modifier \code{exact}, clears all match modifiers and resets the
-R's normal exact matching to the target's names.
-
-It is incompatible with all other match modifiers. Setting \code{exact}
-clears other match modifiers to \code{FALSE}.
+Match modifiers \code{exact} or \code{default} clear all modification and
+resets to R's normal matching against the target's names.
 
 See \url{https://github.com/hadley/stringr/issues/55}
+}
+
+\section{full}{
+
+
+Match modifier \code{full} requires the whole pattern to match as opposted to
+\code{partial} or fixed that match a substring.
+
+If existing match modifiers
 }
 \examples{
 exact( "string" )

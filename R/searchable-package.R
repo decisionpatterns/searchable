@@ -53,5 +53,6 @@
 #' @docType package
 #' @name searchable-package
 #' @include Class-searchable.R
+#' @import magrittr
 
 NULL
