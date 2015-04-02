@@ -2,7 +2,6 @@
 % Please edit documentation in R/Class-searchable.R
 \docType{class}
 \name{searchable-class}
-\alias{is.searchable}
 \alias{searchable}
 \alias{searchable-class}
 \alias{show,searchable-method}
@@ -11,14 +10,12 @@
 searchable(object, ...)
 
 \S4method{show}{searchable}(object)
-
-is.searchable(object)
 }
 \arguments{
 \item{object}{searchable object or object to be made searchable}
 
-\item{...}{one or more stringr-style match modifying sunctions, See
-  \code{?match.modifiers} for details.}
+\item{...}{additional arguments defining the search pattern. See
+  \code{?pattern} for details.}
 }
 \value{
 By default, extraction from a searchable objects does not produce a subset
@@ -26,22 +23,25 @@ By default, extraction from a searchable objects does not produce a subset
   will not want another searchable object and only wish to have the subclass.
 }
 \description{
-Creates a searchable class that allows for modification for searches.
-
-is.searchable
+Marks an objects as searchable, optionally specifying the default search
+options
 }
 \details{
 The searchable class allows for non-standard, 'stringr'-like searches when
-extracting (or replacing) objects. The following modifiers are (at present)
-supported:
+extracting (or replacing) objects. The following search types are supported:
+
 \itemize{
-  \item \code{fixed},
-  \item \code{ignore.case},
-  \item \code{perl},
-  \item \code{exact} and
-  \item \code{reverse.lookup}.
+  \item \code{regex} for regular expression matching,
+  \item \code{fixed} for fixed string matching,
+  \item \code{coll} for collation matching,
+  \item \code{standard} for standard R matching
 }
 }
+\section{Slots}{
+
+\describe{
+\item{\code{pattern}}{used as the default method for searching an objects names}
+}}
 \note{
 - Environments cannot be (easily) be made "searchable" due to the way the
     they are implemented.
@@ -54,26 +54,32 @@ supported:
 
 \code{stringr} is a general purpose string manipulations library; amoung its
 functions is the ability to search/pattern match against strings.
-\code{searchable} uses \code{stringr} to allow searching objects' names using
-standard R accessors.
+\code{searchable} applies this type of matching  to allow searching objects'
+names using standard R accessors: \code{\[}, \code{\$}, \code{\[\[}.
 
 Unlike \code{stringr} which allows search modifiers to apply to only the
-search pattern, \code{searchable} also allows the modifier to be applied to
-the search target. This provides a default search method for an object.
-This modification to the search against the target can be specified at
-initialization time or any subsequent time using the same match-modifying
-functions: \code{fixed}, \code{perl}, \code{ignore.case}, etc. See examples.
+search pattern, \code{searchable} also modifiers to be applied to
+the search target. Unless overridden, all subsequent searches of searchable
+objects will use the predefinced pattern.
 
-When modifiers are applied to both target and pattern, modifers applied to
-the pattern take precedence and the target's modifiers are disabled.
+This search used can be specified at initialization of the searchable object
+or any subsequent time any of the match-modifying functions, e.g.
+\code{fixed}, \code{perl}, \code{ignore.case}, etc. See examples.
+
+When modifiers are applied to both target and pattern, \strong{modifers
+applied to the pattern take precedence} and the target's modifiers are disabled.
 }
 
 \section{Differences from base R}{
 
 
-For the most part, R's standard accessors: \code{\[}, \code{\$}, \code{\[\[}
-applied to searchable objects work as expected with a few changes to
-accomodate the indeterminate number of search results. These are:
+\code{searchable} is designed to be minimally invase. When no search types
+or options are specified, searchable objects default to R's use of standard
+accessors.
+
+When a search type or options are specified, R's accessors work as
+expected with a few, small changes to accomodate an indeterminate number
+of search results. These are:
 
 \itemize{
 
@@ -101,20 +107,6 @@ accomodate the indeterminate number of search results. These are:
         the searchable class wraps.
 
 }
-
-\code{searchable} is designed to be minimally invase. No modification to the
-object or its names are made and if no search modifiers are enabled or
-\code{exact} is used, search behavior and performance reverts to the norm, as
-if the object was a regular, 'non-searchable' object.
-}
-
-\section{reverse.lookup}{
-
-
-When performing a reverse lookup, values (not names) are searched. The
-corresponding names are returned.  NOTE: this is highly experimental and only
-works for atomic vectors. It is uncertain how this might be applied to
-recursive structures like lists.
 }
 
 \section{replacement}{
@@ -129,12 +121,6 @@ for additional exemples.
 
 Multiple dimension ojects such as data.frames, data.tables, matrices and
 arrays are not supported at this time.
-}
-
-\section{Adding new modifiers}{
-
-
-It is possible to add additional search modifiers ... details forthcoming.
 }
 \examples{
 # ATOMIC VECTORS:

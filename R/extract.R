@@ -115,7 +115,7 @@
 #' @export     
   setMethod( '[', c(x='searchable', i='character', j='missing'), 
     function(x,i,j,...) {
-       browser()
+       
      # ESCAPE HATCH FOR  'standard' matching
        if( .is.standard(x,i) ) return( x@.Data[i] ) 
        

@@ -56,63 +56,69 @@ setClass(
 
 
 
-# CONSTRUTOR
-# NB. compare with searchable
+#  CONSTRUTOR
+#  NB. compare with searchable
 #' @rdname pattern
 #' @export
-
-pattern <- function(object=NULL, type = NULL, ... ) { 
-
-  # OBJECT ALREADY pattern & NO type IS SET & NO ... IS SET:
-  if( 
-      object %>% is('pattern')     &&  
-      is.null(type)                &&       # type not supplied 
-      length( list(...) ) == 0              # no ... 
-  ) object %>% return 
-
-  
-  # TYPE
-  if( is.null(type) ) 
-    if( object  %>% is('searchable') ) type <- object@type 
-  
-  if( is.null(type) ) 
-    type <- 'standard'
-  
-
-# MOVED TO DETECT.
-#   # OPTIONS
-#   opts <- switch( type 
-#             , regex = stri_opts_regex(...)
-#             , coll  = stri_opts_coll(...)
-#             , fixed = stri_opts_fixed(...)
-#             , standard = list(...)  
-#             , list()                          # Not sure this is a good idea to 
-#           )                                   # have a default option without a 
-#                                               # known type
-  
-  opts <- list(...)
-
-  new('pattern', object, type=type, options=opts ) %>% return   
-
-} 
-  
+  pattern <- function( object, type, ... ) UseMethod('pattern')
 
 
-.describe_pattern <- function(object) { 
-  
-    msg <- character() 
-    if( length(object) < 2 ) msg %<>% append(  "a " )
-    if( ! is.null(object@options$case_insensitive) && 
-          object@options$case_insensitive 
-    ) msg  %<>% append( 'case-insensitive, ')
+#' @rdname pattern
+#' @export
+  pattern.character <- function( object=NULL, type = NULL, ... ) { 
     
-    msg %<>% append( c("'",  object@type, "' matching ") )  
-    msg %<>% append( 'pattern ' )
-    msg %<>% append( ":\n")
+    if( is.null(type) ) type <- 'standard'
+    opts <- list(...)
   
-    msg %>% paste0( collapse = '' )  %>% return 
-      
-}
+    new('pattern', object, type=type, options=opts ) %>% return   
+  
+  } 
+  
+
+#' @rdname pattern
+#' @export
+  pattern.pattern <- function( object, type, ... ) { 
+    
+    if( is.null(type)                &&       # type not supplied 
+        length( list(...) ) == 0              # no ... 
+    ) return(object)  
+  
+    # TYPE
+    if( is.null(type) ) 
+      if( object  %>% is('searchable') ) type <- object@type 
+    
+    opts <- list(...)
+  
+    new('pattern', object, type=type, options=opts ) # %>% return   
+  
+  }
+
+
+#' @rdname pattern
+#' @export
+  pattern.searchable <- function( object, type, ... ) { 
+  
+    if( is.null(type)                &&       # type not supplied 
+        length( list(...) ) == 0              # no ... 
+    ) return(object)  
+  
+    # TYPE
+    if( is.null(type) ) 
+      if( object  %>% is('searchable') ) type <- object@type 
+    
+    opts <- list(...)
+  
+    new('pattern', object, type=type, options=opts ) # %>% return   
+  
+  }
+
+
+#' @rdname pattern
+#' @export
+  pattern.default <- function( object=NULL, type = NULL, ... ) {
+    pattern.character( as.character(object), type=type, ... ) 
+  }
+
 
 
 #' @rdname pattern
@@ -132,34 +138,23 @@ setMethod('show', 'pattern',
 )
 
 
-# not.null.and.true <- function(x) ! is.null(x) && x
-
-
-
-
-
-
-#' @rdname pattern
-#' @export
-
-regex <- function( object, ... ) {
-    
-  if( object %>% is('pattern') ) { 
-    object@type = 'regex'
-    object@options = stri_opts_regex(...)
-    
-  } else if( object  %>% is('searchable' ) ) { 
-     object@pattern@type = 'regex'
-     object@pattern@options = stri_opts_regex(...)
-     
-  } else { 
-    object <- pattern(object, 'regex', ...) 
-    
-  }
-
-  return(object)
+.describe_pattern <- function(object) { 
   
-}  
+    msg <- character() 
+    if( length(object) < 2 ) msg %<>% append(  "a " )
+    if( ! is.null(object@options$case_insensitive) && 
+          object@options$case_insensitive 
+    ) msg  %<>% append( 'case-insensitive, ')
+    
+    msg %<>% append( c("'",  object@type, "' matching ") )  
+    msg %<>% append( 'pattern ' )
+    msg %<>% append( ":\n")
+  
+    msg %>% paste0( collapse = '' )  %>% return 
+      
+}
+
+
 
 
 #' @rdname pattern

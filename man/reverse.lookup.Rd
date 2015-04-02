@@ -27,6 +27,14 @@ values instead of its names
 \note{
 What happens if there are two reverse.lookups
 }
+\section{reverse.lookup}{
+
+
+When performing a reverse lookup, values (not names) are searched. The
+corresponding names are returned.  NOTE: this is highly experimental and only
+works for atomic vectors. It is uncertain how this might be applied to
+recursive structures like lists.
+}
 \examples{
 reverse.lookup("string")
 }

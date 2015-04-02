@@ -91,7 +91,7 @@ pattern match yields all matching elements.
 
   # EXTRACT:
     sv[ c('a','b') ]        # Normal
-    sv[ perl('c.?') ]
+    sv[ regex('c.?') ]
     sv[ fixed('c') ]
     sv[ 'x' ]                # NA
 

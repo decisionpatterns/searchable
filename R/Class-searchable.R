@@ -175,7 +175,6 @@
 #   )
 
   # default.pattern = pattern('')
-  
   setClass( 'searchable' 
     , representation = representation('searchables', pattern='pattern')  
     , prototype( pattern=pattern(NA) ) 
@@ -188,17 +187,17 @@
 #' @rdname searchable
 #' @export
  
-searchable <- function( object, ... ) { 
-  
-  # TRAP NON-NAMED OBJECTS
-  if( object  %>% attr('names')  %>% is.null ) 
-    stop( 'Only objects with a names attribute can be made searchable.')
-  
-  pattern <- pattern( NA, ...) 
-  
-  new( 'searchable', object, pattern = pattern ) %>% return
- 
-}  
+  searchable <- function( object, ... ) { 
+    
+    # TRAP NON-NAMED OBJECTS
+    if( object  %>% attr('names')  %>% is.null ) 
+      stop( 'Only objects with a names attribute can be made searchable.')
+    
+    pattern <- pattern( NA, ...) 
+    
+    new( 'searchable', object, pattern = pattern ) %>% return
+   
+  }  
 
   
   
@@ -215,8 +214,3 @@ searchable <- function( object, ... ) {
     }
   )
   
-
-# #' is.searchable 
-# #' @rdname searchable
-# #' @export 
-#   is.searchable <- function(object) is(object,'searchable')

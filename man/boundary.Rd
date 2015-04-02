@@ -2,16 +2,16 @@
 % Please edit documentation in R/boundary.R
 \name{boundary}
 \alias{boundary}
-\alias{ends_with}
+\alias{endsqwith}
 \alias{full}
 \alias{partial}
 \alias{sentence}
-\alias{starts_with}
+\alias{startswith}
 \alias{word}
 \title{Define boundary for pattern matching}
 \usage{
 boundary(object, type = c("partial", "full", "word", "sentence", "line",
-  "atarts_with", "ends_with"))
+  "starts_with", "ends_with"))
 
 full(object)
 
@@ -21,9 +21,9 @@ word(object)
 
 sentence(object)
 
-starts_with(object)
+startswith(object)
 
-ends_with(object)
+endsqwith(object)
 }
 \arguments{
 \item{object}{target or pattern for search}

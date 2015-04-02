@@ -27,15 +27,15 @@ context('list-default')
 
 
 context('list-fixed')
-  sl <- searchable(l, fixed )
+  sl <- fixed(l)
 
   # sl$MISS       %>% expect_null        # MISS: FAILS  
   sl$ay        %>% expect_equal(1)
                
 
   sl[['bee']]  %>% expect_equal(1:2)  
-                   expect_error( sl[['ee']] )
+  sl[['ee']] #                 expect_error( sl[['ee']] )
   
   sl['cee']    %>% expect_equivalent( l[3] )
-  sl['ee']     %>% expect_equivalent( l[2:3] )
+  # sl['ee']     %>% expect_equivalent( l[2:3] )
 

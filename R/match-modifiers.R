@@ -78,7 +78,7 @@
 #' @rdname match_modifiers
 #' @export
 
-regex <- function( object, ... ) { 
+regex <- function( object, ... ) {
   opts(object) <- stringi::stri_opts_regex(...)
   type(object) <- "fixed"  
   return(object)
