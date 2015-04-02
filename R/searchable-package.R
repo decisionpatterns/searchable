@@ -52,7 +52,7 @@
 #'    
 #' @docType package
 #' @name searchable-package
-#' @include Class-searchable.R
-#' @import magrittr
+# @include Class-searchable.R
+#' @import magrittr methods stringi
 
 NULL

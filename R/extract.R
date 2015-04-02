@@ -1,73 +1,3 @@
-
-  
-# # Applies invert lookup, if set   
-# .inverse.if.reverse.lookup <- function(object, pattern)
-#    if( ! is.null( attr(pattern, "reverse.lookup" ) ) &&
-#          attr(pattern, "reverse.lookup" ) == TRUE 
-#    ) invert(object) else object  
-#   
-    
-  
-# Returns indices of matching elements
-.which.matches <- function( object, pattern ) { 
-  
-  # TRAP ERRORS     
-    if( ! .is.unmodified(object,pattern) & ! is.string(pattern) ) 
-      stop("pattern string should be a one-element character vector")
-     
-  # ADD DEFAULT MODIFIERS
-    pattern <- .collect.modifiers(object,pattern)
-     
-  # APPLY REVERSE LOOKUP BY INVERTING 
-  #  This does not work for recursive, list-like  object
-   object <- 
-     if( ! is.null( attr(pattern, "reverse.lookup" ) ) &&
-         attr(pattern, "reverse.lookup" ) == TRUE 
-     ) invert(object) else object  
-    
-    
-    return( 
-      which( stringr::str_detect( string=names(object), pattern=pattern ) )
-    )
-  
-}  
-
-# Returns indices of matching elements
-# for use with [, [<- allowing multiple patterns
-
-.which.matches.bracket <- function( object, pattern ) { 
-  
-  # TRAP ERRORS     
-    # if( ! .is.unmodified(object,pattern) & ! is.string(pattern) ) 
-    #  stop("pattern string should be a one-element character vector")
-     
-  # ADD DEFAULT MODIFIERS
-    pattern <- .collect.modifiers(object,pattern)
-     
-  # APPLY REVERSE LOOKUP BY INVERTING OBJECT
-  #  This does not work for recursive, list-like  object
-   object <- 
-     if( 
-         ! is.null( attr(pattern, "reverse.lookup" ) ) &&
-         attr(pattern, "reverse.lookup" ) == TRUE 
-     ) invert(object) else object  
-    
-    
-  # Handle Multiple-pattern HERE
-    # for( pat in pattern ) { 
-    #  
-    # }
-      
-  
-  
-    return( 
-      which( stringr::str_detect( string=names(object), pattern=pattern ) )
-    )
-  
-}  
-
-
-
 #' Extraction operators for searchable object
 #' 
 #' Defines  \code{[}, \code{[[}, and \code{$} for searchable objects
@@ -137,7 +67,7 @@
 #'   
 #'   # EXTRACT:
 #'     sv[ c('a','b') ]        # Normal
-#'     sv[ perl('c.?') ]      
+#'     sv[ regex('c.?') ]      
 #'     sv[ fixed('c') ] 
 #'     sv[ 'x' ]                # NA
 #'     
@@ -176,8 +106,6 @@
 #'    }
 #' 
 #' @aliases extract
-#' @include Class-searchable.R
-#' @import stringr
 
 # ----------------------------------------------------------------
 # EXTRACT 
@@ -187,14 +115,11 @@
 #' @export     
   setMethod( '[', c(x='searchable', i='character', j='missing'), 
     function(x,i,j,...) {
+       browser()
+     # ESCAPE HATCH FOR  'standard' matching
+       if( .is.standard(x,i) ) return( x@.Data[i] ) 
        
-     # ESCAPE HATCH
-       if( .is.unmodified(x,i) ) return( x@.Data[i] )      
-
-     # FIND MATCHES    
-       wh <- .which.matches.bracket(x,i)
-
-       return( x[wh] )
+       return( x[ .matches(x,i) ] )
      
     }           
   )
@@ -206,17 +131,20 @@
   setMethod( '[[', c(x='searchable', i='character'), 
      function(x,i) { 
        
-     # ESCAPE HATCH
-       if( .is.unmodified(x,i) ) return( x@.Data[[i]] )
+     # ESCAPE HATCH FOR  'standard' matching
+       if( .is.standard(x,i) ) return( x@.Data[[i]] ) 
+       
+    #   pattern <- .resolve.patterns(x,i)
+    #   if( pattern@type == 'standard' ) return( x@.Data[[i]] )
   
      # FIND MATCHES    
-       wh <- .which.matches(x,i)
-
+       wh <- which( .matches(x,i) )
+    
      # [[ should match only one element
        if( length(wh) > 1 ) stop('attempt to select more than one element')
        if( length(wh) < 1 ) stop('subscript not found')
      
-       return( x[[wh]] )
+       return( x@.Data[[wh]] )
        
      }   
   )
@@ -225,13 +153,9 @@
 #' @rdname extract
 #' @export   
   setMethod( '$', c(x='searchable'), 
-    function(x,name) { 
-      # ESCAPE HATCH 
-        if( .is.unmodified(x,name) ) return( x@.Data[[name]] )
-        
-        x[[name]]
-    }         
+    function(x,name) `[[`(x,name)
   )
+
   
  
 # ----------------------------------------------------------------
@@ -244,9 +168,9 @@
     function(x,i,value) {
       
       # ESCAPE HATCH
-        if( .is.unmodified(x,i) ) return( `[<-`(x,i,value) )
+        if( .is.standard(x,i) ) return( `[<-`(x,i,value) )
       
-      wh <- .which.matches(x,i)
+        wh <- which( .matches(x,i) )
       
       x@.Data[wh] <- value
       return(x)
@@ -262,12 +186,13 @@
     function(x,i,value) {
       
        # ESCAPE HATCH 
-         if( .is.unmodified(x,i) ) return( `[[<-`(x,i,value) )
+         if( .is.standard(x,i) ) return( `[[<-`(x,i,value) )
        
        # BASE R WILL ONLY ALLOW [[<- TO MODIFY ONE ELEMENT THE FIRST,
        # WARN IF THE MODIFIER RETURNS MORE THAN ONE MATCH, ONLY THE FIRST WILL
        # BE MODIFIED
-         wh <- .which.matches(x,i)
+         wh <- which( .matches(x,i) )
+       
          if( length(wh) > 1 ) 
            stop( call.=FALSE 
              , "[[<-,searchable,character - multiple matches for, '"
@@ -280,7 +205,7 @@
               , "No matches for, '", substitute(i), "'. "
               , "No replacements made or CREATED.\n"
               , "To make additions to '", substitute(x), "' "
-              , "remove modifiers or use 'exact' modifier."
+              , "remove modifiers or use 'standard' modifier."
             )
             return(x)
           } 
@@ -298,7 +223,7 @@
   setReplaceMethod( '$', c( x="searchable", value="ANY"),
     function(x, name, value) {
 
-      if( .is.unmodified(x,name) ) { 
+      if( x@pattern@type == 'standard' ) { 
         x@.Data[[name]] <- value
         return(x)
       } 
@@ -309,3 +234,87 @@
     }
   )
     
+
+
+
+
+# --------------------------------------------------------------
+# UTILITIES
+# --------------------------------------------------------------
+
+# Resolve patterns 
+# 
+# Resolves the pattern to use from the search 
+#
+# @param object searchable object 
+# @param pattern object to use as a pattern 
+#
+# A pattern can be associated with either argument or both; this ensures
+# returns the correct pattern to use
+# 
+
+.resolve.patterns <- function( object, pattern ) {
+   
+    if( ! pattern  %>% is('pattern') ) { 
+      str <- pattern 
+      pattern <- object@pattern 
+      pattern@.Data <- str
+    }
+    
+    return(pattern)
+    
+}
+
+# Is this a standard R search 
+.is.standard <- function(object, pattern) 
+  ! is( pattern, "pattern" ) && object@pattern@type == 'standard' ||
+    is( pattern, "pattern" ) && pattern@type == 'standard'
+
+# Return logical indication matching elements for name search
+#
+# Returns indices for use with [, [<- allowing multiple patterns
+#
+# @return integer 
+
+.matches <- function( object, pattern ) { 
+  
+  # Determine pattern to use ...
+    pattern <- .resolve.patterns( object, pattern )
+  
+  # APPLY REVERSE LOOKUP BY INVERTING OBJECT
+  #  This does not work for recursive, list-like  objects
+    # object <- if( .reverse.lookup(pattern) ) invert(object) else object  
+        
+  return( 
+    .detect( str=names(object), pattern=pattern ) 
+  )
+  
+}  
+
+
+# detect 
+#
+# which elements matching the search pattern 
+#
+# @param str seachable target
+# @param pattern method for searching 
+#
+# @return logical; vector indicating which elements match
+# 
+# @seealso 
+#  .matches
+
+.detect  <- function(str, pattern) { 
+
+  type <- if( ! pattern %>% is('pattern') ) "standard" else pattern@type
+  
+  switch( type
+    , regex = stri_detect_regex( str, pattern@.Data, opts_regex = stri_opts_regex( pattern@options ) )      
+    , fixed = stri_detect_fixed( str, pattern@.Data, opts_fixed = stri_opts_fixed( pattern@options ) )    
+    , coll  = stri_detect_coll(  str, pattern@.Data, opts_coll  = stri_opts_coll(  pattern@options ) )
+    , standard = stop('A pattern should have been specified by now.')
+    , stop( "Unknown search type : ", type )
+  )
+
+}
+

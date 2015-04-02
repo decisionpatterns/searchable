@@ -2,8 +2,8 @@ Package: searchable
 Type: Package
 Title: Make R Objects Searchable by Matching Names Based on Case
     (in)Sensitivity, Regular Expressions, ...
-Version: 0.2.1
-Date: 2015-03-29
+Version: 0.3.0
+Date: 2015-03-31
 Author: "DecisionPatterns [aut, cre]"
 Maintainer: Christopher Brown <chris.brown@decisionpatterns.com>
 Description: Provides functionality for searching named vectors and
@@ -12,22 +12,14 @@ Description: Provides functionality for searching named vectors and
     expressions using standard accessors: $, [, [[. It also allows searching
     through values rather than names.
 Depends:
-    R (>= 3.0.2)
+    R (>= 3.1.0),
+    stringr (>= 0.9)
 Imports:
     methods,
     magrittr(>= 1.5),
-    stringr (>= 0.6.2)
+    stringi(>= 0.4.1)
 Suggests:
     testthat
 License: GPL-2
 URL: https://github.com/decisionpatterns/searchable
 BugReports: https://github.com/decisionpatterns/searchable/issues
-Collate:
-    'Class-searchable.R'
-    'extract.R'
-    'invert.R'
-    'is.string.R'
-    'match-modifiers.R'
-    'reverse.lookup.R'
-    'searchable-package.R'
-    'zzz.R'

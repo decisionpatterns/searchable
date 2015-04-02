@@ -1,95 +1,10 @@
-# List of active modifiers, exact/default is not a match modifier, it resets ther others
-# .match.modifiers <- c( 'ignore.case', 'fixed', 'perl' ) #, 'exact', 'default', 'partial' #
-.match.modifiers <- c( 'ignore.case', 'fixed', 'perl', 'exact', 'default', 'partial', 'case.sensitive', 'case.insensitive', 'use.case' )
-
-
-# Turn OFF attribute by toggling attribute to NULL if TRUE  
-.off <- function( object, which ) { 
-
-  for( wh in which ) { 
-    
-    attr <- object  %>% attr(wh)
-    if( ! attr  %>% is.null && attr  %>% is.logical && attr )
-      attr(object,wh) <- NULL
-      
-  }
-  
-  return(object)
-}
-
-
-
-
-# Toggle ON attribute 
-.on <- function(object, which ) { 
-  
-  for( wh in which ) { 
-    attr <- object  %>% attr(wh)
-    if( ! attr  %>% is.null && ! attr  %>% is.logical ) warning( wh, " is exists and is not logical") 
-    attr(object, wh) <- TRUE
-  }
-  return(object)
-}
-
-
-
-.is.on <- function(object, which)
-  ! object %>% attr(which) %>% is.null && object %>% attr(which)
-  
-
-
-# Get active modifier(s) 
-# @return list of match.modifiers or NULL if non-exist.
-.get.modifiers <- function(object) {
-  li <- attributes(object)[ .match.modifiers ] 
-  li <- li[ ! sapply(li, is.null) ]
-  
-  # if( ! is.null(li) && length(li) == 0 ) return(NULL)
-  return(li)
-}
-  
-
-# Unmodifed do not have any .match.modifiers set.
-
-# Identify whether a search (object and pattern) are unmodified.
-.is.unmodified <- function( object, pattern )  {
-  
-  mods.object  <- .get.modifiers(object)
-  mods.pattern <- .get.modifiers(pattern)
-  
-  ( is.null( mods.object)  || length(mods.object)  == 0 ) && 
-  ( is.null( mods.pattern) || length(mods.pattern) == 0 ) 
-  
-}
-
-
-# resolve modifiers applied to both object and patterns.
-.collect.modifiers <- function( object, pattern ) { 
-   ret <- pattern 
-   
-   obj.mods <- .get.modifiers(object)
-   if( ! is.null(obj.mods) ) 
-
-      
-   # RESOLVE CONFLICTS ...
-   # If there are any modifiers to pattern use those instead.
-   pat.mods <- .get.modifiers(pattern)
-   if( ! is.null(pat.mods) ) 
-     attributes(ret) <- pat.mods else
-     attributes(ret) <- obj.mods
-
-   return(ret)
-   
-}
-
-
-
 #' Match modifiers 
 #' 
 #' Functions affecting how matching occurs. The modifiers can be applied to 
 #' either the search pattern or the search target.  
 #' 
 #' @param object string or target object to apply match modifiers to
+#' @param ... additional arguments passed to \code{stri_opts_*}.
 #' 
 #' Match modifiers control how a search pattern is matched against the search 
 #' target. They can be applied to either the pattern or target.  
@@ -106,17 +21,9 @@
 #' 
 #' @section reset, default:
 #' 
-#' Clears all match modifiers and performs a search as base R.
+#' Clears all match attributes and performa a name search as base R.
 #' 
-#' @section ignore.case: 
-#' 
-#' Match modifier \code{ignore.case} performs case insensitive matching against
-#' the names of the target. \code{ignore.case} is incompatible and overrides  
-#' \code{fixed}. Application of \code{ignore.case} overrides previous calls to
-#' \code{fixed}.
-#' 
-#' 
-#' @section perl: 
+#' @section regex, fixed, coll: 
 #' 
 #' Match modifier \code{perl} performs matches against the targets names using
 #' PCREs. \code{perl} is incompatible with 
@@ -158,122 +65,49 @@
 #'   \url{https://github.com/hadley/stringr/issues/60} \cr
 #'   
 #' @seealso 
+#'   \code{\link{boundary}} for setting boundary matching \cr
+#'   \code{\link{case}} for setting case (in)sensitive matching \cr
 #'   \code{\link{extract}} \cr
 #'   \code{\link[stringr]{fixed}} \cr
 #'   \code{\link[stringr]{ignore.case}} \cr
 #'   \code{\link[stringr]{perl}} \cr
 #'   
 #' @examples 
-#'   exact( "string" )
-#'       
-#' @rdname match_modifiers   
+#'   "pattern" %>% regex %>% reset
+
+#' @rdname match_modifiers
 #' @export
 
-perl <- function (object) {
-  
-    if( object  %>% .is.on('fixed') ) { 
-       message("perl overriding fixed matching")
-       object  %<>% .off('fixed')
-    } 
-    
-    object %<>%  .on('perl')
-    return(object)
-}
-
-
-
-#' @rdname match_modifiers 
-#' @export
-fixed <- function (object) {
-  
-  if( object  %>% .is.on('perl') ) { 
-     message("fixed overriding perl matching")
-     object %<>%  .off('perl')
-  } 
-    
-  if( object  %>% .is.on('ignore.case') ) { 
-    message("fixed overridding ignore.case")
-    object %<>% .off('ignore.case')
-  }
-  
-  if( object  %>% .is.on('full') ) { 
-    message("fixed overridding partial")
-    object %<>% partial
-  }
-  
-  object %<>% .on('fixed')
+regex <- function( object, ... ) { 
+  opts(object) <- stringi::stri_opts_regex(...)
+  type(object) <- "fixed"  
   return(object)
-  
 }
 
 
-#' @rdname match_modifiers 
+#' @rdname match_modifiers
 #' @export
-partial <- function(object) { 
-
-  object  %<>% .off("full")
-  object  %<>% .on("partial")
-  
-  return(object)
-
-}
-
-
-
-full <- function(object) { 
  
-  object %<>% .off('partial')
-  
-  # THERE IS NO FIXED, FULL SINCE BY DEFIN
-  # fixed <- attr(object, 'fixed')
-  if( .is.on('fixed') ) { 
-    message("full overriding fixed matching")
-    object %<>% perl
-  } 
-  
-  if( .is.on)
-  object %<>%  .on('full')
-  
-  return(object)
-  
-}  
-
-
-
-#' @rdname match_modifiers 
-#' @export
-
-ignore.case <- function (object) {
-  object %<>%  .off('use.case')
-  object %<>%  .on('ignore.case')
+fixed <- function( object, ... ) { 
+  opts(object) <- stringi::stri_opts_fixed(...)
+  type(object) <- "fixed"  
   return(object)
 }
 
-#' @rdname match_modifiers 
+
+
+#' @rdname match_modifiers
 #' @export
-
-case.insensitive <- ignore.case
-
-
-#' @rdname match_modifiers 
-#' @export
-
-use.case <- function(object) { 
- object %<>% .off('ignore.case')
- object %<>% .on('use.case')
-   
- return(object)
+ 
+coll <- function( object, ... ) { 
+  opts(object) <- stringi::stri_opts_collator(...)
+  type(object) <- "coll"  
+  return(object)
 }
 
 
-#' @rdname match_modifiers 
-#' @export
 
-case.sensitive <- use.case 
-     
-     
-
-#' @rdname match_modifiers 
+#' @rdname match_modifiers
 #' @export
 
 reset <- function(object) { 
@@ -286,4 +120,24 @@ reset <- function(object) {
 #' @export
 
 default <- reset
+
+#' @rdname match_modifiers 
+#' @export
+base <- reset 
+
+# GET AND SET TYPE OF SEARCH 
+type <- function(object) attr( object, 'type' ) 
+
+`type<-` <- function( object, value = c('regex','coll','fixed') ) { 
+  attr(object,'type') <- match.arg(value)
+  object
+}
+
+# GET AND SET OPTIONS
+opts <- function(object) attr( object, 'opts' ) 
+
+`opts<-` <- function( object, value ) { 
+  attr(object,'opts') <- value
+  return(object)
+}
 

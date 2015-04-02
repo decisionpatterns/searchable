@@ -13,6 +13,13 @@
 #' In order to perform a reverse lookup, values must be converted to character 
 #' names.
 #' 
+#' @section reverse.lookup:
+#' 
+#' When performing a reverse lookup, values (not names) are searched. The 
+#' corresponding names are returned.  NOTE: this is highly experimental and only
+#' works for atomic vectors. It is uncertain how this might be applied to 
+#' recursive structures like lists. 
+#' 
 #' @return 
 #'   a string object with the \code{reversse.lookup} attribute set. 
 #' 
@@ -34,3 +41,19 @@ reverse.lookup <-
       structure( string, reverse.lookup = TRUE ) else 
       structure( string, reverse.lookup = ! orig ) 
   }   
+
+
+# GET AND SET REVERSE LOOKUP
+#
+# @examples
+#  .reverse.lookup("hello")
+#  .reverse.lookup("hello"  %>% reverse.lookup )
+
+.reverse.lookup <- function(object) 
+  ! is.null( attr(object,'reverse.lookup') ) &&
+  attr(object,'reverse.lookup')
+
+`.reverse.lookup<-` <- function(object, value) { 
+  attr(object,'reverse.lookup') <- value
+  return(object)
+}
