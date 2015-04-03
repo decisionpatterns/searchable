@@ -15,6 +15,7 @@
 #' @slot pattern used as the default method for searching an objects names 
 #'  
 #' @param object searchable object or object to be made searchable
+#' @param type character; the type of search to perform 
 #' @param ... additional arguments defining the search pattern. See 
 #'   \code{?pattern} for details.
 #'  
@@ -165,37 +166,54 @@
 #'    
 #'      
 #' @rdname searchable
-#' @exportClass searchable
+#' @exportClass searchable SearchableOrPattern
 #' @export searchable 
 
+#    setClass( 'searchable' 
+#      , representation = representation('searchables', type='character', options='list')  
+#      , prototype( type = 'standard', options=list() ) # , ignore.case = FALSE, perl = FALSE, fixed = FALSE ) 
+#      , contains = 'searchables'  
+#    )
+
+   
+   # setClassUnion( 'SearchableOrPattern', c('searchable','pattern' ) )
+  
+   setClass( 'SearchableOrPattern' 
+     , representation = representation( 'searchables', type='character', options='list')  
+     , prototype( type = 'standard', options=list() ) # , ignore.case = FALSE, perl = FALSE, fixed = FALSE ) 
+     , contains = 'searchables'  
+   )
+   
+#' @rdname searchable
+#' @exportClass searchable SearchableOrPattern
+#' @export searchable 
+
+   setClass( 'searchable' 
+     # , representation = representation('searchables', type='character', options='list')  
+     # , prototype( type = 'standard', options=list() ) # , ignore.case = FALSE, perl = FALSE, fixed = FALSE ) 
+     , contains = 'SearchableOrPattern'  
+   )
+  
+  
 #   setClass( 'searchable' 
-#     , representation = representation('searchables', type='character', options='list')  
-#     , prototype( type='regex', type = 'standard', options=list() ) # , ignore.case = FALSE, perl = FALSE, fixed = FALSE ) 
+#     , representation = representation('searchables', pattern='pattern')  
+#     , prototype( pattern=pattern(NA) ) 
 #     , contains = 'searchables'  
 #   )
-
-  # default.pattern = pattern('')
-  setClass( 'searchable' 
-    , representation = representation('searchables', pattern='pattern')  
-    , prototype( pattern=pattern(NA) ) 
-    , contains = 'searchables'  
-  )
-  
+#   
 
 # CONSTRUCTOR
 # NB. compare with pattern 
 #' @rdname searchable
 #' @export
  
-  searchable <- function( object, ... ) { 
+  searchable <- function( object, type='standard', ... ) { 
     
     # TRAP NON-NAMED OBJECTS
     if( object  %>% attr('names')  %>% is.null ) 
       stop( 'Only objects with a names attribute can be made searchable.')
     
-    pattern <- pattern( NA, ...) 
-    
-    new( 'searchable', object, pattern = pattern ) %>% return
+    new( 'searchable', object, type=type, options=list(...) )  # %>% return
    
   }  
 
@@ -207,7 +225,7 @@
   setMethod('show', 'searchable', 
     function(object) {
       
-      cat( 'searcable object using', .describe_pattern(object@pattern) )       
+      cat( 'searchable object using', .describe_pattern(object) )       
       show( object@.Data[ 1:length(object@.Data) ] )  # REMOVE attributes
       invisible(NULL)
       

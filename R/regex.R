@@ -1,6 +1,6 @@
 #' regex 
 #' 
-#' Create a pattern for regular expression matching 
+#' Creates or modifies the search type to use regular expression matching 
 #' 
 #' @param object to make specification 
 #' @param ... additional arguments passes to \code{\link{pattern}}
@@ -11,8 +11,9 @@
 #'   \code{\link{pattern}}
 #' 
 #' @examples
-#'   # -tk       
-#'
+#'   pat <- regex("a.+") 
+#'   .detect( c('alpha','beta'), pat )
+#'   
 
 #' @rdname regex
 #' @export
@@ -32,37 +33,8 @@
 #' @rdname regex
 #' @export
 #  Note: an alternative is to clobber the options
-   regex.pattern  <- function( object, ... ) {
+   regex.SearchableOrPattern  <- function( object, ... ) {
      object@type = 'regex'
      object@options = list(...)
      return(object)
    }
-
-
-#' @rdname regex
-#' @export
-   regex.searchable  <- function( object, ... ) {
-     object@pattern = regex( object@pattern, ... ) 
-     return(object)
-   }  
-    
-
-
-# regex <- function( object, ... ) {
-#     
-#   if( object %>% is('pattern') ) { 
-#     object@type = 'regex'
-#     object@options = stri_opts_regex(...)
-#     
-#   } else if( object  %>% is('searchable' ) ) { 
-#      object@pattern@type = 'regex'
-#      object@pattern@options = stri_opts_regex(...)
-#      
-#   } else { 
-#     object <- pattern(object, 'regex', ...) 
-#     
-#   }
-# 
-#   return(object)
-#   
-# }  

@@ -50,8 +50,9 @@
 
 setClass( 
   'pattern'
-  , representation( 'character', type = 'character', options='list') 
-  , prototype( type='regex', type = 'standard', options=list() )
+  # , representation( 'SearchableOrPattern', type = 'character', options='list') 
+  # , prototype( type='regex', type = 'standard', options=list() )
+  , contains = 'SearchableOrPattern'
 )
 
 
@@ -65,59 +66,30 @@ setClass(
 
 #' @rdname pattern
 #' @export
-  pattern.character <- function( object=NULL, type = NULL, ... ) { 
-    
-    if( is.null(type) ) type <- 'standard'
-    opts <- list(...)
-  
-    new('pattern', object, type=type, options=opts ) %>% return   
-  
-  } 
-  
-
-#' @rdname pattern
-#' @export
-  pattern.pattern <- function( object, type, ... ) { 
-    
-    if( is.null(type)                &&       # type not supplied 
-        length( list(...) ) == 0              # no ... 
-    ) return(object)  
-  
-    # TYPE
-    if( is.null(type) ) 
-      if( object  %>% is('searchable') ) type <- object@type 
-    
-    opts <- list(...)
-  
-    new('pattern', object, type=type, options=opts ) # %>% return   
-  
-  }
-
-
-#' @rdname pattern
-#' @export
-  pattern.searchable <- function( object, type, ... ) { 
-  
-    if( is.null(type)                &&       # type not supplied 
-        length( list(...) ) == 0              # no ... 
-    ) return(object)  
-  
-    # TYPE
-    if( is.null(type) ) 
-      if( object  %>% is('searchable') ) type <- object@type 
-    
-    opts <- list(...)
-  
-    new('pattern', object, type=type, options=opts ) # %>% return   
-  
-  }
-
-
-#' @rdname pattern
-#' @export
-  pattern.default <- function( object=NULL, type = NULL, ... ) {
+  pattern.default <- function( object=NULL, type = 'standard', ... ) {
     pattern.character( as.character(object), type=type, ... ) 
   }
+
+
+#' @rdname pattern
+#' @export
+  pattern.character <- function( object, type = 'standard', ... ) 
+     new('pattern', object, type=type, options=list(...) ) # %>% return   
+  
+  
+#' @rdname pattern
+#' @export
+  pattern.SearchbleOrPattern <- function( object, type = object@type, ... ) { 
+    
+    if(missing(type)                &&       # type not supplied 
+      length( list(...) ) == 0               # no ... 
+    ) return(object)  
+  
+    new('pattern', object, type=type, options=list(...) ) # %>% return   
+  
+  }
+
+
 
 
 

@@ -1,8 +1,8 @@
 # List of active modifiers, exact/default is not a match modifier, it resets ther others
 # .match.modifiers <- c( 'ignore.case', 'fixed', 'perl' ) #, 'exact', 'default', 'partial' #
-.match.modifiers <- c( 'ignore.case', 'fixed', 'perl', 'exact', 'default', 'partial', 'case.sensitive', 'case.insensitive', 'use.case' )
+# .match.modifiers <- c( 'ignore.case', 'fixed', 'perl', 'exact', 'default', 'partial', 'case.sensitive', 'case.insensitive', 'use.case' )
 
-.partials <- c('full','partials' ) 
+# .partials <- c('full','partials' ) 
 
 
 # "x" %>% ignore.case %>% .is.modified
