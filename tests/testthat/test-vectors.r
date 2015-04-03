@@ -8,7 +8,7 @@ v <- c( ay=1, bee=2, cee=3 )
 context('vector-default')
   sv <- searchable(v)
 
-  sv$ay        %>% expect_equal(1)
+  sv$ay        %>% expect_equal( v[['ay']] )
                    expect_error( sv$ee )
   
   sv[['bee']]  %>% expect_equal(2)  
@@ -20,10 +20,10 @@ context('vector-default')
 
 
 context('vector-fixed')
-  sv <- searchable(v, fixed )
+  sv <- searchable(v, 'fixed' )
 
-  sv$ay        %>% expect_equal(1)
-                   expect_error( sv$ee )
+  sv$ay        %>% expect_equal( sv[['ay']] )
+                   expect_error( sv$ee )      # 2 matching elements
   
   sv[['bee']]  %>% expect_equal(2)  
                    expect_error( sv[['ee']] )

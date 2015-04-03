@@ -75,69 +75,81 @@
 #' @examples 
 #'   "pattern" %>% regex %>% reset
 
-#' @rdname match_modifiers
-#' @export
-
-regex <- function( object, ... ) {
-  opts(object) <- stringi::stri_opts_regex(...)
-  type(object) <- "fixed"  
-  return(object)
-}
+# @rdname match_modifiers
+# @export
 
 
-#' @rdname match_modifiers
-#' @export
- 
-fixed <- function( object, ... ) { 
-  opts(object) <- stringi::stri_opts_fixed(...)
-  type(object) <- "fixed"  
-  return(object)
-}
+# regex <- function( object, ... ) UseMethod('regex')
+# 
+# 
+# regex.pattern <- function(object, ... ) { 
+#   object@type
+# 
+# 
+# }
+#   
+#   
+# regex <- function( object, ... ) {
+#   opts(object) <- stringi::stri_opts_regex(...)
+#   type(object) <- "fixed"  
+#   return(object)
+# }
+
+
+# #' @rdname match_modifiers
+# #' @export
+#  
+# fixed <- function( object, ... ) { 
+#   opts(object) <- stringi::stri_opts_fixed(...)
+#   type(object) <- "fixed"  
+#   return(object)
+# }
 
 
 
-#' @rdname match_modifiers
-#' @export
- 
-coll <- function( object, ... ) { 
-  opts(object) <- stringi::stri_opts_collator(...)
-  type(object) <- "coll"  
-  return(object)
-}
+# #' @rdname match_modifiers
+# #' @export
+#  
+# coll <- function( object, ... ) { 
+#   opts(object) <- stringi::stri_opts_collator(...)
+#   type(object) <- "coll"  
+#   return(object)
+# }
 
 
 
-#' @rdname match_modifiers
-#' @export
+# #' @rdname match_modifiers
+# #' @export
+# 
+# reset <- function(object) { 
+#   attributes(object) <- NULL 
+#   return(object)
+# }
+# 
+# 
+# #' @rdname match_modifiers 
+# #' @export
+#    default <- reset
+# 
+# #' @rdname match_modifiers 
+# #' @export
+#    base <- reset 
 
-reset <- function(object) { 
-  attributes(object) <- NULL 
-  return(object)
-}
 
 
-#' @rdname match_modifiers 
-#' @export
+# # GET AND SET TYPE OF SEARCH 
+# type <- function(object) attr( object, 'type' ) 
+# 
+# `type<-` <- function( object, value = c('regex','coll','fixed') ) { 
+#   attr(object,'type') <- match.arg(value)
+#   object
+# }
 
-default <- reset
-
-#' @rdname match_modifiers 
-#' @export
-base <- reset 
-
-# GET AND SET TYPE OF SEARCH 
-type <- function(object) attr( object, 'type' ) 
-
-`type<-` <- function( object, value = c('regex','coll','fixed') ) { 
-  attr(object,'type') <- match.arg(value)
-  object
-}
-
-# GET AND SET OPTIONS
-opts <- function(object) attr( object, 'opts' ) 
-
-`opts<-` <- function( object, value ) { 
-  attr(object,'opts') <- value
-  return(object)
-}
+# # GET AND SET OPTIONS
+# opts <- function(object) attr( object, 'opts' ) 
+# 
+# `opts<-` <- function( object, value ) { 
+#   attr(object,'opts') <- value
+#   return(object)
+# }
 

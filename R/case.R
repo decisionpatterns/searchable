@@ -23,21 +23,14 @@
 
 #' @rdname case
 #' @export
-  ignore.case.pattern <- function(object) { 
-    object@options$case_insensitivity = TRUE 
+  ignore.case.SearchableOrPattern <- function(object, ...) { 
+    object@options$case_insensitive = TRUE 
     return(object)
   }
 
 #' @rdname case
 #' @export
-  ignore.case.searchable <- function(object) { 
-    object@pattern@options$case_insensitivity = TRUE 
-    return(object)
-  }
-
-#' @rdname case
-#' @export
-  ignore.case.character <- function(object) object %>% standard() 
+  ignore.case.character <- function(object) object %>% std( case_insensitive = TRUE ) 
   
 #' @rdname case
 #' @export
@@ -45,6 +38,7 @@
   
 
 
+# --------------------------------------------------------------
 
 #' @rdname case
 #' @export
@@ -52,21 +46,14 @@
 
 #' @rdname case
 #' @export
-  use.case.pattern <- function(object) { 
-    object@options$case_insensitivity = FALSE 
+  use.case.SearchableOrPattern <- function(object) { 
+    object@options$case_insensitive = FALSE 
     return(object)
   }
 
 #' @rdname case
 #' @export
-  use.case.searchable <- function(object) { 
-    object@pattern@options$case_insensitivity = FALSE 
-    return(object)
-  }
-
-#' @rdname case
-#' @export
-  use.case.character <- function(object) object %>% standard() 
+  use.case.character <- function(object) object %>% std( case_insensitive = FALSE )
   
 #' @rdname case
 #' @export

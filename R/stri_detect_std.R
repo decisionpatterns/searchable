@@ -8,7 +8,7 @@
 #'        including additional settings for \code{stri_opts_std}
 #' @param case_insensitive logical; enable simple case insensitive matching
 #'
-#' \code{stri_detect_std} is equivalent to \code{str %in% pattern} and is 
+#' \code{stri_detect_std} is equivalent to \code{str \%in\% pattern} and is 
 #' created to provide a parallel to other search methods.
 #'  
 #' \code{stri_opts_std}
@@ -19,8 +19,8 @@
 #'   \code{\link[stringi]{stri_detect}}
 #' 
 #' @examples 
-#'   stri_detect_std( letters[1:5], letters[1:2] )
-#'   stri_detect_std( letters[1:5], LETTERS[1:2] )
+#'   stri_detect_std( letters[1:5], letters[1:2] )  # TRUE TRUE ...
+#'   stri_detect_std( letters[1:5], LETTERS[1:2] )  # ALL FALSE 
 #'   stri_detect_std( letters[1:5], LETTERS[1:2], opts_std = list(case_insensitive = TRUE ) )
 #'   
 #' @rdname stri_std            

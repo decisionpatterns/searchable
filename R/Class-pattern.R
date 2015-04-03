@@ -1,9 +1,15 @@
-#' Defines a search pattern 
+setClassUnion( 'PatternOrCharacter', c('pattern','character'))
+
+#' Defines or extract a search pattern 
 #' 
-#' Defines how searches are conducted against a searchable target
+#' Patterns defines how searches are conducted against a searchable target
+#' 
+#' @slot type character; type of search performed; one of "std" (default), "regex", 
+#'      "fixed", "coll", or "charclass". See details. 
+#' @slot options list; name = value pairs for search options used.
 #' 
 #' @param object character or pattern; 
-#' @param type character; the type of match: standard (default), regex, coll, 
+#' @param type character; the type of match: std (default), regex, coll, 
 #'        fixed.
 #' @param .... additional arguments to be passed to \code{stri_opts_*} functions. 
 #'        See details.
@@ -19,9 +25,9 @@
 #' 
 #' These are closely related to the 
 #'
-#' @section standard:
+#' @section std:
 #' 
-#' The default is \code{standard} matching which performs matching 
+#' The default is \code{std} matching which performs matching 
 #' as base R would. This is equivalent to \code{fixed} and 
 #' \code{case_insensitive = FALSE}. Though the internal matching is sed.
 #'   
@@ -46,12 +52,20 @@
 #' @exportClass pattern
 #' @export
 
-# setClassUnion('CharacterOrNull', members = c('character','NULL'))
+   setClass( 'SearchableOrPattern' 
+     , representation = representation( 'searchables', type='character', options='list')  
+     , prototype( type = 'std', options=list() ) # , ignore.case = FALSE, perl = FALSE, fixed = FALSE ) 
+     , contains = 'searchables'  
+   )
+
+#' @rdname pattern
+#' @exportClass pattern
+#' @export
 
 setClass( 
   'pattern'
   # , representation( 'SearchableOrPattern', type = 'character', options='list') 
-  # , prototype( type='regex', type = 'standard', options=list() )
+  # , prototype( type='regex', type = 'std', options=list() )
   , contains = 'SearchableOrPattern'
 )
 
@@ -66,29 +80,36 @@ setClass(
 
 #' @rdname pattern
 #' @export
-  pattern.default <- function( object=NULL, type = 'standard', ... ) {
+  pattern.default <- function( object=NULL, type = 'std', ... ) {
     pattern.character( as.character(object), type=type, ... ) 
   }
 
 
 #' @rdname pattern
 #' @export
-  pattern.character <- function( object, type = 'standard', ... ) 
+  pattern.character <- function( object, type = 'std', ... ) {
+     if( object %>% is('SearchableOrPattern' ) ) NextMethod('pattern')
      new('pattern', object, type=type, options=list(...) ) # %>% return   
-  
+  }
   
 #' @rdname pattern
 #' @export
-  pattern.SearchbleOrPattern <- function( object, type = object@type, ... ) { 
-    
-    if(missing(type)                &&       # type not supplied 
-      length( list(...) ) == 0               # no ... 
-    ) return(object)  
+  pattern.pattern <- function( object, type = object@type, ... ) { 
+  
+    if( missing(type)                &&        # type not supplied 
+        length( list(...) ) == 0               # no ... 
+    ) return( object %>%  pattern )  
   
     new('pattern', object, type=type, options=list(...) ) # %>% return   
   
   }
 
+
+#' @rdname pattern
+#' @export
+  pattern.searchable <- function( object, type = object@type, ... ) { 
+    new('pattern', NA_character_, type=type, options=if( missing(...) ) object@options else list(...) )  # %>% return   
+  }
 
 
 
@@ -114,6 +135,7 @@ setMethod('show', 'pattern',
   
     msg <- character() 
     if( length(object) < 2 ) msg %<>% append(  "a " )
+    
     if( ! is.null(object@options$case_insensitive) && 
           object@options$case_insensitive 
     ) msg  %<>% append( 'case-insensitive, ')
@@ -127,76 +149,49 @@ setMethod('show', 'pattern',
 }
 
 
-
-
-#' @rdname pattern
-#' @export
-
-coll <- function( object, ... ) { 
-
-  if( object %>% is('pattern') ) { 
-    object@type = 'coll'
-    object@options = stri_opts_collator(...)
-    
-  } else if( object  %>% is('searchable' ) ) { 
-     object@pattern@type = 'coll'
-     object@pattern@options = stri_opts_collator(...)
-     
-  } else { 
-    object <- pattern(object, 'coll', ...) 
-    
-  }
-
-  return(object)
-  
-}  
-
-
-
-#' @rdname pattern
-#' @export
-
-fixed <- function( object, ... ) { 
-
-  if( object %>% is('pattern') ) { 
-    object@type = 'fixed'
-    object@options = stri_opts_fixed(...)
-    
-  } else if( object  %>% is('searchable' ) ) { 
-     object@pattern@type = 'fixed'
-     object@pattern@options = stri_opts_fixed(...)
-     
-  } else { 
-    object <- pattern(object, 'fixed', ...) 
-    
-  }
-
-  return(object)
-  
-}  
-
-
-#' @rdname pattern
-#' @export
-
-standard <- function( object, ... ) { 
-
-  if( object %>% is('pattern') ) { 
-    object@type = 'standard'
-    object@options = list()
-    
-  } else if( object  %>% is('searchable' ) ) { 
-     object@pattern@type = 'standard'
-     object@pattern@options = list()
-     
-  } else { 
-    object %<>%  pattern('standard', ...) 
-    
-  }
-
-  return(object)
-
-  
-}
-
+# #' @rdname pattern
+# #' @export
+# 
+# coll <- function( object, ... ) { 
+# 
+#   if( object %>% is('pattern') ) { 
+#     object@type = 'coll'
+#     object@options = stri_opts_collator(...)
+#     
+#   } else if( object  %>% is('searchable' ) ) { 
+#      object@type = 'coll'
+#      object@options = stri_opts_collator(...)
+#      
+#   } else { 
+#     object <- pattern(object, 'coll', ...) 
+#     
+#   }
+# 
+#   return(object)
+#   
+# }  
+# 
+# 
+# 
+# #' @rdname pattern
+# #' @export
+# 
+# fixed <- function( object, ... ) { 
+# 
+#   if( object %>% is('pattern') ) { 
+#     object@type = 'fixed'
+#     object@options = stri_opts_fixed(...)
+#     
+#   } else if( object  %>% is('searchable' ) ) { 
+#      object@type = 'fixed'
+#      object@options = stri_opts_fixed(...)
+#      
+#   } else { 
+#     object <- pattern(object, 'fixed', ...) 
+#     
+#   }
+# 
+#   return(object)
+#   
+# }  
 

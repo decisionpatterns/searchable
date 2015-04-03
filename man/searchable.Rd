@@ -7,12 +7,14 @@
 \alias{show,searchable-method}
 \title{searchable}
 \usage{
-searchable(object, ...)
+searchable(object, type = "std", ...)
 
 \S4method{show}{searchable}(object)
 }
 \arguments{
 \item{object}{searchable object or object to be made searchable}
+
+\item{type}{character; the type of search to perform}
 
 \item{...}{additional arguments defining the search pattern. See
   \code{?pattern} for details.}
@@ -23,25 +25,23 @@ By default, extraction from a searchable objects does not produce a subset
   will not want another searchable object and only wish to have the subclass.
 }
 \description{
-Marks an objects as searchable, optionally specifying the default search
-options
+Marks an objects as a \code{searchable} target, optionally specifying the
+default search options
 }
 \details{
-The searchable class allows for non-standard, 'stringr'-like searches when
+The searchable class allows 'stringr/i'-like searches when
 extracting (or replacing) objects. The following search types are supported:
 
 \itemize{
+  \item \code{std} standard R matching,
   \item \code{regex} for regular expression matching,
   \item \code{fixed} for fixed string matching,
   \item \code{coll} for collation matching,
-  \item \code{standard} for standard R matching
 }
-}
-\section{Slots}{
 
-\describe{
-\item{\code{pattern}}{used as the default method for searching an objects names}
-}}
+Class \code{searchable} allows customization of how R's standard accessors --
+ \code{\[}, \code{\$}, \code{\[\[} -- match objects' names.
+}
 \note{
 - Environments cannot be (easily) be made "searchable" due to the way the
     they are implemented.
@@ -52,10 +52,11 @@ extracting (or replacing) objects. The following search types are supported:
 \section{Diffences from stringr}{
 
 
-\code{stringr} is a general purpose string manipulations library; amoung its
-functions is the ability to search/pattern match against strings.
-\code{searchable} applies this type of matching  to allow searching objects'
-names using standard R accessors: \code{\[}, \code{\$}, \code{\[\[}.
+\code{stringr/i} is a general purpose string manipulations library;
+amoung its functions is the ability to search/pattern match against strings.
+\code{searchable} applies this type of matching  to allow specifying that
+objects' names will be searched using standard R accessors: \code{\[},
+\code{\$}, \code{\[\[}. Thus, \code{ searchable(sv)[ regex('b') ]} returns objects
 
 Unlike \code{stringr} which allows search modifiers to apply to only the
 search pattern, \code{searchable} also modifiers to be applied to
@@ -147,7 +148,7 @@ arrays are not supported at this time.
 
 
   # MODIFIERS TO SEARCH TARGET/OBJECT
-    sv <- searchable(v, ignore.case )
+    sv <- searchable(v, case_insensitive = TRUE )
     sv$A
     sv['b']
     sv['B']

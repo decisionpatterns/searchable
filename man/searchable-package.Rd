@@ -5,9 +5,10 @@
 \alias{searchable-package}
 \title{searchable}
 \description{
-Make R objects more searchable by allowing search of names based on case
-(in)sensitivity, regular expressions, fixed patterns, exact matches, etc.
-The package facilitates making and searching dictionaries,
+The 'searchable' package provides flexibile methods of accessing objects with
+names using case (in)sensitivity, regular or fixed expressions, and boundary
+matching. It applies the most common textual searches to allow the
+construction of sophisticated dictionaries and thesauruses.
 }
 \examples{
 # ATOMIC VECTORS

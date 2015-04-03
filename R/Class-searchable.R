@@ -1,19 +1,9 @@
-# setClassUnion( "LogicalOrCharacter", c("logical","character") )
-  setClassUnion( "searchables", c('vector', 'list') )
-  
-  # TO make hash searchable as well, it seems a second Class Union is required.
-  # library(hash)
-  # setClassUnion( "searchables2", c('searchables','hash'))
-
-
 #' @title searchable 
 #' 
 #' @description
-#' Marks an objects as searchable, optionally specifying the default search 
-#' options
-#'
-#' @slot pattern used as the default method for searching an objects names 
-#'  
+#' Marks an objects as a \code{searchable} target, optionally specifying the 
+#' default search options
+#'   
 #' @param object searchable object or object to be made searchable
 #' @param type character; the type of search to perform 
 #' @param ... additional arguments defining the search pattern. See 
@@ -21,22 +11,26 @@
 #'  
 #' @details 
 #' 
-#' The searchable class allows for non-standard, 'stringr'-like searches when 
+#' The searchable class allows 'stringr/i'-like searches when 
 #' extracting (or replacing) objects. The following search types are supported: 
 #' 
 #' \itemize{ 
+#'   \item \code{std} standard R matching,
 #'   \item \code{regex} for regular expression matching, 
 #'   \item \code{fixed} for fixed string matching, 
 #'   \item \code{coll} for collation matching, 
-#'   \item \code{standard} for standard R matching   
 #' }
+#' 
+#' Class \code{searchable} allows customization of how R's standard accessors -- 
+#'  \code{\[}, \code{\$}, \code{\[\[} -- match objects' names.
 #' 
 #' @section Diffences from stringr:
 #' 
-#' \code{stringr} is a general purpose string manipulations library; amoung its 
-#' functions is the ability to search/pattern match against strings. 
-#' \code{searchable} applies this type of matching  to allow searching objects' 
-#' names using standard R accessors: \code{\[}, \code{\$}, \code{\[\[}. 
+#' \code{stringr/i} is a general purpose string manipulations library; 
+#' amoung its functions is the ability to search/pattern match against strings. 
+#' \code{searchable} applies this type of matching  to allow specifying that 
+#' objects' names will be searched using standard R accessors: \code{\[}, 
+#' \code{\$}, \code{\[\[}. Thus, \code{ searchable(sv)[ regex('b') ]} returns objects 
 #'  
 #' Unlike \code{stringr} which allows search modifiers to apply to only the 
 #' search pattern, \code{searchable} also modifiers to be applied to 
@@ -145,7 +139,7 @@
 #'   
 #'   
 #'   # MODIFIERS TO SEARCH TARGET/OBJECT
-#'     sv <- searchable(v, ignore.case )         
+#'     sv <- searchable(v, case_insensitive = TRUE )         
 #'     sv$A
 #'     sv['b']
 #'     sv['B']
@@ -171,26 +165,13 @@
 
 #    setClass( 'searchable' 
 #      , representation = representation('searchables', type='character', options='list')  
-#      , prototype( type = 'standard', options=list() ) # , ignore.case = FALSE, perl = FALSE, fixed = FALSE ) 
+#      , prototype( type = 'std', options=list() ) # , ignore.case = FALSE, perl = FALSE, fixed = FALSE ) 
 #      , contains = 'searchables'  
 #    )
 
-   
-   # setClassUnion( 'SearchableOrPattern', c('searchable','pattern' ) )
-  
-   setClass( 'SearchableOrPattern' 
-     , representation = representation( 'searchables', type='character', options='list')  
-     , prototype( type = 'standard', options=list() ) # , ignore.case = FALSE, perl = FALSE, fixed = FALSE ) 
-     , contains = 'searchables'  
-   )
-   
-#' @rdname searchable
-#' @exportClass searchable SearchableOrPattern
-#' @export searchable 
-
    setClass( 'searchable' 
      # , representation = representation('searchables', type='character', options='list')  
-     # , prototype( type = 'standard', options=list() ) # , ignore.case = FALSE, perl = FALSE, fixed = FALSE ) 
+     # , prototype( type = 'std', options=list() ) # , ignore.case = FALSE, perl = FALSE, fixed = FALSE ) 
      , contains = 'SearchableOrPattern'  
    )
   
@@ -207,7 +188,7 @@
 #' @rdname searchable
 #' @export
  
-  searchable <- function( object, type='standard', ... ) { 
+  searchable <- function( object, type='std', ... ) { 
     
     # TRAP NON-NAMED OBJECTS
     if( object  %>% attr('names')  %>% is.null ) 

@@ -2,22 +2,18 @@
 % Please edit documentation in R/case.R
 \name{ignore.case}
 \alias{ignore.case}
+\alias{ignore.case.SearchableOrPattern}
 \alias{ignore.case.character}
 \alias{ignore.case.default}
-\alias{ignore.case.pattern}
-\alias{ignore.case.searchable}
 \alias{use.case}
+\alias{use.case.SearchableOrPattern}
 \alias{use.case.character}
 \alias{use.case.default}
-\alias{use.case.pattern}
-\alias{use.case.searchable}
 \title{Turn on/off case sensitivity for searchable targets and patterns}
 \usage{
 ignore.case(object)
 
-\method{ignore.case}{pattern}(object)
-
-\method{ignore.case}{searchable}(object)
+\method{ignore.case}{SearchableOrPattern}(object, ...)
 
 \method{ignore.case}{character}(object)
 
@@ -25,9 +21,7 @@ ignore.case(object)
 
 use.case(object)
 
-\method{use.case}{pattern}(object)
-
-\method{use.case}{searchable}(object)
+\method{use.case}{SearchableOrPattern}(object)
 
 \method{use.case}{character}(object)
 

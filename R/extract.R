@@ -113,11 +113,11 @@
   
 #' @rdname extract
 #' @export     
-  setMethod( '[', c(x='searchable', i='character', j='missing'), 
+  setMethod( '[', c(x='searchable', i='PatternOrCharacter', j='missing'), 
     function(x,i,j,...) {
        
-     # ESCAPE HATCH FOR  'standard' matching
-       if( .is.standard(x,i) ) return( x@.Data[i] ) 
+     # ESCAPE HATCH FOR  'std' matching
+       if( .is.basic(x,i) ) return( x@.Data[i] ) 
        
        return( x[ .matches(x,i) ] )
      
@@ -129,13 +129,13 @@
 #' @rdname extract
 #' @export   
   setMethod( '[[', c(x='searchable', i='character'), 
-     function(x,i) { 
+     function(x,i) {
        
-     # ESCAPE HATCH FOR  'standard' matching
-       if( .is.standard(x,i) ) return( x@.Data[[i]] ) 
+     # ESCAPE HATCH FOR  'std' matching
+       if( .is.basic(x,i) ) return( x@.Data[[i]] ) 
        
     #   pattern <- .resolve.patterns(x,i)
-    #   if( pattern@type == 'standard' ) return( x@.Data[[i]] )
+    #   if( pattern@type == 'std' ) return( x@.Data[[i]] )
   
      # FIND MATCHES    
        wh <- which( .matches(x,i) )
@@ -168,7 +168,7 @@
     function(x,i,value) {
       
       # ESCAPE HATCH
-        if( .is.standard(x,i) ) return( `[<-`(x,i,value) )
+        if( .is.basic(x,i) ) return( `[<-`(x,i,value) )
       
         wh <- which( .matches(x,i) )
       
@@ -186,7 +186,7 @@
     function(x,i,value) {
       
        # ESCAPE HATCH 
-         if( .is.standard(x,i) ) return( `[[<-`(x,i,value) )
+         if( .is.basic(x,i) ) return( `[[<-`(x,i,value) )
        
        # BASE R WILL ONLY ALLOW [[<- TO MODIFY ONE ELEMENT THE FIRST,
        # WARN IF THE MODIFIER RETURNS MORE THAN ONE MATCH, ONLY THE FIRST WILL
@@ -205,7 +205,7 @@
               , "No matches for, '", substitute(i), "'. "
               , "No replacements made or CREATED.\n"
               , "To make additions to '", substitute(x), "' "
-              , "remove modifiers or use 'standard' modifier."
+              , "remove modifiers or use 'std' modifier."
             )
             return(x)
           } 
@@ -223,7 +223,7 @@
   setReplaceMethod( '$', c( x="searchable", value="ANY"),
     function(x, name, value) {
 
-      if( x@pattern@type == 'standard' ) { 
+      if( x@type == 'std' ) { 
         x@.Data[[name]] <- value
         return(x)
       } 
@@ -255,9 +255,11 @@
 
 .resolve.patterns <- function( object, pattern ) {
    
+    # browser()
+    
     if( ! pattern  %>% is('pattern') ) { 
       str <- pattern 
-      pattern <- object@pattern 
+      pattern <- object %>% pattern
       pattern@.Data <- str
     }
     
@@ -265,10 +267,20 @@
     
 }
 
-# Is this a standard R search 
-.is.standard <- function(object, pattern) 
-  ! is( pattern, "pattern" ) && object@pattern@type == 'standard' ||
-    is( pattern, "pattern" ) && pattern@type == 'standard'
+# Is this a std R search and should use base R comparisons
+# search is standard without modifications
+.is.basic <- function(object, pattern)
+    ! is( pattern, "pattern" ) &&                      # uses object 
+    object@type == 'std'       &&                      # object is std
+    ( is.null( object@options$case_insensitive ) ||    # case sensitve 
+      ! object@options$case_insensitive 
+    ) ||                                            # -OR- 
+
+    is( pattern, "pattern" )   &&                      # uses pattern
+    pattern@type == 'std'      && 
+    ( is.null( pattern@options$case_insensitive ) || # case sensitve 
+      ! pattern@options$case_insensitive 
+    )
 
 # Return logical indication matching elements for name search
 #
@@ -277,7 +289,8 @@
 # @return integer 
 
 .matches <- function( object, pattern ) { 
-  
+    
+  # browser()
   # Determine pattern to use ...
     pattern <- .resolve.patterns( object, pattern )
   
@@ -286,7 +299,7 @@
     # object <- if( .reverse.lookup(pattern) ) invert(object) else object  
         
   return( 
-    .detect( str=names(object), pattern=pattern ) 
+    detect( str=names(object), pattern=pattern ) 
   )
   
 }  

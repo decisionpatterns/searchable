@@ -1,8 +1,9 @@
 #' searchable 
 #' 
-#' Make R objects more searchable by allowing search of names based on case
-#' (in)sensitivity, regular expressions, fixed patterns, exact matches, etc. 
-#' The package facilitates making and searching dictionaries, 
+#' The 'searchable' package provides flexibile methods of accessing objects with 
+#' names using case (in)sensitivity, regular or fixed expressions, and boundary
+#' matching. It applies the most common textual searches to allow the 
+#' construction of sophisticated dictionaries and thesauruses. 
 #' 
 #' @references 
 #'   \url{http://stackoverflow.com/questions/5671719/case-insensitive-search-of-a-list-in-r} \cr
