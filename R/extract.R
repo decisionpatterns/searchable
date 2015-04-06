@@ -21,33 +21,32 @@ NULL
 #' 
 #' @section \code{[}, \code{[<-} :
 #' 
-#' \code{[} and \code{[<-} are used for getting and setting 
-#' \strong{zero or more} elemenxts of \code{x}. This is probably the most 
-#' useful of the search modifiers. This search returns elements of 
-#' the target that matches \strong{ANY} of the search patterns. Unlike the 
+#' \code{[} and \code{[<-} are used for subsetting and replacing 
+#' \strong{zero or more} elemenxts of \code{x}. Used with searchable objects, 
+#' these operators differ from normal R operations in the following respects:
+#' 
+#' \itemize{ 
+#' 
+#' \item The search returns elements of 
+#' the target that matches \strong{ANY} of the search patterns. 
+#' 
+#' \item Unlike the 
 #' its normal behavior, \code{\[} does not guarantee the output to have as many
 #' elements as elements to \code{pattern}.
 #'  
-#' \code{[} does not return a Searchable object. It is thought that 
+#' \item \code{[} does not return a Searchable object. It is thought that 
 #' the return valuable will not be subsequently searched. It is easy to turn 
 #' the results into a Searchable object using \code{searchable} however. 
 #'
-#'
-#' @section \code{[[}, \code{[[<-} and \code{$}, \code{$<-} :
-#' 
-#' These operators are used for getting and setting at \strong{zero or one} 
-#' element of \code{x}. Matches to more than one element result in an error.  
-#' 
-#' 
-#' @section repeated-names:
-#' 
-#' Unlike for environments and hashes, no constraints exist for ensuring 
+#' \item Unlike for environments and hashes, no constraints exist for ensuring 
 #' uniqueness for names in vectors and lists. These structures may contain 
 #' multiple elements with the same name. Normal attempts to extract by name 
-#' yield only the first element that matches the name. Using a \code{Searchable}
-#' pattern match yields all matching elements.
+#' yield only the \strong{first} element that matches the name. Using a 
+#' \code{Searchable} patterns match yields all matching elements.
 #' 
-#' 
+#' }
+#'  
+#'  
 #' @return 
 #'   The values after the extracting methods have been applied:\cr
 #'   \code{\[} returns a subset of \code{x}, but which is not Searchable.  \cr
@@ -56,9 +55,10 @@ NULL
 #'  @seealso
 #'    \code{\link{Searchable}}           \cr
 #'    \code{\link[base]{Extract}}        \cr
-#     \code{\link[stringr]{ignore.case}} \cr
-#     \code{\link[stringr]{regex}}        \cr
+#'    Match mofiers: \code{\link{fixed}}, \code{\link{regex}}, 
+#'      \code{\link{coll}} and \code{\link{ignore.case}}
 #'    \code{\link{reverse.lookup}}       \cr
+#'    
 #'    
 #' @examples 
 #' 
