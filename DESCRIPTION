@@ -1,14 +1,15 @@
 Package: searchable
 Type: Package
-Title: Allow Subsets of R Object by Matching Object Names Based on Case
-    (in)Sensitivity, Regular Expressions, etc...
-Version: 0.3.0
+Title: Tools For Custom Searches / Subsets / Slices of Named R Objects
+Version: 0.3.3
 Date: 2015-04-06
 Author: "DecisionPatterns [aut, cre]"
 Maintainer: Christopher Brown <chris.brown@decisionpatterns.com>
-Description: Provides functionality for subsetting objects using
-    'stringr/i'-style match modifier to match search vector and list objects
-    by case (in)sensitivity, regular expressions or fixed expressions.
+Description: Provides functionality for searching / subsetting and slicing named
+    objects using 'stringr/i'-style modifiers by case (in)sensitivity,
+    regular expressions or fixed expressions; searches uses the standard '['
+    operator and allows specification of default search behavior to either the
+    search target (named object) and/or the search pattern.
 Depends:
     R (>= 3.1.0)
 Imports:

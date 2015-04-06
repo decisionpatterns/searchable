@@ -105,8 +105,7 @@
 #'   
 #' @seealso
 #'   \code{\link{extract}}              \cr 
-#'   \code{\link[stringr]{ignore.case}} \cr
-#'   \code{\link[stringr]{regex}}       \cr
+#'   \code{\link[stringi]{stri_detect_regex}}       \cr
 #'   \code{\link{reverse.lookup}}       \cr
 #' 
 #'     

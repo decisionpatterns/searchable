@@ -5,7 +5,8 @@ TODO:
 ## ? Support options for missing hits from search.  
 
      For example: 
-        v[[MISS]] -> NA rather vector()
+        v[[MISS]] -> NA rather than 'named vector()'
+    
 
 ## Test to support 
    - None, 0, 1, 1 of multiple, multiple match hits
@@ -61,7 +62,7 @@ TODO:
 
 ## Determine if we need subclasses: 
    - searchable.atomic and searchable.recursive
-     There are no classes for atomic and recursive(?)
+     There are no classes for atomic and recursive)
    - searchable.vector, searchable.list, searchable.hash
 
 ## Make environments searchable 
