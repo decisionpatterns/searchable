@@ -13,7 +13,7 @@ construction of sophisticated dictionaries and thesauruses.
 \examples{
 # ATOMIC VECTORS
     v <- c( ay=1, bee=2, cee=3 )
-    sv <- searchable( v, ignore.case  )
+    sv <- searchable( v, case_insensitive = TRUE )
 
     sv$BEE
 
@@ -26,7 +26,7 @@ construction of sophisticated dictionaries and thesauruses.
 
     sv[ 'bee' ]
     sv[ 'ee' ]                 #
-    sv[ perl('[A|B]') ]        # 1,2
+    sv[ regex('[A|B]') ]        # 1,2
 
   # RECURSIVE LISTS
 
@@ -43,7 +43,7 @@ construction of sophisticated dictionaries and thesauruses.
 
     sl[ 'bee' ]
     sl[ 'ee' ]                 # 1  1 2
-    sl[ perl('[a|b]') ]        # 1  1 2
+    sl[ regex('[a|b]') ]        # 1  1 2
 }
 \references{
 \url{http://stackoverflow.com/questions/5671719/case-insensitive-search-of-a-list-in-r} \cr

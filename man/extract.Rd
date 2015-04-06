@@ -108,14 +108,14 @@ pattern match yields all matching elements.
   \dontrun{
     "b" \%>\% sv[[.]]
     "B" \%>\% ignore.case \%>\% sv[.]
-    "c." \%>\% perl \%>\% sv[[.]]
-    "c.?" \%>\% perl \%>\% sv[.]
+    "c." \%>\% regex \%>\% sv[[.]]
+    "c.?" \%>\% regex \%>\% sv[.]
    }
 
   # REPLACEMENT:
     sv[['a']] <- "first"
-    sv[[ perl('c.') ]] <- "third"
-    # sv[[ perl('c.?') ]] <- "third"
+    sv[[ regex('c.') ]] <- "third"
+    # sv[[ regex('c.?') ]] <- "third"
 
 
   # RECURSIVE LISTS:
@@ -132,8 +132,6 @@ pattern match yields all matching elements.
 \seealso{
 \code{\link{Searchable}}           \cr
    \code{\link[base]{Extract}}        \cr
-   \code{\link[stringr]{ignore.case}} \cr
-   \code{\link[stringr]{perl}}        \cr
    \code{\link{reverse.lookup}}       \cr
 }
 

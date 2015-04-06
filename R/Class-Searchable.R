@@ -2,7 +2,7 @@
 #' 
 #' @description
 #' Marks an objects as a \code{searchable} target, optionally specifying the 
-#' default search options
+#' default search options.
 #'   
 #' @param object searchable object or object to be made searchable
 #' @param type character; the type of search to perform 
@@ -15,34 +15,37 @@
 #' extracting (or replacing) objects. The following search types are supported: 
 #' 
 #' \itemize{ 
-#'   \item \code{std} standard R matching,
+#'   \item \code{std} standard R matching, the default
 #'   \item \code{regex} for regular expression matching, 
 #'   \item \code{fixed} for fixed string matching, 
 #'   \item \code{coll} for collation matching, 
 #' }
 #' 
-#' Class \code{searchable} allows customization of how R's standard accessors -- 
+#' Class \code{Searchable} allows customization of how R's standard accessors -- 
 #'  \code{\[}, \code{\$}, \code{\[\[} -- match objects' names.
 #' 
 #' @section Diffences from stringr:
 #' 
-#' \code{stringr/i} is a general purpose string manipulations library; 
-#' amoung its functions is the ability to search/pattern match against strings. 
-#' \code{searchable} applies this type of matching  to allow specifying that 
-#' objects' names will be searched using standard R accessors: \code{\[}, 
-#' \code{\$}, \code{\[\[}. Thus, \code{ searchable(sv)[ regex('b') ]} returns objects 
+#' \code{stringr}  and \code{stringi} are general purpose string manipulations 
+#' library; amoung their functions are the ability to search/pattern match 
+#' against strings. The \code{searchable} package applies this type of matching  
+#' to objects' names and will be searched using standard R accessors: \code{\[}, 
+#' \code{\$}, \code{\[\[}. Thus, \code{ searchable(sv)[ regex('b') ]} returns 
+#' objects whose names contain 'b'.
 #'  
-#' Unlike \code{stringr} which allows search modifiers to apply to only the 
+#' Unlike \code{stringr/i} which allows search modifiers to apply to only the 
 #' search pattern, \code{searchable} also modifiers to be applied to 
 #' the search target. Unless overridden, all subsequent searches of searchable 
 #' objects will use the predefinced pattern. 
 #'   
 #' This search used can be specified at initialization of the searchable object 
 #' or any subsequent time any of the match-modifying functions, e.g. 
-#' \code{fixed}, \code{perl}, \code{ignore.case}, etc. See examples. 
+#' \code{fixed}, \code{regex}, \code{coll}, \code{ignore.case}, etc. 
+#' See examples. 
 #' 
 #' When modifiers are applied to both target and pattern, \strong{modifers 
-#' applied to the pattern take precedence} and the target's modifiers are disabled. 
+#' applied to the pattern take precedence} and the target's modifiers are 
+#' disabled. 
 #' 
 #' 
 #' @section Differences from base R:
@@ -109,7 +112,7 @@
 #' @seealso
 #'   \code{\link{extract}}              \cr 
 #'   \code{\link[stringr]{ignore.case}} \cr
-#'   \code{\link[stringr]{perl}}        \cr
+#'   \code{\link[stringr]{regex}}       \cr
 #'   \code{\link{reverse.lookup}}       \cr
 #' 
 #'     
@@ -126,16 +129,16 @@
 #'     sv[[ ignore.case('A') ]]
 #'     
 #'     sv[ ignore.case('b') ]     
-#'     sv[ perl('c') ]
+#'     sv[ regex('c') ]
 #'     sv[ fixed('c') ]
 #'            
 #'                                       
 #'   # REPLACEMENT: 
 #'     sv$a               <- "first" 
 #'     sv[['a']]          <- "1st"  
-#'     sv[[ perl('c.') ]] <- "third"
+#'     sv[[ regex('c.') ]] <- "third"
 #'     
-#'     sv[ perl('c.?') ]   <- "3rd"
+#'     sv[ regex('c.?') ]   <- "3rd"
 #'   
 #'   
 #'   # MODIFIERS TO SEARCH TARGET/OBJECT
@@ -185,7 +188,7 @@
       stop( 'Only objects with a names attribute can be made searchable.')
     
     return( 
-      new( 'searchable', object, type=type, options=list(...) )  
+      new( 'Searchable', object, type=type, options=list(...) )  
     )
   }  
 
@@ -197,7 +200,9 @@
   setMethod('show', 'Searchable', 
     function(object) {
       
-      cat( 'searchable object using', .describe_pattern(object) )       
+      cat( 'searchable ' ) 
+      cat( class(object@.Data) )
+      cat( ' object using', .describe_pattern(object) )       
       show( object@.Data[ 1:length(object@.Data) ] )  # REMOVE attributes
       invisible(NULL)
       

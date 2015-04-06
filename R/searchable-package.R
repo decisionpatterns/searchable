@@ -18,7 +18,7 @@
 #'   
 #'   # ATOMIC VECTORS 
 #'     v <- c( ay=1, bee=2, cee=3 )
-#'     sv <- searchable( v, ignore.case  )
+#'     sv <- searchable( v, case_insensitive = TRUE )
 #'     
 #'     sv$BEE 
 #'     
@@ -31,7 +31,7 @@
 #'     
 #'     sv[ 'bee' ]                       
 #'     sv[ 'ee' ]                 #  
-#'     sv[ perl('[A|B]') ]        # 1,2  
+#'     sv[ regex('[A|B]') ]        # 1,2  
 #'      
 #'   # RECURSIVE LISTS 
 #'   
@@ -48,7 +48,7 @@
 #'     
 #'     sl[ 'bee' ]                       
 #'     sl[ 'ee' ]                 # 1  1 2 
-#'     sl[ perl('[a|b]') ]        # 1  1 2  
+#'     sl[ regex('[a|b]') ]        # 1  1 2  
 #'    
 #'    
 #' @docType package

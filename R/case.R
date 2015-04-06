@@ -1,23 +1,24 @@
-#' Turn on/off case sensitivity for searchable targets and patterns 
+#' Turn on/off case sensitivity for Searchable and Pattern objects 
 #' 
-#' Functions for affecting the case sensitivity of matching.  
+#' Functions for affecting the case sensitivity of matching/  
 #' 
 #' @param object search pattern or target
 #' @param ... additional arguments
 #' 
-#' \code{ignore.case} and \code{use.case} control the case sensitivity of the 
+#' \code{ignore.case}/\code{case_insensitive} and 
+#' \code{use.case}/\code{case_sensitive} control the case sensitivity of the 
 #' matching
 #' 
-#' The default is to preform case sensitive matching. 
+#' The default is to perform case-sensitive matching. 
 #' 
 #' @seealso 
 #'   \code{stri_detect_*} from the \code{stringi} package
 #'   
 #' @examples 
-#'   "pattern" %>% use.case 
-#'   "pattern" %>% ignore.case 
+#'   use.case("pattern")     # case-sensitive (Default)
+#'   ignore.case("pattern")  # case-insensitive 
 #'   
-#' @aliases ignore.case use.case
+#' @aliases ignore.case use.case case_insensitive case_sensitive
 
 #' @rdname case
 #' @export
@@ -39,6 +40,10 @@
 #' @export
   ignore.case.default <- function(object) object %>% as.character %>% ignore.case 
   
+
+#' @rdname case
+#' @export
+  case_insensitive <- function(object) ignore.case(object)
 
 
 # --------------------------------------------------------------
@@ -63,3 +68,6 @@
   use.case.default <- function(object) object %>% as.character %>% use.case 
   
 
+#' @rdname case
+#' @export
+  case_sensitive <- function(object) use.case(object)

@@ -25,17 +25,30 @@ context('list-default')
   sl[ c('ay','bee','dee') ]  %>% expect_equivalent( l[ c('ay','bee','dee') ] ) 
 
 
+context('list-regex')
+  sl <- searchable(l, 'regex')
+  
+  sl$ay       %>% expect_equal( l$ay )
+  sl$bee      %>% expect_equal( l$bee )
+                  expect_error( sl$aitch )
+   
+  sl[['xdx']]
+  sl[['^ay$']] %>% expect_equal( l[[1]] )
+                   expect_error( sl[['^a']] )
+
+
+  
+
 
 context('list-fixed')
-  sl <- fixed(l)
+  sl <- searchable( l, 'fixed' ) 
 
   # sl$MISS       %>% expect_null        # MISS: FAILS  
   sl$ay        %>% expect_equal(1)
                
 
   sl[['bee']]  %>% expect_equal(1:2)  
-  sl[['ee']] #                 expect_error( sl[['ee']] )
+                   expect_error( sl[['ee']] )
   
   sl['cee']    %>% expect_equivalent( l[3] )
-  # sl['ee']     %>% expect_equivalent( l[2:3] )
-
+  sl['ee']     %>% expect_equivalent( l[2:3] )

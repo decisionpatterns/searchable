@@ -66,7 +66,7 @@ objects will use the predefinced pattern.
 
 This search used can be specified at initialization of the searchable object
 or any subsequent time any of the match-modifying functions, e.g.
-\code{fixed}, \code{perl}, \code{ignore.case}, etc. See examples.
+\code{fixed}, \code{regex}, \code{ignore.case}, etc. See examples.
 
 When modifiers are applied to both target and pattern, \strong{modifers
 applied to the pattern take precedence} and the target's modifiers are disabled.
@@ -136,16 +136,16 @@ arrays are not supported at this time.
     sv[[ ignore.case('A') ]]
 
     sv[ ignore.case('b') ]
-    sv[ perl('c') ]
+    sv[ regex('c') ]
     sv[ fixed('c') ]
 
 
   # REPLACEMENT:
     sv$a               <- "first"
     sv[['a']]          <- "1st"
-    sv[[ perl('c.') ]] <- "third"
+    sv[[ regex('c.') ]] <- "third"
 
-    sv[ perl('c.?') ]   <- "3rd"
+    sv[ regex('c.?') ]   <- "3rd"
 
 
   # MODIFIERS TO SEARCH TARGET/OBJECT
@@ -171,7 +171,7 @@ arrays are not supported at this time.
 \seealso{
 \code{\link{extract}}              \cr
   \code{\link[stringr]{ignore.case}} \cr
-  \code{\link[stringr]{perl}}        \cr
+  \code{\link[stringr]{regex}}       \cr
   \code{\link{reverse.lookup}}       \cr
 }
 
