@@ -12,7 +12,7 @@
 #' 
 #' @examples
 #'   pat <- regex("a.+") 
-#'   .detect( c('alpha','beta'), pat )
+#'   detect( c('alpha','beta'), pat )
 #'   
 
 #' @rdname regex

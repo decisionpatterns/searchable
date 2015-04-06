@@ -1,3 +1,7 @@
+
+
+setClassUnion( 'PatternOrCharacter', c('pattern','character'))
+
 #' Extraction operators for searchable object
 #' 
 #' Defines  \code{[}, \code{[[}, and \code{$} for searchable objects
@@ -257,7 +261,7 @@
    
     # browser()
     
-    if( ! pattern  %>% is('pattern') ) { 
+    if( ! pattern  %>% is('Pattern') ) { 
       str <- pattern 
       pattern <- object %>% pattern
       pattern@.Data <- str
@@ -270,13 +274,13 @@
 # Is this a std R search and should use base R comparisons
 # search is standard without modifications
 .is.basic <- function(object, pattern)
-    ! is( pattern, "pattern" ) &&                      # uses object 
+    ! is( pattern, "Pattern" ) &&                      # uses object 
     object@type == 'std'       &&                      # object is std
     ( is.null( object@options$case_insensitive ) ||    # case sensitve 
       ! object@options$case_insensitive 
     ) ||                                            # -OR- 
 
-    is( pattern, "pattern" )   &&                      # uses pattern
+    is( pattern, "Pattern" )   &&                      # uses pattern
     pattern@type == 'std'      && 
     ( is.null( pattern@options$case_insensitive ) || # case sensitve 
       ! pattern@options$case_insensitive 

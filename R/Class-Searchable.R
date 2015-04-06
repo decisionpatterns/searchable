@@ -160,28 +160,11 @@
 #'    
 #'      
 #' @rdname searchable
-#' @exportClass searchable SearchableOrPattern
-#' @export searchable 
+#' @exportClass Searchable
+#' @export
 
-#    setClass( 'searchable' 
-#      , representation = representation('searchables', type='character', options='list')  
-#      , prototype( type = 'std', options=list() ) # , ignore.case = FALSE, perl = FALSE, fixed = FALSE ) 
-#      , contains = 'searchables'  
-#    )
-
-   setClass( 'searchable' 
-     # , representation = representation('searchables', type='character', options='list')  
-     # , prototype( type = 'std', options=list() ) # , ignore.case = FALSE, perl = FALSE, fixed = FALSE ) 
-     , contains = 'SearchableOrPattern'  
-   )
-  
-  
-#   setClass( 'searchable' 
-#     , representation = representation('searchables', pattern='pattern')  
-#     , prototype( pattern=pattern(NA) ) 
-#     , contains = 'searchables'  
-#   )
-#   
+   Searchable <- setClass( 'Searchable', contains = 'SearchableOrPattern' )
+    
 
 # CONSTRUCTOR
 # NB. compare with pattern 
@@ -194,16 +177,17 @@
     if( object  %>% attr('names')  %>% is.null ) 
       stop( 'Only objects with a names attribute can be made searchable.')
     
-    new( 'searchable', object, type=type, options=list(...) )  # %>% return
-   
+    return( 
+      new( 'searchable', object, type=type, options=list(...) )  
+    )
   }  
 
   
-  
-  
+
 # METHOD: show
 #' @rdname searchable
-  setMethod('show', 'searchable', 
+
+  setMethod('show', 'Searchable', 
     function(object) {
       
       cat( 'searchable object using', .describe_pattern(object) )       

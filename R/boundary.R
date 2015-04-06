@@ -14,10 +14,10 @@
 #' Except when the boundad
 #' 
 #' @seealso 
-#'   \code{\link{match.modifiers}}
+#'   # -tk
 #' 
 #' @examples
-#'   "pattern
+#'   # -tk
 #' 
 #' @rdname boundary
 #' @export

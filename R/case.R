@@ -3,6 +3,7 @@
 #' Functions for affecting the case sensitivity of matching.  
 #' 
 #' @param object search pattern or target
+#' @param ... additional arguments
 #' 
 #' \code{ignore.case} and \code{use.case} control the case sensitivity of the 
 #' matching
@@ -10,15 +11,17 @@
 #' The default is to preform case sensitive matching. 
 #' 
 #' @seealso 
-#'   \code{\link{match.modifiers}} \cr 
+#'   \code{stri_detect_*} from the \code{stringi} package
 #'   
 #' @examples 
 #'   "pattern" %>% use.case 
 #'   "pattern" %>% ignore.case 
-
+#'   
+#' @aliases ignore.case use.case
 
 #' @rdname case
 #' @export
+
   ignore.case <- function(object) UseMethod('ignore.case')
 
 #' @rdname case

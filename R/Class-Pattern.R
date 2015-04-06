@@ -1,19 +1,19 @@
-setClassUnion( 'PatternOrCharacter', c('pattern','character'))
-
 #' Defines or extract a search pattern 
 #' 
 #' Patterns defines how searches are conducted against a searchable target
+#'
+#' @slot .Data SearchableOrPattern; a Searchable or Pattern object
+#'  
+# @slot type character; type of search performed; one of "std" (default), "regex", 
+#      "fixed", "coll", or "charclass". See details. 
+# @slot options list; name = value pairs for search options used.
 #' 
-#' @slot type character; type of search performed; one of "std" (default), "regex", 
-#'      "fixed", "coll", or "charclass". See details. 
-#' @slot options list; name = value pairs for search options used.
 #' 
 #' @param object character or pattern; 
 #' @param type character; the type of match: std (default), regex, coll, 
 #'        fixed.
-#' @param .... additional arguments to be passed to \code{stri_opts_*} functions. 
+#' @param ... additional arguments to be passed to \code{stri_opts_*} functions. 
 #'        See details.
-#' 
 #' 
 #' The \strong{pattern} class defines how the search is conducted.
 #' 
@@ -33,7 +33,8 @@ setClassUnion( 'PatternOrCharacter', c('pattern','character'))
 #'   
 #' @section regex:
 #' 
-#' \code{regex} matching takes a regular expression for matching using the 
+#' \code{regex} matching takes a regular expression for matching using 
+#' 
 #' \code{stri_*_regex} functions. 
 #' 
 #' @section coll:
@@ -46,28 +47,13 @@ setClassUnion( 'PatternOrCharacter', c('pattern','character'))
 #' 
 #'   pattern('hello')
 #'   pattern('hello', type="regex", boundary="starts_with", )
-#' 
-#' 
+#'  
+#' @include Class-SearchableOrPattern.R 
 #' @rdname pattern
-#' @exportClass pattern
+#' @exportClass Pattern
 #' @export
-
-   setClass( 'SearchableOrPattern' 
-     , representation = representation( 'searchables', type='character', options='list')  
-     , prototype( type = 'std', options=list() ) # , ignore.case = FALSE, perl = FALSE, fixed = FALSE ) 
-     , contains = 'searchables'  
-   )
-
-#' @rdname pattern
-#' @exportClass pattern
-#' @export
-
-setClass( 
-  'pattern'
-  # , representation( 'SearchableOrPattern', type = 'character', options='list') 
-  # , prototype( type='regex', type = 'std', options=list() )
-  , contains = 'SearchableOrPattern'
-)
+ 
+   Patterm <- setClass( 'Pattern', contains = 'SearchableOrPattern' )
 
 
 
@@ -75,6 +61,7 @@ setClass(
 #  NB. compare with searchable
 #' @rdname pattern
 #' @export
+
   pattern <- function( object, type, ... ) UseMethod('pattern')
 
 
@@ -89,35 +76,34 @@ setClass(
 #' @export
   pattern.character <- function( object, type = 'std', ... ) {
      if( object %>% is('SearchableOrPattern' ) ) NextMethod('pattern')
-     new('pattern', object, type=type, options=list(...) ) # %>% return   
+     new('Pattern', object, type=type, options=list(...) ) # %>% return   
   }
   
 #' @rdname pattern
 #' @export
-  pattern.pattern <- function( object, type = object@type, ... ) { 
+  pattern.Pattern <- function( object, type = object@type, ... ) { 
   
     if( missing(type)                &&        # type not supplied 
         length( list(...) ) == 0               # no ... 
     ) return( object %>%  pattern )  
   
-    new('pattern', object, type=type, options=list(...) ) # %>% return   
+    new('Pattern', object, type=type, options=list(...) ) # %>% return   
   
   }
 
 
 #' @rdname pattern
 #' @export
-  pattern.searchable <- function( object, type = object@type, ... ) { 
-    new('pattern', NA_character_, type=type, options=if( missing(...) ) object@options else list(...) )  # %>% return   
+  pattern.Searchable <- function( object, type = object@type, ... ) { 
+    new('Pattern', NA_character_, type=type, options=if( missing(...) ) object@options else list(...) )  # %>% return   
   }
-
 
 
 
 #' @rdname pattern
 #' @export
 
-setMethod('show', 'pattern',
+setMethod( 'show', 'Pattern',
           
   function(object) {
     
@@ -147,51 +133,3 @@ setMethod('show', 'pattern',
     msg %>% paste0( collapse = '' )  %>% return 
       
 }
-
-
-# #' @rdname pattern
-# #' @export
-# 
-# coll <- function( object, ... ) { 
-# 
-#   if( object %>% is('pattern') ) { 
-#     object@type = 'coll'
-#     object@options = stri_opts_collator(...)
-#     
-#   } else if( object  %>% is('searchable' ) ) { 
-#      object@type = 'coll'
-#      object@options = stri_opts_collator(...)
-#      
-#   } else { 
-#     object <- pattern(object, 'coll', ...) 
-#     
-#   }
-# 
-#   return(object)
-#   
-# }  
-# 
-# 
-# 
-# #' @rdname pattern
-# #' @export
-# 
-# fixed <- function( object, ... ) { 
-# 
-#   if( object %>% is('pattern') ) { 
-#     object@type = 'fixed'
-#     object@options = stri_opts_fixed(...)
-#     
-#   } else if( object  %>% is('searchable' ) ) { 
-#      object@type = 'fixed'
-#      object@options = stri_opts_fixed(...)
-#      
-#   } else { 
-#     object <- pattern(object, 'fixed', ...) 
-#     
-#   }
-# 
-#   return(object)
-#   
-# }  
-

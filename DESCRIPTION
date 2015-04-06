@@ -12,8 +12,7 @@ Description: Provides functionality for searching named vectors and
     expressions using standard accessors: $, [, [[. It also allows searching
     through values rather than names.
 Depends:
-    R (>= 3.1.0),
-    stringr (>= 0.9)
+    R (>= 3.1.0)
 Imports:
     methods,
     magrittr(>= 1.5),
@@ -23,3 +22,22 @@ Suggests:
 License: GPL-2
 URL: https://github.com/decisionpatterns/searchable
 BugReports: https://github.com/decisionpatterns/searchable/issues
+Collate:
+    'Class-Searchables.R'
+    'Class-SearchableOrPattern.R'
+    'Class-Pattern.R'
+    'Class-Searchable.R'
+    'boundary.R'
+    'case.R'
+    'coll.R'
+    'detect.R'
+    'extract.R'
+    'fixed.R'
+    'invert.R'
+    'is.string.R'
+    'regex.R'
+    'reverse.lookup.R'
+    'searchable-package.R'
+    'std.R'
+    'stri_detect_std.R'
+    'zzz.R'

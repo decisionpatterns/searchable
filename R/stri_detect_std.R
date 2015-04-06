@@ -6,12 +6,14 @@
 #' @param pattern pattern to attempt
 #' @param ... supplementary arguments passed to the underlying functions, 
 #'        including additional settings for \code{stri_opts_std}
+#' @param opts_std list; optional arguments used by stri_*_std functions        
 #' @param case_insensitive logical; enable simple case insensitive matching
 #'
 #' \code{stri_detect_std} is equivalent to \code{str \%in\% pattern} and is 
 #' created to provide a parallel to other search methods.
 #'  
 #' \code{stri_opts_std}
+#' 
 #' @return 
 #'   logical indicating the matching elements in \code{str}
 #'  
