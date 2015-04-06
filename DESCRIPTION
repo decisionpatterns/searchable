@@ -1,8 +1,8 @@
 Package: searchable
 Type: Package
-Title: Allow Subsets of R Object by Matching Object Names Based on Case
-    (in)Sensitivity, Regular Expressions, etc...
-Version: 0.3.1
+Title: Allow Subsets of R Objects by Matching Names Based on Flexible Patterns 
+    such as Regular and Fixed Expressions Case, (in)Sensitivity, ...
+Version: 0.3.2
 Date: 2015-04-06
 Author: "DecisionPatterns [aut, cre]"
 Maintainer: Christopher Brown <chris.brown@decisionpatterns.com>
