@@ -5,9 +5,7 @@ TODO:
 ## ? Support options for missing hits from search.  
 
      For example: 
-        v$MISS -> NA rather than error
-        l$MISS -> list() rather than list( NA=NULL )
-     
+        v[[MISS]] -> NA rather vector()
 
 ## Test to support 
    - None, 0, 1, 1 of multiple, multiple match hits
@@ -15,11 +13,7 @@ TODO:
    - Each (upcoming) return modifier
    - Extract, Replace
  
-## Test and support lists
-   
-   It is unclear how lists are supported.
-   - On [ with search miss should yield NULL (?), Cf. tests
- 
+
 ## Support data.frames 
    
    This should be straight-foward and implement a method of 
@@ -57,14 +51,6 @@ TODO:
        - count 
 
 
-## Better modifier collision in extract.R/.collect.modifiers 
-
-    - ? match modifiers should be resolved without necessarily affecting search etc.  
-    - It's possible to apply the modifiers differently to searchable vs nt searchable
-      objects
-    
-    Any modifiers to search pattern override the target. 
-
 
 ## Write fn to collect values sharing the same keys into a list or vector.
 
@@ -73,8 +59,6 @@ TODO:
     
 # LONG TERM 
 
-## remove dependency on stringr in favor of stringi?
-    
 ## Determine if we need subclasses: 
    - searchable.atomic and searchable.recursive
      There are no classes for atomic and recursive(?)
@@ -143,6 +127,21 @@ TODO:
 
 # COMPLETED 
 
+## Better modifier collision in extract.R/.collect.modifiers 
+
+    - ? match modifiers should be resolved without necessarily affecting search etc.  
+    - Its possible to apply the modifiers differently to searchable vs nt searchable
+      objects
+    
+    Any modifiers to search pattern override the target. 
+
+## remove dependency on stringr in favor of stringi?
+    
+## Test and support lists
+   
+   It is unclear how lists are supported.
+   - On [ with search miss should yield NULL (?), Cf. tests
+ 
 ## Supporting multiple patterns for [ and [<- (version 0.2)
   
    STATUS: 
