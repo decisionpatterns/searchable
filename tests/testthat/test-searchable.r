@@ -10,11 +10,13 @@ library(magrittr)
   
   utf8. <- searchable(utf8)  
 
-context( 'Extract' )
+context( 'utf8-Extract' )
   utf8.[ "a" ]         %>% expect_equivalent(97) 
   utf8.[ fixed("a") ]  %>% expect_equivalent(97) 
   utf8.[ ignore.case("a") ] %>% expect_equivalent( c(65,97) )
-  utf8.[ reverse.lookup("65") ]
+  # utf8.[ reverse.lookup("65") ]
 
 context( 'Replace' )
+  utf8.[ "a" ]  <- -97      
+  utf8.[ "a" ] %>% expect_equivalent(-97) 
   

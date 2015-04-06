@@ -2,26 +2,14 @@
 % Please edit documentation in R/extract.R
 \docType{methods}
 \name{[,Searchable,PatternOrCharacter,missing-method}
-\alias{$,Searchable-method}
-\alias{$<-,Searchable-method}
 \alias{[,Searchable,PatternOrCharacter,missing-method}
 \alias{[<-,Searchable,character,missing-method}
-\alias{[[,Searchable,character-method}
-\alias{[[<-,Searchable,character,missing-method}
 \alias{extract}
 \title{Extraction operators for Searchable object}
 \usage{
 \S4method{[}{Searchable,PatternOrCharacter,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[[}{Searchable,character}(x, i)
-
-\S4method{$}{Searchable}(x, name)
-
 \S4method{[}{Searchable,character,missing}(x, i) <- value
-
-\S4method{[[}{Searchable,character,missing}(x, i) <- value
-
-\S4method{$}{Searchable}(x, name) <- value
 }
 \arguments{
 \item{x}{Searchable object}
@@ -36,9 +24,6 @@
 lowest possible dimension (see the examples). This only works for
 extracting elements, not for the replacement. See \code{\link[base]{drop}}
 for further details.}
-
-\item{name}{character; a name to be extracted, used with \code{$}, so no
-match modification can be applied to the name.}
 
 \item{value}{replacement value for replacement functions
 
@@ -89,44 +74,43 @@ pattern match yields all matching elements.
     v <- c( a=1, b=2, B=3, c=4, c2=5 )
     sv <- searchable(v)
 
-  # EXTRACT:
-    sv[ c('a','b') ]        # Normal
-    sv[ regex('c.?') ]
+
+  # FLEXIBLY FIND ELEMENTS BY NAME
+    sv[ regex('c') ]
     sv[ fixed('c') ]
-    sv[ 'x' ]                # NA
 
-    sv[["a"]]
-    sv[[ ignore.case("a") ]]
-    sv[[ ignore.case("A") ]]
-
-    sv$a
-    sv$b
-    sv$B
+    sv[ ignore.case('b') ]
 
 
-  # WITH MARGRITTR:
-  \dontrun{
-    "b" \%>\% sv[[.]]
-    "B" \%>\% ignore.case \%>\% sv[.]
-    "c." \%>\% regex \%>\% sv[[.]]
-    "c.?" \%>\% regex \%>\% sv[.]
-   }
-
-  # REPLACEMENT:
-    sv[['a']] <- "first"
-    sv[[ regex('c.') ]] <- "third"
-    # sv[[ regex('c.?') ]] <- "third"
+  # FLEXIBLY REPLACEMENT ELEMENTS BY NAME
+    sv[ regex('c.?') ]   <- "3rd"
 
 
-  # RECURSIVE LISTS:
+  # SET DEFAULT SEARCH FOR TARGET/OBJECT
+    sv <- searchable(v, case_insensitive = TRUE )
+    sv['b']
+    sv['B']
+
+    sv <- regex(sv)
+    sv['c']
+
+    sv <- ignore.case(sv)
+    sv['b']
+    sv['c']                  # st
+
+
+  # USE ON (RECURSIVE) LISTS:
     l <- list( a=1, b=2, c=3 )
     sl <- searchable(l)
-    sl[["b"]]
-    sl[[ ignore.case("B") ]]
+    sl["b"]
+    sl[ ignore.case("B") ]
+
+
+  # USE WITH MAGRITTR
    \dontrun{
-    sl[[ "B"  \%>\% ignore.case ]]
-    "b" \%>\% sl[[.]]
-    "B" \%>\% ignore.case \%>\% sl[[ . ]]
+    sl[ "B"  \%>\% ignore.case ]
+    "b" \%>\% sl[.]
+    "B" \%>\% ignore.case \%>\% sl[.]
    }
 }
 \seealso{

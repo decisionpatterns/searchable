@@ -7,12 +7,6 @@ v <- c( ay=1, bee=2, cee=3 )
 
 context('vector-default')
   sv <- searchable(v)
-
-  sv$ay        %>% expect_equal( v[['ay']] )
-                   expect_error( sv$ee )
-  
-  sv[['bee']]  %>% expect_equal(2)  
-                   expect_error( sv[['ee']] )
   
   sv['cee']    %>% expect_equivalent(3)
   sv['ee']     %>% is.na %>% expect_true
@@ -21,12 +15,6 @@ context('vector-default')
 
 context('vector-fixed')
   sv <- searchable(v, 'fixed' )
-
-  sv$ay        %>% expect_equal( sv[['ay']] )
-                   expect_error( sv$ee )      # 2 matching elements
-  
-  sv[['bee']]  %>% expect_equal(2)  
-                   expect_error( sv[['ee']] )
   
   sv['cee']    %>% expect_equivalent(3)
   sv['ee']     %>% expect_equivalent(2:3)

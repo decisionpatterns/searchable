@@ -6,7 +6,7 @@
 \alias{Searchable-class}
 \alias{searchable}
 \alias{show,Searchable-method}
-\title{searchable}
+\title{Searchable}
 \usage{
 searchable(object, type = "std", ...)
 
@@ -26,22 +26,22 @@ By default, extraction from a searchable objects does not produce a subset
   will not want another searchable object and only wish to have the subclass.
 }
 \description{
-Marks an objects as a \code{searchable} target, optionally specifying the
-default search options
+\code{searchable} makes a named object a \code{Searchable} target, optionally
+specifying the default search options.
 }
 \details{
-The searchable class allows 'stringr/i'-like searches when
-extracting (or replacing) objects. The following search types are supported:
+The searchable class allows 'stringr/i'-like searches using \code{\[} and
+\code{\[<-} operators. The following search types are supported:
 
 \itemize{
-  \item \code{std} standard R matching,
+  \item \code{std} standard R matching, the default
   \item \code{regex} for regular expression matching,
   \item \code{fixed} for fixed string matching,
   \item \code{coll} for collation matching,
 }
 
-Class \code{searchable} allows customization of how R's standard accessors --
- \code{\[}, \code{\$}, \code{\[\[} -- match objects' names.
+Class \code{Searchable} objects allow customizations of how R's
+\code{\[} operator match objects' names.
 }
 \note{
 - Environments cannot be (easily) be made "searchable" due to the way the
@@ -53,51 +53,48 @@ Class \code{searchable} allows customization of how R's standard accessors --
 \section{Diffences from stringr}{
 
 
-\code{stringr/i} is a general purpose string manipulations library;
-amoung its functions is the ability to search/pattern match against strings.
-\code{searchable} applies this type of matching  to allow specifying that
-objects' names will be searched using standard R accessors: \code{\[},
-\code{\$}, \code{\[\[}. Thus, \code{ searchable(sv)[ regex('b') ]} returns objects
+\code{stringr}  and \code{stringi} are general purpose string manipulations
+library allowing flexible search and pattern matching against character
+strings. The \code{searchable} package applies this type of matching
+to objects' names using the standard \code{\[} accessor.  Thus,
 
-Unlike \code{stringr} which allows search modifiers to apply to only the
-search pattern, \code{searchable} also modifiers to be applied to
-the search target. Unless overridden, all subsequent searches of searchable
-objects will use the predefinced pattern.
+  \code{ searchable(sv)[ regex('b') ]}
 
-This search used can be specified at initialization of the searchable object
-or any subsequent time any of the match-modifying functions, e.g.
-\code{fixed}, \code{regex}, \code{ignore.case}, etc. See examples.
+returns objects the subset of whose names contain 'b'.
+
+Unlike \code{stringr/i}, \code{searchable} allows search specification
+to applied to either the search pattern or search target.
+When applied to the target, a default search method is configured. All
+subsequent searches of the searchable target will use this default pattern.
+
+The search method can be specified with the \code{type} argument of the
+\code{searchable} function or any of match-modifying functions,
+e.g. \code{fixed}, \code{regex}, \code{coll}, \code{ignore.case}, etc.
+See examples.
 
 When modifiers are applied to both target and pattern, \strong{modifers
-applied to the pattern take precedence} and the target's modifiers are disabled.
+applied to the pattern take precedence} and the target's modifiers are
+disabled.
 }
 
 \section{Differences from base R}{
 
 
 \code{searchable} is designed to be minimally invase. When no search types
-or options are specified, searchable objects default to R's use of standard
-accessors.
+or options are specified, mathcing defaults to R's normal behavior.
 
-When a search type or options are specified, R's accessors work as
-expected with a few, small changes to accomodate an indeterminate number
-of search results. These are:
+Here are the other differnece from standard R operations:
 
 \itemize{
 
-  \item \code{\$} works with atomic, searchable objects. This is not true of
-        R's atomic objects. This should probably be fixed in Base R.
+  \item \code{\$} and \item{\[\[} are unaltered by the package. It is
+  unclear, how these operators might accommodate the indeterminate number of
+  matches.
 
-  \item Searches using \code{\[\[]} or \code{\$} may have more than one match.
-        In order to be consistent with base R, searches with multiple matches
-        produce an error: \code{attempt to select more than one element}.
+  \item Searches using multiple patterns recylce the patterns, but rather
+  return elements that match any of the patterns.
 
-  \item Searches using \code{\[} accepts a one element search
-        pattern. (This may change). Attempts to provide multiple search terms
-        results in an error:
-           \code{pattern string should be a one-element character vector}.
-
-        In base R, there is output value every element of input argument,
+  \item In base R, there is output value every element of input argument,
         \code{i}. Input elements that do not match a named element of
         \code{x} return \code{NA}. Because of the indeterminant number of
         matches given a pattern search against a \code{searchable} object,
@@ -105,8 +102,8 @@ of search results. These are:
         matches are found, a zero-length object is returned. (This may change
         to \code{NA} to be more consisitent.)
 
-  \item Searches do not produce a searchable class but the superclass that
-        the searchable class wraps.
+  \item Results do not yield a Searchable object, but the superclass that
+        the searchable class wraps. See \strong{Value} below.
 
 }
 }
@@ -129,43 +126,43 @@ arrays are not supported at this time.
     v <- c( a=1, b=2, B=3, c=4, c2=5 )
     sv <- searchable(v)
 
-  # EXTRACT:
-    sv$a
 
-    sv[['a']]
-    sv[[ ignore.case('A') ]]
-
-    sv[ ignore.case('b') ]
+  # FLEXIBLY FIND ELEMENTS BY NAME
     sv[ regex('c') ]
     sv[ fixed('c') ]
 
+    sv[ ignore.case('b') ]
 
-  # REPLACEMENT:
-    sv$a               <- "first"
-    sv[['a']]          <- "1st"
-    sv[[ regex('c.') ]] <- "third"
 
+  # FLEXIBLY REPLACEMENT ELEMENTS BY NAME
     sv[ regex('c.?') ]   <- "3rd"
 
 
-  # MODIFIERS TO SEARCH TARGET/OBJECT
+  # SET DEFAULT SEARCH FOR TARGET/OBJECT
     sv <- searchable(v, case_insensitive = TRUE )
-    sv$A
     sv['b']
     sv['B']
 
+    sv <- regex(sv)
+    sv['c']
 
-  # RECURSIVE LISTS:
+    sv <- ignore.case(sv)
+    sv['b']
+    sv['c']                  # st
+
+
+  # USE ON (RECURSIVE) LISTS:
     l <- list( a=1, b=2, c=3 )
     sl <- searchable(l)
-    sl[["b"]]
-    sl[[ ignore.case("B") ]]
+    sl["b"]
+    sl[ ignore.case("B") ]
+
 
   # USE WITH MAGRITTR
    \dontrun{
-    sl[[ "B"  \%>\% ignore.case ]]
-    "b" \%>\% sl[[.]]
-    "B" \%>\% ignore.case \%>\% sl[[ . ]]
+    sl[ "B"  \%>\% ignore.case ]
+    "b" \%>\% sl[.]
+    "B" \%>\% ignore.case \%>\% sl[.]
    }
 }
 \seealso{

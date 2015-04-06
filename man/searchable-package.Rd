@@ -7,43 +7,53 @@
 \description{
 The 'searchable' package provides flexibile methods of accessing objects with
 names using case (in)sensitivity, regular or fixed expressions, and boundary
-matching. It applies the most common textual searches to allow the
-construction of sophisticated dictionaries and thesauruses.
+matching. It was designed to make flexible, high performance dictionary and
+thesaurus structures.
 }
 \examples{
-# ATOMIC VECTORS
-    v <- c( ay=1, bee=2, cee=3 )
-    sv <- searchable( v, case_insensitive = TRUE )
-
-    sv$BEE
-
-    sv[[ "b" ]]                # 2
-    sv[[ "B" ]]                # 2
-    sv[[ ignore.case('BEE') ]] # 2
-
-    sv[[ fixed('b') ]]         # 2
+# ATOMIC VECTORS:
+    v <- c( a=1, b=2, B=3, c=4, c2=5 )
+    sv <- searchable(v)
 
 
-    sv[ 'bee' ]
-    sv[ 'ee' ]                 #
-    sv[ regex('[A|B]') ]        # 1,2
+  # FLEXIBLY FIND ELEMENTS BY NAME
+    sv[ regex('c') ]
+    sv[ fixed('c') ]
 
-  # RECURSIVE LISTS
+    sv[ ignore.case('b') ]
 
-    l <- list( ay=c(1), bee=c(2), cee=3 )
-    sl <- searchable(l, ignore.case )
 
-    sl$BEE                     # 1 2
+  # FLEXIBLY REPLACEMENT ELEMENTS BY NAME
+    sv[ regex('c.?') ]   <- "3rd"
+    sv
 
-    sl[[ "b" ]]                # 1 2
-    sl[[ "B" ]]                # 1 2
-    sl[[ ignore.case('BEE') ]] # 1 2
 
-    sl[[ fixed('b') ]]         # 1 2
+  # SET DEFAULT SEARCH FOR TARGET/OBJECT
+    sv <- searchable(v, case_insensitive = TRUE )
+    sv['b']
+    sv['B']
 
-    sl[ 'bee' ]
-    sl[ 'ee' ]                 # 1  1 2
-    sl[ regex('[a|b]') ]        # 1  1 2
+    sv <- regex(sv)
+    sv['c']
+
+    sv <- ignore.case(sv)
+    sv['b']
+    sv['c']                  # st
+
+
+  # USE ON (RECURSIVE) LISTS:
+    l <- list( a=1, b=2, c=3 )
+    sl <- searchable(l)
+    sl["b"]
+    sl[ ignore.case("B") ]
+
+
+  # USE WITH MAGRITTR
+   \dontrun{
+    sl[ "B"  \%>\% ignore.case ]
+    "b" \%>\% sl[.]
+    "B" \%>\% ignore.case \%>\% sl[.]
+   }
 }
 \references{
 \url{http://stackoverflow.com/questions/5671719/case-insensitive-search-of-a-list-in-r} \cr

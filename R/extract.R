@@ -7,8 +7,6 @@ NULL
 #' 
 #' @param x Searchable object
 #' @param i character; pattern with potential match modifiers applied,
-#' @param name character; a name to be extracted, used with \code{$}, so no 
-#'   match modification can be applied to the name.
 #' @param j missing; never specified
 #' @param drop For matrices and arrays. If TRUE the result is coerced to the 
 #'    lowest possible dimension (see the examples). This only works for 
@@ -62,52 +60,52 @@ NULL
 #     \code{\link[stringr]{regex}}        \cr
 #'    \code{\link{reverse.lookup}}       \cr
 #'    
-#' @examples
+#' @examples 
 #' 
 #'   # ATOMIC VECTORS: 
 #'     v <- c( a=1, b=2, B=3, c=4, c2=5 )
 #'     sv <- searchable(v)
-#'   
-#'   # EXTRACT:
-#'     sv[ c('a','b') ]        # Normal
-#'     sv[ regex('c.?') ]      
-#'     sv[ fixed('c') ] 
-#'     sv[ 'x' ]                # NA
-#'     
-#'     sv[["a"]]
-#'     sv[[ ignore.case("a") ]] 
-#'     sv[[ ignore.case("A") ]] 
+#'       
+#'       
+#'   # FLEXIBLY FIND ELEMENTS BY NAME 
+#'     sv[ regex('c') ]
+#'     sv[ fixed('c') ]
 #'
-#'     sv$a   
-#'     sv$b
-#'     sv$B 
-#'  
-#'        
-#'   # WITH MARGRITTR:   
-#'   \dontrun{
-#'     "b" %>% sv[[.]]
-#'     "B" %>% ignore.case %>% sv[.]
-#'     "c." %>% regex %>% sv[[.]]     
-#'     "c.?" %>% regex %>% sv[.]
-#'    } 
-#'   
-#'   # REPLACEMENT: 
-#'     sv[['a']] <- "first"  
-#'     sv[[ regex('c.') ]] <- "third"
-#'     # sv[[ regex('c.?') ]] <- "third"
+#'     sv[ ignore.case('b') ] 
+#'                                                                                                                                                                                                                                                                                                                            
+#'
+#'   # FLEXIBLY REPLACEMENT ELEMENTS BY NAME  
+#'     sv[ regex('c.?') ]   <- "3rd"
 #'   
 #'   
-#'   # RECURSIVE LISTS:
+#'   # SET DEFAULT SEARCH FOR TARGET/OBJECT
+#'     sv <- searchable(v, case_insensitive = TRUE )         
+#'     sv['b']
+#'     sv['B']
+#'   
+#'     sv <- regex(sv)  
+#'     sv['c']  
+#'
+#'     sv <- ignore.case(sv)    
+#'     sv['b']                                                                    
+#'     sv['c']                  # st  
+#'                                        
+#'
+#'   # USE ON (RECURSIVE) LISTS:
 #'     l <- list( a=1, b=2, c=3 )
 #'     sl <- searchable(l)                
-#'     sl[["b"]]
-#'     sl[[ ignore.case("B") ]] 
+#'     sl["b"]
+#'     sl[ ignore.case("B") ] 
+#'     
+#'     
+#'   # USE WITH MAGRITTR   
 #'    \dontrun{
-#'     sl[[ "B"  %>% ignore.case ]]
-#'     "b" %>% sl[[.]]
-#'     "B" %>% ignore.case %>% sl[[ . ]]
+#'     sl[ "B"  %>% ignore.case ]
+#'     "b" %>% sl[.]
+#'     "B" %>% ignore.case %>% sl[.]
 #'    }
-#' 
+#'    
+#'      
 #' @aliases extract
 
 # ----------------------------------------------------------------
@@ -127,40 +125,7 @@ NULL
     }           
   )
   
-  
 
-#' @rdname extract
-#' @export   
-  setMethod( '[[', c(x='Searchable', i='character'), 
-     function(x,i) {
-       
-     # ESCAPE HATCH FOR  'std' matching
-       if( .is.basic(x,i) ) return( x@.Data[[i]] ) 
-       
-    #   pattern <- .resolve.patterns(x,i)
-    #   if( pattern@type == 'std' ) return( x@.Data[[i]] )
-  
-     # FIND MATCHES    
-       wh <- which( .matches(x,i) )
-    
-     # [[ should match only one element
-       if( length(wh) > 1 ) stop('attempt to select more than one element')
-       if( length(wh) < 1 ) stop('subscript not found')
-     
-       return( x@.Data[[wh]] )
-       
-     }   
-  )
-
-  
-#' @rdname extract
-#' @export   
-  setMethod( '$', c(x='Searchable'), 
-    function(x,name) `[[`(x,name)
-  )
-
-  
- 
 # ----------------------------------------------------------------
 # REPLACE  
 # ----------------------------------------------------------------
@@ -182,65 +147,6 @@ NULL
   )
   
   
-
-#' @rdname extract
-#' @export    
-  setReplaceMethod( '[[', c(x="Searchable", i="character", j="missing", value="ANY") ,
-    function(x,i,value) {
-      
-       # ESCAPE HATCH 
-         if( .is.basic(x,i) ) return( `[[<-`(x,i,value) )
-       
-       # BASE R WILL ONLY ALLOW [[<- TO MODIFY ONE ELEMENT THE FIRST,
-       # WARN IF THE MODIFIER RETURNS MORE THAN ONE MATCH, ONLY THE FIRST WILL
-       # BE MODIFIED
-         wh <- which( .matches(x,i) )
-       
-         if( length(wh) > 1 ) 
-           stop( call.=FALSE 
-             , "[[<-,Searchable,character - multiple matches for, '"
-             , substitute(i) # deparse( substitute(i) )
-             , "'. Use `[<-` to replace/modify multiple elements."
-            )
-       
-          if( length(wh) == 0 ) { 
-            warning( call.=FALSE
-              , "No matches for, '", substitute(i), "'. "
-              , "No replacements made or CREATED.\n"
-              , "To make additions to '", substitute(x), "' "
-              , "remove modifiers or use 'std' modifier."
-            )
-            return(x)
-          } 
-       
-       # MODI
-       x@.Data[[ wh[[1]] ]] <- value
-       return(x)
-    }
-  )
-
-  
-
-#' @rdname extract
-#' @export   
-  setReplaceMethod( '$', c( x="Searchable", value="ANY"),
-    function(x, name, value) {
-
-      if( x@type == 'std' ) { 
-        x@.Data[[name]] <- value
-        return(x)
-      } 
-      
-      x[[ name ]] <- value
-      return(x)
-      
-    }
-  )
-    
-
-
-
-
 # --------------------------------------------------------------
 # UTILITIES
 # --------------------------------------------------------------
@@ -306,6 +212,4 @@ NULL
   )
   
 }  
-
-
 
