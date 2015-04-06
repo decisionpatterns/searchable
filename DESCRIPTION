@@ -1,16 +1,14 @@
 Package: searchable
 Type: Package
-Title: Make R Objects Searchable by Matching Names Based on Case
-    (in)Sensitivity, Regular Expressions, ...
+Title: Allow Subsets of R Object by Matching Object Names Based on Case
+    (in)Sensitivity, Regular Expressions, etc...
 Version: 0.3.0
 Date: 2015-03-31
 Author: "DecisionPatterns [aut, cre]"
 Maintainer: Christopher Brown <chris.brown@decisionpatterns.com>
-Description: Provides functionality for searching named vectors and
-    lists more configurable. The packages uses 'stringr'-style match modifiers
-    to allow search by case (in)sensitivity, regular expressions or fixed
-    expressions using standard accessors: $, [, [[. It also allows searching
-    through values rather than names.
+Description: Provides functionality for subsetting objects using
+    'stringr/i'-style match modifier to match search vector and list objects
+    by case (in)sensitivity, regular expressions or fixed expressions.
 Depends:
     R (>= 3.1.0)
 Imports:
