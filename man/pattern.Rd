@@ -2,7 +2,7 @@
 % Please edit documentation in R/Class-Pattern.R
 \docType{class}
 \name{Pattern-class}
-\alias{Patterm}
+\alias{Pattern}
 \alias{Pattern-class}
 \alias{pattern}
 \alias{pattern.Pattern}
@@ -49,7 +49,12 @@ Patterns defines how searches are conducted against a searchable target
 \section{Slots}{
 
 \describe{
-\item{\code{.Data}}{SearchableOrPattern; a Searchable or Pattern object}
+\item{\code{.Data}}{character object representing a pattern.}
+
+\item{\code{type}}{character; type of search performed; one of "std" (default), "regex",
+     "fixed", "coll", or "charclass". See details.}
+
+\item{\code{options}}{list; name = value pairs for search options used.}
 }}
 \section{std}{
 
@@ -78,6 +83,6 @@ as base R would. This is equivalent to \code{fixed} and
 }
 \examples{
 pattern('hello')
-  pattern('hello', type="regex", boundary="starts_with", )
+  pattern('hello', type="regex", boundary="starts_with" )
 }
 

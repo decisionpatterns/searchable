@@ -46,7 +46,7 @@ setMethod( "invert", "vector",
 # SEARCHABLE
 #' @rdname invert
 #' @export
-  setMethod( "invert", "searchable", 
+  setMethod( "invert", "Searchable", 
   
     function(x) { 
       x@.Data <- invert( x@.Data )

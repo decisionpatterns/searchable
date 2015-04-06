@@ -162,8 +162,15 @@
 #' @rdname searchable
 #' @exportClass Searchable
 #' @export
+#' @include Class-Searchables.R
 
-   Searchable <- setClass( 'Searchable', contains = 'SearchableOrPattern' )
+   Searchable <- setClass( 'Searchable'
+     , contains = 'Searchables' 
+     , representation = representation( 'Searchables', type='character', options='list')
+     , prototype( NA_character_, type = 'std', options=list() ) 
+   )
+
+   # setClass( 'Searchable', contains = 'SearchableOrPattern' )
     
 
 # CONSTRUCTOR

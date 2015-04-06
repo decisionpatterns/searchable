@@ -3,8 +3,8 @@
 \docType{methods}
 \name{invert}
 \alias{invert}
+\alias{invert,Searchable-method}
 \alias{invert,list-method}
-\alias{invert,searchable-method}
 \alias{invert,vector-method}
 \title{Invert a structure by swapping keys and values}
 \usage{
@@ -12,7 +12,7 @@ invert(x)
 
 \S4method{invert}{vector}(x)
 
-\S4method{invert}{searchable}(x)
+\S4method{invert}{Searchable}(x)
 
 \S4method{invert}{list}(x)
 }

@@ -2,11 +2,12 @@
 #' 
 #' Patterns defines how searches are conducted against a searchable target
 #'
-#' @slot .Data SearchableOrPattern; a Searchable or Pattern object
+#' @slot .Data character object representing a pattern.
 #'  
-# @slot type character; type of search performed; one of "std" (default), "regex", 
-#      "fixed", "coll", or "charclass". See details. 
-# @slot options list; name = value pairs for search options used.
+#' @slot type character; type of search performed; one of "std" (default), "regex", 
+#'      "fixed", "coll", or "charclass". See details. 
+#'      
+#' @slot options list; name = value pairs for search options used.
 #' 
 #' 
 #' @param object character or pattern; 
@@ -46,15 +47,25 @@
 #' @examples
 #' 
 #'   pattern('hello')
-#'   pattern('hello', type="regex", boundary="starts_with", )
+#'   pattern('hello', type="regex", boundary="starts_with" )
 #'  
-#' @include Class-SearchableOrPattern.R 
 #' @rdname pattern
 #' @exportClass Pattern
 #' @export
  
-   Patterm <- setClass( 'Pattern', contains = 'SearchableOrPattern' )
+   Pattern <- setClass( 'Pattern'
+     , contains = 'character' 
+     , representation = representation( 'character', type='character', options='list')
+     , prototype( NA_character_, type = 'std', options=list() ) 
+   )
 
+
+
+# setClass( 'SearchableOrPattern' 
+#      , representation = representation( 'Searchables', type='character', options='list')  
+#      , prototype( type = 'std', options=list() ) 
+#      , contains = 'Searchables'  
+#    )
 
 
 #  CONSTRUTOR
@@ -116,6 +127,9 @@ setMethod( 'show', 'Pattern',
   
 )
 
+# -------------------------------------------------------------
+# UTILS
+# -------------------------------------------------------------
 
 .describe_pattern <- function(object) { 
   

@@ -1,12 +1,12 @@
+#' @include Class-PatternOrCharacter.R 
 
+NULL 
 
-setClassUnion( 'PatternOrCharacter', c('pattern','character'))
-
-#' Extraction operators for searchable object
+#' Extraction operators for Searchable object
 #' 
-#' Defines  \code{[}, \code{[[}, and \code{$} for searchable objects
+#' Defines  \code{[}, \code{[[}, and \code{$} for Searchable objects
 #' 
-#' @param x searchable object
+#' @param x Searchable object
 #' @param i character; pattern with potential match modifiers applied,
 #' @param name character; a name to be extracted, used with \code{$}, so no 
 #'   match modification can be applied to the name.
@@ -31,9 +31,9 @@ setClassUnion( 'PatternOrCharacter', c('pattern','character'))
 #' its normal behavior, \code{\[} does not guarantee the output to have as many
 #' elements as elements to \code{pattern}.
 #'  
-#' \code{[} does not return a searchable object. It is thought that 
+#' \code{[} does not return a Searchable object. It is thought that 
 #' the return valuable will not be subsequently searched. It is easy to turn 
-#' the results into a searchable object using \code{searchable} however. 
+#' the results into a Searchable object using \code{searchable} however. 
 #'
 #'
 #' @section \code{[[}, \code{[[<-} and \code{$}, \code{$<-} :
@@ -47,17 +47,17 @@ setClassUnion( 'PatternOrCharacter', c('pattern','character'))
 #' Unlike for environments and hashes, no constraints exist for ensuring 
 #' uniqueness for names in vectors and lists. These structures may contain 
 #' multiple elements with the same name. Normal attempts to extract by name 
-#' yield only the first element that matches the name. Using a \code{searchable}
+#' yield only the first element that matches the name. Using a \code{Searchable}
 #' pattern match yields all matching elements.
 #' 
 #' 
 #' @return 
 #'   The values after the extracting methods have been applied:\cr
-#'   \code{\[} returns a subset of \code{x}, but which is not searchable.  \cr
+#'   \code{\[} returns a subset of \code{x}, but which is not Searchable.  \cr
 #'   \code{\[\[} and \code{\$} return a sinlge element of \code{x}  \cr
 #'   
 #'  @seealso
-#'    \code{\link{searchable}}           \cr
+#'    \code{\link{Searchable}}           \cr
 #'    \code{\link[base]{Extract}}        \cr
 #'    \code{\link[stringr]{ignore.case}} \cr
 #'    \code{\link[stringr]{perl}}        \cr
@@ -117,7 +117,7 @@ setClassUnion( 'PatternOrCharacter', c('pattern','character'))
   
 #' @rdname extract
 #' @export     
-  setMethod( '[', c(x='searchable', i='PatternOrCharacter', j='missing'), 
+  setMethod( '[', c(x='Searchable', i='PatternOrCharacter', j='missing'), 
     function(x,i,j,...) {
        
      # ESCAPE HATCH FOR  'std' matching
@@ -132,7 +132,7 @@ setClassUnion( 'PatternOrCharacter', c('pattern','character'))
   
 #' @rdname extract
 #' @export   
-  setMethod( '[[', c(x='searchable', i='character'), 
+  setMethod( '[[', c(x='Searchable', i='character'), 
      function(x,i) {
        
      # ESCAPE HATCH FOR  'std' matching
@@ -156,7 +156,7 @@ setClassUnion( 'PatternOrCharacter', c('pattern','character'))
   
 #' @rdname extract
 #' @export   
-  setMethod( '$', c(x='searchable'), 
+  setMethod( '$', c(x='Searchable'), 
     function(x,name) `[[`(x,name)
   )
 
@@ -168,7 +168,7 @@ setClassUnion( 'PatternOrCharacter', c('pattern','character'))
   
 #' @rdname extract
 #' @export  
-  setReplaceMethod( '[', c(x='searchable', i='character', j='missing', value='ANY'), 
+  setReplaceMethod( '[', c(x='Searchable', i='character', j='missing', value='ANY'), 
     function(x,i,value) {
       
       # ESCAPE HATCH
@@ -186,7 +186,7 @@ setClassUnion( 'PatternOrCharacter', c('pattern','character'))
 
 #' @rdname extract
 #' @export    
-  setReplaceMethod( '[[', c(x="searchable", i="character", j="missing", value="ANY") ,
+  setReplaceMethod( '[[', c(x="Searchable", i="character", j="missing", value="ANY") ,
     function(x,i,value) {
       
        # ESCAPE HATCH 
@@ -199,7 +199,7 @@ setClassUnion( 'PatternOrCharacter', c('pattern','character'))
        
          if( length(wh) > 1 ) 
            stop( call.=FALSE 
-             , "[[<-,searchable,character - multiple matches for, '"
+             , "[[<-,Searchable,character - multiple matches for, '"
              , substitute(i) # deparse( substitute(i) )
              , "'. Use `[<-` to replace/modify multiple elements."
             )
@@ -224,7 +224,7 @@ setClassUnion( 'PatternOrCharacter', c('pattern','character'))
 
 #' @rdname extract
 #' @export   
-  setReplaceMethod( '$', c( x="searchable", value="ANY"),
+  setReplaceMethod( '$', c( x="Searchable", value="ANY"),
     function(x, name, value) {
 
       if( x@type == 'std' ) { 
@@ -250,7 +250,7 @@ setClassUnion( 'PatternOrCharacter', c('pattern','character'))
 # 
 # Resolves the pattern to use from the search 
 #
-# @param object searchable object 
+# @param object Searchable object 
 # @param pattern object to use as a pattern 
 #
 # A pattern can be associated with either argument or both; this ensures
