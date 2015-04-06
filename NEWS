@@ -1,3 +1,14 @@
+Version 0.3 "Drowsey Driver"
+---------------------------
+* Move dependency from stringr to stringi
+
+* Remove methods for $, $<-, [[, [[<-: These are indeterminant and lead to ambiguous results
+
+* Class names are now CapWords
+
+* Code better factored into files
+
+
 Version 0.2 "happy birthday"
 ----------------------------
 
