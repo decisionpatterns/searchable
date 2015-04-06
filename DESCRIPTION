@@ -3,7 +3,7 @@ Type: Package
 Title: Allow Subsets of R Object by Matching Object Names Based on Case
     (in)Sensitivity, Regular Expressions, etc...
 Version: 0.3.0
-Date: 2015-03-31
+Date: 2015-04-06
 Author: "DecisionPatterns [aut, cre]"
 Maintainer: Christopher Brown <chris.brown@decisionpatterns.com>
 Description: Provides functionality for subsetting objects using
