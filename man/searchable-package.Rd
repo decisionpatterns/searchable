@@ -5,9 +5,16 @@
 \alias{searchable-package}
 \title{searchable}
 \description{
-The 'searchable' package provides flexibile methods of accessing objects with
-names using case (in)sensitivity, regular or fixed expressions, and boundary
-matching. It was designed to make flexible, high performance dictionary and
+Tools For Custom Searches / Subsets / Slices of Named R Objects
+}
+\details{
+The 'searchable' package provides flexibile methods for subseting named
+object by matching the names using case (in)sensitivity, regular or
+fixed expressions. searches uses the standard '['
+operator and allows specification of default search behavior to either the
+search target (named object) and/or the search pattern.
+
+It was designed to make flexible, high performance dictionary and
 thesaurus structures.
 }
 \examples{

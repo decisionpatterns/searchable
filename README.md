@@ -1,14 +1,22 @@
 # Introduction
 
-The `searchable` packages provides functions for using flexible matching 
-for extracting elements from named objects. Features of this package are:
+The 'searchable' package provides flexibile methods for subseting  
+object by matching objects names using case (in)sensitivity, regular or 
+fixed expressions. Searches uses the standard '['
+operator and allows specification of default search behavior to either the
+search target (named object) and/or the search pattern.
+
+It was designed to make flexible, high performance dictionary and 
+thesaurus structures.  
+
+Features of this package are:
 
 * 'stringr/i'-style match modifiers for matching names by case (in)sensitivity, 
 regular expressions or fixed expression. 
 
-* Match modification can be applied to both the pattern and target.
+* Match modification applied to either/both the pattern and target.
 
-* The `[` operatore is overloaded to provide R-like functionality. 
+* The `[` operatore overloaded to provide R-like functionality. 
 
 * Search behavior defaults to base R behaviors.
 
