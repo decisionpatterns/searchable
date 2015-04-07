@@ -60,6 +60,9 @@ TODO:
     
 # LONG TERM 
 
+## Make it so names do not have to be quoted using qw, qcc or something
+
+
 ## Determine if we need subclasses: 
    - searchable.atomic and searchable.recursive
      There are no classes for atomic and recursive)

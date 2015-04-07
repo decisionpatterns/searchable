@@ -1,7 +1,7 @@
 Package: searchable
 Type: Package
-Title: Tools For Custom Searches / Subsets / Slices of Named R Objects
-Version: 0.3.3
+Title: Tools for Custom Searches / Subsets / Slices of Named R Objects
+Version: 0.3.3.1
 Date: 2015-04-06
 Author: "DecisionPatterns [aut, cre]"
 Maintainer: Christopher Brown <chris.brown@decisionpatterns.com>
