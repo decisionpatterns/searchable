@@ -1,7 +1,15 @@
 TODO:
  
 # IMMEDIATE 
+
+## Delineate default vs ad-hoc searching
+
+In Default searching, search modifiers are applied to the target. In 
+Ad Hoc searching modifiers are applied to the search pattern.
+
+Introduce this distinction into the docs.
  
+
 ## ? Support options for missing hits from search.  
 
      For example: 
