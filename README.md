@@ -1,10 +1,10 @@
 # Introduction
 
 The 'searchable' package provides flexibile methods for subseting  
-object by matching objects names using case (in)sensitivity, regular or 
-fixed expressions. Searches uses the standard '['
-operator and allows specification of default search behavior to either the
-search target (named object) and/or the search pattern.
+objects by matching their names using case (in)sensitivity, regular or 
+fixed expressions. Searches uses the standard '[' operator and allows 
+specification of a default (applied to the target) or ad hoc search 
+behavior (applied to the search pattern).
 
 It was designed to make flexible, high performance dictionary and 
 thesaurus structures.  
