@@ -2,7 +2,7 @@ TODO:
  
 # IMMEDIATE 
 
-## Delineate default vs ad-hoc searching
+- [ ] Delineate default vs ad-hoc searching
 
 In Default searching, search modifiers are applied to the target. In 
 Ad Hoc searching modifiers are applied to the search pattern.
@@ -10,40 +10,39 @@ Ad Hoc searching modifiers are applied to the search pattern.
 Introduce this distinction into the docs.
  
 
-## ? Support options for missing hits from search.  
+- [ ] Support options for missing hits from search.  
 
      For example: 
         v[[MISS]] -> NA rather than 'named vector()'
     
-
-## Test to support 
+- [ ] Test to support 
    - None, 0, 1, 1 of multiple, multiple match hits
    - Each match modifier
    - Each (upcoming) return modifier
    - Extract, Replace
  
 
-## Support data.frames 
+- [ ] Support data.frames 
    
    This should be straight-foward and implement a method of 
    seachable-ANY-character that dispatches to data.frame-ANY-character after 
    appropriate resolutions.
 
 
-## Support data.tables
+- [ ]  Support data.tables
    
     This might be tricky as j is interpreted within x. There might not be a 
     good way to do this unless with = FALSE.  Although there might not be 
     anything different from data.frames
  
 
-## Support Search Modifiers
+- [ ] Support Search Modifiers
 
    - search.modifiers: 
        - reverse.lookup - look in values  
        - recursive (unlist) - descend into recursive structures
 
-## Support return modifiers, e.g. 
+- [ ] Support return modifiers, e.g. 
 
    - multiple pattern matches reslovers:
        - any 
@@ -60,7 +59,6 @@ Introduce this distinction into the docs.
        - count 
 
 
-
 ## Write fn to collect values sharing the same keys into a list or vector.
 
    - cf. base.tools/collect_values_by_name
@@ -68,15 +66,15 @@ Introduce this distinction into the docs.
     
 # LONG TERM 
 
-## Make it so names do not have to be quoted using qw, qcc or something
+- [ ] Make it so names do not have to be quoted using qw, qcc or something
 
 
-## Determine if we need subclasses: 
+- [ ] Determine if we need subclasses: 
    - searchable.atomic and searchable.recursive
      There are no classes for atomic and recursive)
    - searchable.vector, searchable.list, searchable.hash
 
-## Make environments searchable 
+- [ ] Make environments searchable 
    - Environments cannot be (easily) be made "searchable" due to the way the 
      they are implemented.
      

@@ -1,27 +1,32 @@
 Package: searchable
 Type: Package
-Title: Tools for Custom Searches / Subsets / Slices of Named R Objects
-Version: 0.3.3.1
-Date: 2015-04-06
-Author: "DecisionPatterns [aut, cre]"
-Maintainer: Christopher Brown <chris.brown@decisionpatterns.com>
+Title: Customize Search/Slice/Subset Behavior for Accessing Subsets of List, Vectors, Environments, Hashes and Other R Objects
+Version: 0.4.0
+Date: 2016-03-04
+Authors@R: c(
+    person("Christopher", "Brown", , "chris.brown@decisionpatterns.com", c("aut", "cre") ),
+    person("Decision Patterns", role = "cph")
+    )
 Description: Provides functionality for searching / subsetting and slicing named
     objects using 'stringr/i'-style modifiers by case (in)sensitivity,
     regular expressions or fixed expressions; searches uses the standard '['
     operator and allows specification of default search behavior to either the
     search target (named object) and/or the search pattern.
-Depends:
+Depends: 
     R (>= 3.1.0)
-Imports:
+Imports: 
     methods,
     magrittr(>= 1.5),
     stringi(>= 0.4.1)
-Suggests:
-    testthat
+Suggests: 
+    testthat,
+    knitr
 License: GPL-2
-URL: https://github.com/decisionpatterns/searchable
+URL: 
+    https://github.com/decisionpatterns/searchable
+    http://www.decisionpatterns.com
 BugReports: https://github.com/decisionpatterns/searchable/issues
-Collate:
+Collate: 
     'Class-Pattern.R'
     'Class-PatternOrCharacter.R'
     'Class-Searchables.R'
@@ -41,3 +46,4 @@ Collate:
     'std.R'
     'stri_detect_std.R'
     'zzz.R'
+VignetteBuilder: knitr
