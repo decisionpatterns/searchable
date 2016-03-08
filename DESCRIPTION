@@ -1,35 +1,35 @@
 Package: searchable
 Type: Package
-Title: Customize Search/Slice/Subset Behavior for Accessing Subsets of List, Vectors, Environments, Hashes and Other R Objects
+Title: Customize Search/Slice/Subset Behavior for Accessing Subsets of List,
+    Vectors, Environments, Hashes and Other R Objects
 Version: 0.4.0
 Date: 2016-03-04
 Authors@R: c(
-    person("Christopher", "Brown", , "chris.brown@decisionpatterns.com", c("aut", "cre") ),
-    person("Decision Patterns", role = "cph")
+      person("Christopher", "Brown", , "chris.brown@decisionpatterns.com", c("aut", "cre") ),
+      person("Decision Patterns", role = "cph")
     )
 Description: Provides functionality for searching / subsetting and slicing named
     objects using 'stringr/i'-style modifiers by case (in)sensitivity,
     regular expressions or fixed expressions; searches uses the standard '['
     operator and allows specification of default search behavior to either the
     search target (named object) and/or the search pattern.
-Depends: 
+Depends:
     R (>= 3.1.0)
-Imports: 
+Imports:
     methods,
     magrittr(>= 1.5),
     stringi(>= 0.4.1)
-Suggests: 
+Suggests:
     testthat,
     knitr
-License: GPL-2
-URL: 
-    https://github.com/decisionpatterns/searchable
+License: GPL-2 | file LICENSE
+URL: https://github.com/decisionpatterns/searchable
     http://www.decisionpatterns.com
 BugReports: https://github.com/decisionpatterns/searchable/issues
-Collate: 
+Collate:
+    'Class-Searchables.R'
     'Class-Pattern.R'
     'Class-PatternOrCharacter.R'
-    'Class-Searchables.R'
     'Class-Searchable.R'
     'Class-SearchableOrPattern.R'
     'boundary.R'

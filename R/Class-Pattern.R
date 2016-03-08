@@ -30,7 +30,7 @@
 #' 
 #' The default is \code{std} matching which performs matching 
 #' as base R would. This is equivalent to \code{fixed} and 
-#' \code{case_insensitive = FALSE}. Though the internal matching is sed.
+#' \code{case_insensitive = FALSE}.
 #'   
 #' @section regex:
 #' 
@@ -52,20 +52,13 @@
 #' @rdname pattern
 #' @exportClass Pattern
 #' @export
+#' @include Class-Searchables.R
  
-   Pattern <- setClass( 'Pattern'
-     , contains = 'character' 
-     , representation = representation( 'character', type='character', options='list')
-     , prototype( NA_character_, type = 'std', options=list() ) 
-   )
-
-
-
-# setClass( 'SearchableOrPattern' 
-#      , representation = representation( 'Searchables', type='character', options='list')  
-#      , prototype( type = 'std', options=list() ) 
-#      , contains = 'Searchables'  
-#    )
+ Pattern <- setClass( 'Pattern'
+   , contains = 'character' 
+   , representation = representation( 'character', type='character', options='list')
+   , prototype( NA_character_, type = 'std', options=list() ) 
+ )
 
 
 #  CONSTRUTOR
@@ -73,41 +66,45 @@
 #' @rdname pattern
 #' @export
 
-  pattern <- function( object, type, ... ) UseMethod('pattern')
+pattern <- function( object, type, ... ) UseMethod('pattern')
 
 
 #' @rdname pattern
 #' @export
-  pattern.default <- function( object=NULL, type = 'std', ... ) {
-    pattern.character( as.character(object), type=type, ... ) 
-  }
+
+pattern.default <- function( object=NULL, type = 'std', ... ) {
+  pattern.character( as.character(object), type=type, ... ) 
+}
 
 
 #' @rdname pattern
 #' @export
-  pattern.character <- function( object, type = 'std', ... ) {
-     if( object %>% is('SearchableOrPattern' ) ) NextMethod('pattern')
-     new('Pattern', object, type=type, options=list(...) ) # %>% return   
-  }
+
+pattern.character <- function( object, type = 'std', ... ) {
+   if( object %>% is('SearchableOrPattern' ) ) NextMethod('pattern')
+   new('Pattern', object, type=type, options=list(...) ) # %>% return   
+}
   
 #' @rdname pattern
 #' @export
-  pattern.Pattern <- function( object, type = object@type, ... ) { 
-  
-    if( missing(type)                &&        # type not supplied 
-        length( list(...) ) == 0               # no ... 
-    ) return( object %>%  pattern )  
-  
-    new('Pattern', object, type=type, options=list(...) ) # %>% return   
-  
-  }
+
+pattern.Pattern <- function( object, type = object@type, ... ) { 
+
+  if( missing(type)                &&        # type not supplied 
+      length( list(...) ) == 0               # no ... 
+  ) return( object %>%  pattern )  
+
+  new('Pattern', object, type=type, options=list(...) ) # %>% return   
+
+}
 
 
 #' @rdname pattern
 #' @export
-  pattern.Searchable <- function( object, type = object@type, ... ) { 
-    new('Pattern', NA_character_, type=type, options=if( missing(...) ) object@options else list(...) )  # %>% return   
-  }
+
+pattern.Searchable <- function( object, type = object@type, ... ) { 
+  new('Pattern', NA_character_, type=type, options=if( missing(...) ) object@options else list(...) )  # %>% return   
+}
 
 
 

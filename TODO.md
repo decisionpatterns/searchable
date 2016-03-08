@@ -1,6 +1,22 @@
 TODO:
  
-# IMMEDIATE 
+# IMMEDIATE
+
+- [ ] Define (in documentation) what is a target, modifier, term, behavior/semantics, 
+      term -> modifier -> target
+
+- [ ] std: removes class from search targets
+
+- [ ] Improve `searchable` function 
+   - [ ] Change argument 'type' to 'modifier'? What does stringr call them?  Yes 'modifiers' 
+   - [ ] Change `...` argument to arguments passed to the modifier?
+   
+- [ ] Levenstein-based match-modifier 
+      levenshtien('term', 2)
+      One idea is to create methods such as levenshtien2('term') ... meaning having a levenshtien distance <= 2
+      By defaut levenstein modifiers should order in decreasing levenstein score ... is there a way to break ties?
+      
+- [ ] Parameterized match-modifiers
 
 - [ ] Delineate default vs ad-hoc searching
 
@@ -10,10 +26,11 @@ Ad Hoc searching modifiers are applied to the search pattern.
 Introduce this distinction into the docs.
  
 
-- [ ] Support options for missing hits from search.  
+- [ ] Support options for missing hits from search. 
+     
+  For example: 
+    v[[MISS]] -> NA rather than 'named vector()'
 
-     For example: 
-        v[[MISS]] -> NA rather than 'named vector()'
     
 - [ ] Test to support 
    - None, 0, 1, 1 of multiple, multiple match hits
@@ -23,29 +40,25 @@ Introduce this distinction into the docs.
  
 
 - [ ] Support data.frames 
-   
-   This should be straight-foward and implement a method of 
-   seachable-ANY-character that dispatches to data.frame-ANY-character after 
-   appropriate resolutions.
 
+    This should be straight-foward and implement a method of 
+    seachable-ANY-character that dispatches to data.frame-ANY-character after 
+    appropriate resolutions.
 
 - [ ]  Support data.tables
-   
+
     This might be tricky as j is interpreted within x. There might not be a 
     good way to do this unless with = FALSE.  Although there might not be 
     anything different from data.frames
  
 
 - [ ] Support Search Modifiers
+  - [x] reverse.lookup - look in values  
+  - recursive (unlist) - descend into recursive structures
 
-   - search.modifiers: 
-       - reverse.lookup - look in values  
-       - recursive (unlist) - descend into recursive structures
-
-- [ ] Support return modifiers, e.g. 
-
+- [ ] Return modifiers, e.g. 
    - multiple pattern matches reslovers:
-       - any 
+      - any 
        - all
        - first, last, second, third, nth(string,n) 
        - collect
@@ -55,16 +68,16 @@ Introduce this distinction into the docs.
        x searchable (returns a searchable object): pipe result to searchable fn
 
    - setting modifiers:
-       - uniqueness
-       - count 
-
+     - uniqueness
+     - count 
 
 ## Write fn to collect values sharing the same keys into a list or vector.
 
    - cf. base.tools/collect_values_by_name
    
-    
 # LONG TERM 
+
+- [ ] Plug-in architecture for search behaviors
 
 - [ ] Make it so names do not have to be quoted using qw, qcc or something
 

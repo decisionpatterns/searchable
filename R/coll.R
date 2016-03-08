@@ -17,24 +17,28 @@
 
 #' @rdname coll
 #' @export
-   coll <- function( object, ... )  UseMethod('coll')
+ 
+coll <- function( object, ... )  UseMethod('coll')
   
 
 #' @rdname coll
 #' @export
-   coll.default  <- function( object, ... ) pattern( as.character(object), 'coll', ... )
+ 
+coll.default  <- function( object, ... ) pattern( as.character(object), 'coll', ... )
 
 
 #' @rdname coll
 #' @export
-   coll.character  <- function( object, ... ) pattern( object, 'coll', ... )
+
+coll.character  <- function( object, ... ) pattern( object, 'coll', ... )
 
 
 #' @rdname coll
 #' @export
 #  Note: an alternative is to clobber the options
-   coll.SearchableOrPattern  <- function( object, ... ) {
-     object@type = 'coll'
-     object@options = list(...)
-     return(object)
-   }
+
+coll.SearchableOrPattern  <- function( object, ... ) {
+   object@type = 'coll'
+   object@options = list(...)
+   return(object)
+ }

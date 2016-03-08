@@ -5,14 +5,18 @@
 #' @param object to make specification 
 #' @param ... additional arguments passes to \code{\link{pattern}}
 #' 
-#' \code{std}
+#' \code{std} causes match behavior to revert to R's default. It is a non-op
+#' stringr-style match modifier that indicates that no special matching 
+#' behavior should be used. 
+#' 
+#' The function mainly exist to revert clear previos modifiers. 
 #' 
 #' @seealso 
 #'   \code{\link{pattern}}
 #' 
 #' @examples
-#'   pat <- std("a") 
-#'   detect( c('alpha','beta'), pat )
+#'   ptrn <- std("a") 
+#'   detect( c('alpha','beta'), ptrn )
 #'   
 
 #' @rdname std

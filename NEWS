@@ -3,26 +3,19 @@ Version 0.3.3 "Billie Holiday"
 * Fixes to DESCRIPTION and docs to get by CRAN censors
 
 
-
 Version 0.3 "Drowsey Driver"
 ---------------------------
-* Move dependency from stringr to stringi
-
-* Remove methods for $, $<-, [[, [[<-: These are indeterminant and lead to ambiguous results
-
+* Moved dependency from stringr to stringi
+* Remove methods for $, $<-, [[, [[<-: These are indeterminant and lead to 
+  ambiguous results
 * Class names are now CapWords
-
 * Code better factored into files
 
 
 Version 0.2 "happy birthday"
 ----------------------------
-
 * Adds support for multiple patterns with `[`. Multiple pattern searches return
   elements of the search target that match ANY of the patterns.
-  
 * Clarifies the documentation 
-
 * Fixes problems with tests
-
 * Adds this NEWS file

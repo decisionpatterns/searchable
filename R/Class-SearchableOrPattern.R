@@ -6,8 +6,8 @@ NULL
 
 # Class: SearchableOrPattern
 #  
-# This is a virtual class used internally to specify an object as either Searchable 
-# or Pattern. 
+# This is a virtual class used internally to specify an object as either 
+# Searchable or Pattern. This allows 
 #
 # @name SearchableOrPattern 
 # 

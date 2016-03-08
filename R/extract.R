@@ -163,9 +163,7 @@ NULL
 # 
 
 .resolve.patterns <- function( object, pattern ) {
-   
-    # browser()
-    
+
     if( ! pattern  %>% is('Pattern') ) { 
       str <- pattern 
       pattern <- object %>% pattern
@@ -205,11 +203,9 @@ NULL
   
   # APPLY REVERSE LOOKUP BY INVERTING OBJECT
   #  This does not work for recursive, list-like  objects
-    # object <- if( .reverse.lookup(pattern) ) invert(object) else object  
-        
+  # object <- if( .reverse.lookup(pattern) ) invert(object) else object  
   return( 
     detect( str=names(object), pattern=pattern ) 
   )
   
 }  
-
