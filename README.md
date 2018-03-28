@@ -1,37 +1,39 @@
-# Introduction
+# searchable
 
-The 'searchable' package provides flexibile methods for subseting  
-objects by matching their names using case (in)sensitivity, regular or 
-fixed expressions. Searches uses the standard '[' operator and allows 
-specification of a default (applied to the target) or ad hoc search 
-behavior (applied to the search pattern).
+[![CRAN](http://www.r-pkg.org/badges/version/searchable)](https://cran.rstudio.com/web/packages/searchable/index.html) 
+[![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) 
+[![Downloads](http://cranlogs.r-pkg.org/badges/lettercase?color=brightgreen)](http://www.r-pkg.org/pkg/searchable)
+ 
 
-It was designed to make flexible, high performance dictionary and 
-thesaurus structures.  
+The *searchable* package provides flexibile methods for subseting objects by matching their names using case (in)sensitivity, regular or fixed expressions. Searches uses the standard `[` operator and allows specification of a default (applied to the target) or ad hoc search behavior (applied to the search pattern).
+
+It was designed to make object flexible, high performance dictionary and thesaurus data structures.  
 
 Features of this package are:
 
-* 'stringr/i'-style match modifiers for matching names by case (in)sensitivity, 
-regular expressions or fixed expression. 
-
-* Match modification applied to either/both the pattern and target.
-
-* The `[` operatore overloaded to provide R-like functionality. 
-
-* Search behavior defaults to base R behaviors.
+* Easy to make name look-ups searchable -- simply by declaring objects searchable.
+* Drop-in functionality -- the `[` operator is overload but defaults to base-R functionality. 
+* stringr/i*-style match modifiers for matching by case (in)sensitivity, regular expressions or fixed expression. 
+* Match modification applied to pattern and/or target
+** Define default behavior for target (dictionary)
+** Overridable, per-search change of search behavior
 
 
+## Installation
 
-# Installation
+Stable Version:
+
+    install.packages('searchable')
+    library(devtools)
+    
+    
+Development Version: 
 
     library(devtools)
     install_github( "decisionpatterns/searchable" )
     
-    # OR 
-    install.packages('searchable')
 
-
-# Examples
+## Examples
 
 ```R
   library(searchable)
@@ -78,6 +80,4 @@ regular expressions or fixed expression.
     sl[ "B"  %>% ignore.case ]
     "b" %>% sl[[.]]
     "B" %>% ignore.case %>% sl[[ . ]]
-
-     
 ```
