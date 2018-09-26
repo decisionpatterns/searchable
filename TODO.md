@@ -2,6 +2,13 @@ TODO:
  
 # IMMEDIATE
 
+- A data.frame or data.table is marked searchable, it is searched against a single column. 
+  - For data.table this is sort-of like using a key.
+  - If the data.table is keyed, it does not need to be marked as searchable.
+  - 
+
+- sv[ ignore.case('[bc]') ] doesn't work 
+
 - [ ] Define (in documentation) what is a target, modifier, term, behavior/semantics, 
       term -> modifier -> target
 
