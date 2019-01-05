@@ -1,0 +1,21 @@
+---
+title: "Extending searchable"
+author: "Christopher Brown"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Extending searchable}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Although most the `searchable` pattern provides the most common search semantics for objects in base R, it is easy to make new classes "searchable" or add new search behavior to existing classes. The `searchable` package. 
+
+## Making A Class "searchable" 
+
+
+
+## Making a New Search Behavior
+
+
+

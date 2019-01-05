@@ -1,9 +1,11 @@
 # searchable
 
-[![CRAN](http://www.r-pkg.org/badges/version/searchable)](https://cran.rstudio.com/web/packages/searchable/index.html) 
-[![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) 
-[![Downloads](http://cranlogs.r-pkg.org/badges/lettercase?color=brightgreen)](http://www.r-pkg.org/pkg/searchable)
- 
+![](https://img.shields.io/cran/v/optigrab.svg) <!-- Version --> 
+![](https://img.shields.io/cran/l/optigrab.svg) <!-- License --> 
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
+[![Downloads](https://cranlogs.r-pkg.org/badges/optigrab?color=brightgreen)](https://www.r-pkg.org/pkg/optigrab)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/optigrab)](https://cran.rstudio.com/web/packages/optigrab/index.html)
+<!-- [![Research software impact](http://depsy.org/api/package/cran/optigrab/badge.svg)](http://depsy.org/package/r/optigrab) -->
 
 The *searchable* package provides flexibile methods for subseting objects by matching their names using case (in)sensitivity, regular or fixed expressions. Searches uses the standard `[` operator and allows specification of a default (applied to the target) or ad hoc search behavior (applied to the search pattern).
 
