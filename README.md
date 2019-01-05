@@ -1,11 +1,11 @@
 # searchable
 
-![](https://img.shields.io/cran/v/optigrab.svg) <!-- Version --> 
-![](https://img.shields.io/cran/l/optigrab.svg) <!-- License --> 
+![](https://img.shields.io/cran/v/searchable.svg) <!-- Version --> 
+![](https://img.shields.io/cran/l/searchable.svg) <!-- License --> 
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
-[![Downloads](https://cranlogs.r-pkg.org/badges/optigrab?color=brightgreen)](https://www.r-pkg.org/pkg/optigrab)
-[![](http://cranlogs.r-pkg.org/badges/grand-total/optigrab)](https://cran.rstudio.com/web/packages/optigrab/index.html)
-<!-- [![Research software impact](http://depsy.org/api/package/cran/optigrab/badge.svg)](http://depsy.org/package/r/optigrab) -->
+[![Downloads](https://cranlogs.r-pkg.org/badges/searchable?color=brightgreen)](https://www.r-pkg.org/pkg/searchable)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/searchable)](https://cran.rstudio.com/web/packages/searchable/index.html)
+<!-- [![Research software impact](http://depsy.org/api/package/cran/searchable/badge.svg)](http://depsy.org/package/r/searchable) -->
 
 The *searchable* package provides flexibile methods for subseting objects by matching their names using case (in)sensitivity, regular or fixed expressions. Searches uses the standard `[` operator and allows specification of a default (applied to the target) or ad hoc search behavior (applied to the search pattern).
 
