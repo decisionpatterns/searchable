@@ -7,9 +7,12 @@
 [![](http://cranlogs.r-pkg.org/badges/grand-total/searchable)](https://cran.rstudio.com/web/packages/searchable/index.html)
 <!-- [![Research software impact](http://depsy.org/api/package/cran/searchable/badge.svg)](http://depsy.org/package/r/searchable) -->
 
-The *searchable* package provides flexibile methods for subseting objects by matching their names using case (in)sensitivity, regular or fixed expressions. Searches uses the standard `[` operator and allows specification of a default (applied to the target) or ad hoc search behavior (applied to the search pattern).
+The *searchable* package provides flexibile methods for searching and subsetting list, vectors and other objects by matching names using case (in)sensitivity, regular expressions, fixed expressions or other user defined patterns.  This is accomplished by overloading the standard `[` operator to allow `string[r|i]` style match modifiers. These can used to change the default search semantics on an object or change search behavior on the fly. When no match modifiers are used, the default is standard R behavior, so this functions as a drop-in replacement.  
 
-It was designed to make object flexible, high performance dictionary and thesaurus data structures.  
+`searchable` was designed to be extensible. Developers can use `searchable` to build thier own flexible, high performance dictionary and thesaurus data structures or their own match modifiers
+
+
+## Features
 
 Features of this package are:
 
@@ -49,7 +52,7 @@ Development Version:
     sv$a
      
     sv[['a']]
-    sv[[ ignore.case('A') ]]
+    sv[[ ignore.case('A') ]]           # Ad-hoc case-insensitive matching 
     
     sv[ ignore.case('b') ]     
     sv[ perl('c') ]
@@ -65,7 +68,7 @@ Development Version:
   
   
   # MODIFIERS TO SEARCH TARGET/OBJECT
-    sv <- searchable(v, ignore.case )         
+    sv <- searchable(v, ignore.case )   # Defines default case-insensitive matching         
     sv$A
     sv['b']
     sv['B']
